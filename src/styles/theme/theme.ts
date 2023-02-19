@@ -29,13 +29,13 @@ declare module '@mui/material/styles' {
 let theme = createTheme({
 	palette: {
 		primary: {
-			main: '#4021FF',
-			light: '#8754ff',
-			dark: '#0000ca',
+			main: '#A7BDA6',
+			light: '#a1f6ad',
+			dark: '#00210a',
 			contrastText: '#fff',
 		},
 		secondary: {
-			main: '#fff',
+			main: '#808080',
 			contrastText: '#000',
 		},
 		neutral: {
@@ -46,8 +46,8 @@ let theme = createTheme({
 			secondary: '#fff',
 		},
 		background: {
-			default: '#0A0A0A',
-			paper: '#333',
+			default: '#fff',
+			paper: '#fcfcfc',
 		},
 		divider: 'rgba(255, 255, 255, 0.06)',
 		common: {
@@ -77,14 +77,15 @@ let theme = createTheme({
 	typography: {
 		fontFamily: ['Roboto Flex', 'sans-serif'].join(','),
 		h1: {
-			fontWeight: 900,
+			fontWeight: 1000,
+			fontSize: 94,
 		},
 		h2: {
 			fontWeight: 900,
 		},
 		button: {
 			fontWeight: 700,
-			fontSize: 14,
+			fontSize: 16,
 			textTransform: 'none',
 		},
 		h6: {
@@ -98,20 +99,28 @@ let theme = createTheme({
 				color: '#fff',
 			},
 		},
+		MuiTypography: {
+			defaultProps: {
+				style: {
+					textShadow: `#9e9e9e 0 0 3px, #9e9e9e 0 0 3px, #9e9e9e 0 0 3px, #9e9e9e 0 0 3px`,
+				},
+			},
+		},
 		MuiButton: {
 			defaultProps: {
 				style: {
 					borderRadius: 12,
+					fontSize: '16px',
+					textShadow: `#9e9e9e 0 0 3px, #9e9e9e 0 0 3px, #9e9e9e 0 0 3px, #9e9e9e 0 0 3px`,
 				},
 			},
 			styleOverrides: {
 				root: ({ ownerState }) => ({
 					...(ownerState.variant === 'contained' &&
 						ownerState.color === 'primary' && {
-							background: 'linear-gradient(95.97deg, #4021FF 73.59%, #1582D0 109.56%)',
-							backgroundColor: 'rgba(255, 255, 255, 0.06)',
+							background: 'linear-gradient(95.97deg, #808080 73.59%, #808080 109.56%)',
 							':hover': {
-								background: '#1582D0',
+								background: '#A0A0A0',
 							},
 						}),
 					...(ownerState.variant === 'outlined' && {

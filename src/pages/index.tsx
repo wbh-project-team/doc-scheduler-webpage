@@ -1,9 +1,82 @@
-import { Typography } from '@mui/material';
+import {
+	Box,
+	Button,
+	Container,
+	InputBase,
+	MenuItem,
+	InputLabel,
+	FormControl,
+	Select,
+	styled,
+	TextField,
+	Typography,
+	FormHelperText,
+} from '@mui/material';
 import Head from 'next/head';
+import { useState } from 'react';
 import Navbar from '../components/Navbar/Navbar';
 import styles from '../styles/Home.module.css';
 
+const CustomTextField = styled(TextField)(({ theme }) => ({
+	'& .MuiInputBase-input': {
+		color: theme.palette.secondary.main,
+		borderRadius: 12,
+		border: '2px solid #ced4da',
+		boxShadow: 'inset 0px 4px 4px rgba(0, 0, 0, 0.25);',
+		padding: '10px 26px 10px 12px',
+	},
+	'& .MuiOutlinedInput-root': {
+		borderRadius: 12,
+		backgroundColor: theme.palette.background.paper,
+		padding: '0',
+		'& fieldset': {
+			color: '#000',
+			padding: '0px',
+			margin: '0px',
+		},
+		'&.Mui-focused fieldset': {
+			border: 'solid 1px #808080',
+		},
+	},
+}));
+
+const BootstrapInput = styled(InputBase)(({ theme }) => ({
+	'label + &': {
+		// marginTop: theme.spacing(3),
+		color: theme.palette.secondary.main,
+	},
+	'& .MuiInputBase-input': {
+		color: theme.palette.secondary.main,
+		borderRadius: 12,
+		backgroundColor: theme.palette.background.paper,
+		border: '1px solid #ced4da',
+		boxShadow: 'inset 0px 4px 4px rgba(0, 0, 0, 0.25);',
+		padding: '10px 26px 10px 12px',
+	},
+	'&:focus': {
+		borderRadius: 12,
+	},
+}));
+
+const areaOfExpertise = [
+	{
+		value: 'doctor',
+		label: 'Hausarzt',
+	},
+	{
+		value: 'dentist',
+		label: 'Zahnarzt',
+	},
+	{
+		value: 'surgeon',
+		label: 'Chirurg',
+	},
+];
+
 export default function Home() {
+	const [currentZipCode, setZipCode] = useState<string>('Postleitzahl');
+	const [currentAreaOfExpertise, setAreaOfExpertise] = useState<string>('doctor');
+	const [age, setAge] = useState('');
 	return (
 		<>
 			<Head>
@@ -13,9 +86,78 @@ export default function Home() {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<Navbar />
-			<main className={styles.main}>
-				<Typography variant="h1">Home</Typography>
-			</main>
+			<Box
+				component="main"
+				sx={{
+					display: 'flex',
+					flexDirection: 'column',
+					alignItems: 'center',
+					width: '100vw',
+				}}>
+				<Container
+					component="section"
+					sx={{
+						position: 'relative',
+						display: 'flex',
+						flexDirection: 'column',
+						alignItems: 'center',
+						// justifyContent: 'center',
+						minHeight: '900px',
+						py: '256px',
+						mt: '70px',
+						backgroundImage: 'url("/images/birch4.jpg")',
+						backgroundSize: 'cover',
+						backgroundPosition: 'center',
+						gap: '32px',
+					}}>
+					<Typography
+						sx={{ width: '500px', textAlign: 'center', textTransform: 'uppercase' }}
+						variant="h1">
+						Arzt Termine Einfach Buchen
+					</Typography>
+					<Box
+						sx={{
+							display: 'flex',
+							flexDirection: 'row',
+							gap: '24px',
+							alignItems: 'center',
+						}}>
+						<CustomTextField
+							variant="outlined"
+							sx={{ width: '150px' }}
+							defaultValue={'Postleitzahl'}
+							value={currentZipCode}
+							onChange={(event) => setZipCode(event.target.value)}
+							onFocus={() => {
+								if (currentZipCode === 'Postleitzahl') {
+									setZipCode('');
+								}
+							}}
+							onBlur={() => {
+								if (currentZipCode === '') {
+									setZipCode('Postleitzahl');
+								}
+							}}
+						/>
+						<Select
+							sx={{ height: '100%', width: '250px' }}
+							input={<BootstrapInput />}
+							id="demo-simple-select-error"
+							value={currentAreaOfExpertise}
+							onChange={(event) => setAreaOfExpertise(event.target.value)}>
+							{areaOfExpertise.map((element) => (
+								<MenuItem
+									sx={{ color: 'secondary.main' }}
+									key={element.value}
+									value={element.value}>
+									{element.label}
+								</MenuItem>
+							))}
+						</Select>
+						<Button variant={'contained'}>Suchen</Button>
+					</Box>
+				</Container>
+			</Box>
 		</>
 	);
 }
