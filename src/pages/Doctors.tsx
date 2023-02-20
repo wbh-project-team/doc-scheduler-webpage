@@ -1,9 +1,11 @@
-import { Box, Typography } from '@mui/material';
+import { Box, InputBase, styled, TextField, Typography } from '@mui/material';
 import Head from 'next/head';
+import router from 'next/router';
 import Navbar from '../components/Navbar/Navbar';
-import styles from '../styles/YourAppointments.module.css';
 
-export default function YourAppointments() {
+export default function Home() {
+	const { zipCode, areaOfExpertise } = router.query;
+
 	return (
 		<>
 			<Head>
@@ -21,7 +23,10 @@ export default function YourAppointments() {
 					alignItems: 'center',
 					width: '100vw',
 					mt: '70px',
-				}}></Box>
+				}}>
+				<Typography variant="h2">{zipCode}</Typography>
+				<Typography variant="h2">{areaOfExpertise}</Typography>
+			</Box>
 		</>
 	);
 }

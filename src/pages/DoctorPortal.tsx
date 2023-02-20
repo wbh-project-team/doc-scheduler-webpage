@@ -1,9 +1,9 @@
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import Head from 'next/head';
 import Navbar from '../components/Navbar/Navbar';
 import styles from '../styles/DoctorsOffice.module.css';
 
-export default function DoctorsOffice() {
+export default function DoctorPortal() {
 	return (
 		<>
 			<Head>
@@ -13,9 +13,15 @@ export default function DoctorsOffice() {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<Navbar />
-			<main className={styles.main}>
-				<Typography variant="h1">Deine Praxis</Typography>
-			</main>
+			<Box
+				component="main"
+				sx={{
+					display: 'flex',
+					flexDirection: 'column',
+					alignItems: 'center',
+					width: '100vw',
+					mt: '70px',
+				}}></Box>
 		</>
 	);
 }

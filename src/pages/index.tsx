@@ -10,12 +10,12 @@ import {
 	styled,
 	TextField,
 	Typography,
-	FormHelperText,
 } from '@mui/material';
 import Head from 'next/head';
+import Link from 'next/link';
+import router from 'next/router';
 import { useState } from 'react';
 import Navbar from '../components/Navbar/Navbar';
-import styles from '../styles/Home.module.css';
 
 const CustomTextField = styled(TextField)(({ theme }) => ({
 	'& .MuiInputBase-input': {
@@ -52,9 +52,10 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
 		border: '1px solid #ced4da',
 		boxShadow: 'inset 0px 4px 4px rgba(0, 0, 0, 0.25);',
 		padding: '10px 26px 10px 12px',
-	},
-	'&:focus': {
-		borderRadius: 12,
+
+		'&:focus': {
+			borderRadius: 12,
+		},
 	},
 }));
 
@@ -76,7 +77,8 @@ const areaOfExpertise = [
 export default function Home() {
 	const [currentZipCode, setZipCode] = useState<string>('Postleitzahl');
 	const [currentAreaOfExpertise, setAreaOfExpertise] = useState<string>('doctor');
-	const [age, setAge] = useState('');
+	const { id } = router.query;
+
 	return (
 		<>
 			<Head>
@@ -93,6 +95,7 @@ export default function Home() {
 					flexDirection: 'column',
 					alignItems: 'center',
 					width: '100vw',
+					mt: '70px',
 				}}>
 				<Container
 					component="section"
@@ -101,10 +104,8 @@ export default function Home() {
 						display: 'flex',
 						flexDirection: 'column',
 						alignItems: 'center',
-						// justifyContent: 'center',
 						minHeight: '900px',
 						py: '256px',
-						mt: '70px',
 						backgroundImage: 'url("/images/birch4.jpg")',
 						backgroundSize: 'cover',
 						backgroundPosition: 'center',
@@ -127,7 +128,7 @@ export default function Home() {
 							sx={{ width: '150px' }}
 							defaultValue={'Postleitzahl'}
 							value={currentZipCode}
-							onChange={(event) => setZipCode(event.target.value)}
+							onChange={(event) => setZipCode(event.target.value)} //todo add validation https://mui.com/material-ui/react-text-field/
 							onFocus={() => {
 								if (currentZipCode === 'Postleitzahl') {
 									setZipCode('');
@@ -154,7 +155,15 @@ export default function Home() {
 								</MenuItem>
 							))}
 						</Select>
-						<Button variant={'contained'}>Suchen</Button>
+						<Button
+							variant={'contained'}
+							onClick={() =>
+								router.push(
+									`/Doctors?zipCode=${currentZipCode}&areaOfExpertise=${currentAreaOfExpertise}`,
+								)
+							}>
+							Suchen
+						</Button>
 					</Box>
 				</Container>
 			</Box>
