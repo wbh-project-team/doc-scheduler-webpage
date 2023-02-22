@@ -84,7 +84,8 @@ let theme = createTheme({
 			fontWeight: 900,
 		},
 		button: {
-			fontWeight: 700,
+			fontWeight: 500,
+			// fontWeight: 700,
 			fontSize: 16,
 			textTransform: 'none',
 		},
@@ -111,7 +112,7 @@ let theme = createTheme({
 				style: {
 					borderRadius: 12,
 					fontSize: '16px',
-					textShadow: `#9e9e9e 0 0 3px, #9e9e9e 0 0 3px, #9e9e9e 0 0 3px, #9e9e9e 0 0 3px`,
+					// textShadow: `#9e9e9e 0 0 3px, #9e9e9e 0 0 3px, #9e9e9e 0 0 3px, #9e9e9e 0 0 3px`,
 				},
 			},
 			styleOverrides: {

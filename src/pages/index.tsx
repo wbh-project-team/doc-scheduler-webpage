@@ -13,9 +13,10 @@ import {
 } from '@mui/material';
 import Head from 'next/head';
 import Link from 'next/link';
-import router from 'next/router';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Navbar from '../components/Navbar/Navbar';
+import Footer from '../components/Footer/Footer';
 
 const CustomTextField = styled(TextField)(({ theme }) => ({
 	'& .MuiInputBase-input': {
@@ -77,6 +78,7 @@ const areaOfExpertise = [
 export default function Home() {
 	const [currentZipCode, setZipCode] = useState<string>('Postleitzahl');
 	const [currentAreaOfExpertise, setAreaOfExpertise] = useState<string>('doctor');
+	const router = useRouter()
 	const { id } = router.query;
 
 	return (
@@ -166,7 +168,9 @@ export default function Home() {
 						</Button>
 					</Box>
 				</Container>
+				
 			</Box>
+			<Footer />
 		</>
 	);
 }
