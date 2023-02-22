@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import Head from 'next/head';
 import Link from 'next/link';
-import router from 'next/router';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Navbar from '../components/Navbar/Navbar';
 
@@ -77,7 +77,7 @@ const areaOfExpertise = [
 export default function Home() {
 	const [currentZipCode, setZipCode] = useState<string>('Postleitzahl');
 	const [currentAreaOfExpertise, setAreaOfExpertise] = useState<string>('doctor');
-	const { id } = router.query;
+	const router = useRouter();
 
 	return (
 		<>
@@ -126,7 +126,6 @@ export default function Home() {
 						<CustomTextField
 							variant="outlined"
 							sx={{ width: '150px' }}
-							defaultValue={'Postleitzahl'}
 							value={currentZipCode}
 							onChange={(event) => setZipCode(event.target.value)} //todo add validation https://mui.com/material-ui/react-text-field/
 							onFocus={() => {

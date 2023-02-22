@@ -1,6 +1,7 @@
 import { Box, InputBase, styled, TextField, Typography } from '@mui/material';
 import Head from 'next/head';
 import router from 'next/router';
+import DoctorCard from '../components/DoctorCard/DoctorCard';
 import Navbar from '../components/Navbar/Navbar';
 
 export default function Home() {
@@ -24,8 +25,52 @@ export default function Home() {
 					width: '100vw',
 					mt: '70px',
 				}}>
-				<Typography variant="h2">{zipCode}</Typography>
-				<Typography variant="h2">{areaOfExpertise}</Typography>
+				{/* <Typography variant="h2">{zipCode}</Typography>
+				<Typography variant="h2">{areaOfExpertise}</Typography> */}
+				<Box
+					sx={{
+						display: 'grid',
+						gridTemplateColumns: 'auto auto',
+						gap: '24px',
+						p: '24px',
+					}}>
+					<DoctorCard
+						doctor={{
+							name: 'Doktor MegaGut',
+							address: 'Bahnhofstraße 1',
+							zipCode: 90441,
+							city: 'Nuernberg',
+							openHours: [{ start: 8.3 * 60 * 60 * 1000, end: 16 * 60 * 60 * 1000 }],
+						}}
+					/>
+					<DoctorCard
+						doctor={{
+							name: 'Doktor MegaGut',
+							address: 'Bahnhofstraße 1',
+							zipCode: 90441,
+							city: 'Nuernberg',
+							openHours: [{ start: 8.3 * 60 * 60 * 1000, end: 16 * 60 * 60 * 1000 }],
+						}}
+					/>
+					<DoctorCard
+						doctor={{
+							name: 'Doktor MegaGut',
+							address: 'Bahnhofstraße 1',
+							zipCode: 90441,
+							city: 'Nuernberg',
+							openHours: [{ start: 8.3 * 60 * 60 * 1000, end: 16 * 60 * 60 * 1000 }],
+						}}
+					/>
+					<DoctorCard
+						doctor={{
+							name: 'Doktor MegaGut',
+							address: 'Bahnhofstraße 1',
+							zipCode: 90441,
+							city: 'Nuernberg',
+							openHours: [{ start: 8.3 * 60 * 60 * 1000, end: 16 * 60 * 60 * 1000 }],
+						}}
+					/>
+				</Box>
 			</Box>
 		</>
 	);
