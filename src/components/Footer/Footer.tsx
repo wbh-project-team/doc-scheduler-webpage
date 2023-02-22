@@ -98,7 +98,6 @@ export default function Footer() {
 					{links_left.map((item) => (
 						
 						<BottomNavigationAction
-
 							label = {item.name}
 							icon = {<item.icon/>} 
 							onClick={() => router.push('${item.link}')}
@@ -108,7 +107,7 @@ export default function Footer() {
 					{links_right.map((item) => (
 						<Box>
 						<BottomNavigationAction
-						sx={{fontSize: 14, fontWeight: 500, padding: '16px 60px'}}
+						sx={{fontSize: 14, fontWeight: 600, padding: '16px 60px'}}
 							showLabel={false}
 							label = {item.name}
 							icon = {item.name} 

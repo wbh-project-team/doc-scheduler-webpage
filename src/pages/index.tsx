@@ -106,15 +106,38 @@ export default function Home() {
 						display: 'flex',
 						flexDirection: 'column',
 						alignItems: 'center',
-						minHeight: '900px',
+						minHeight: '800px',
 						py: '256px',
-						backgroundImage: 'url("/images/birch4.jpg")',
+						backgroundImage: 'url("/images/birch.jpg")',
 						backgroundSize: 'cover',
 						backgroundPosition: 'center',
 						gap: '32px',
 					}}>
+					<Box
+						sx={{
+							height: '400px',
+							width: '400px',
+							position: 'absolute',
+							zIndex: 0,
+							top: '20%',
+							left: 0,
+							right: 0,
+							margin: '0 auto',
+							
+							
+							borderRadius: 150,
+							//border: '2px solid black',
+							
+							//margin: '100px',
+							
+							
+							backgroundColor: 'divider',
+							//opacity: 0.6,
+							
+						}}>
+							</Box>
 					<Typography
-						sx={{ width: '500px', textAlign: 'center', textTransform: 'uppercase' }}
+						sx={{ width: '500px', textAlign: 'center', textTransform: 'uppercase', zIndex: 1 }}
 						variant="h1">
 						Arzt Termine Einfach Buchen
 					</Typography>
@@ -166,6 +189,7 @@ export default function Home() {
 							}>
 							Suchen
 						</Button>
+					
 					</Box>
 				</Container>
 				

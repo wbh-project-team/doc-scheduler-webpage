@@ -21,9 +21,9 @@ export const links_left: Links[] = [
 ];
 
 export const links_right: Links[] = [
-	{ name: 'Impressum', link: '/YourAppointments', icon: SendIcon  },  // is there a possibility to simply put no icon?
 	{ name: 'Datenschutz', link: '/YourAppointments' , icon:SendIcon },
-	{ name: 'AGBs', link: '/DoctorsOffice', icon:SendIcon }
+	{ name: 'AGBs', link: '/DoctorsOffice', icon:SendIcon },
+	{ name: 'Impressum', link: '/YourAppointments', icon: SendIcon  }  // is there a possibility to simply put no icon?
 	
 ];
 

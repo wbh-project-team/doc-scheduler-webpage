@@ -49,11 +49,12 @@ let theme = createTheme({
 			default: '#fff',
 			paper: '#fcfcfc',
 		},
-		divider: 'rgba(255, 255, 255, 0.06)',
+		divider: 'rgba(166, 189, 166, 0.6)', //'rgba(255, 255, 255, 0.06)',
 		common: {
 			black: '#000',
 			white: '#fff',
 		},
+		
 		grey: {
 			'50': '#fafafa',
 			'100': '#f5f5f5',
