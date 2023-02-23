@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import styles from "./footer.module.css";
 import { useContext, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Image from 'next/image';
@@ -62,7 +61,7 @@ export default function Footer() {
 	const [value, setValue] = React.useState(0);
 
 	return  (
-	<AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
+	<AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0, height:'70px', display: 'flex' }}>
         <Toolbar sx={{ height: '100%', padding: 0 }}>
 			
 			{/* <IconButton color="inherit" aria-label="open drawer">
