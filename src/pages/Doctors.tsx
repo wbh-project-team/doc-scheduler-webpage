@@ -1,10 +1,11 @@
 import { Box, InputBase, styled, TextField, Typography } from '@mui/material';
 import Head from 'next/head';
-import router from 'next/router';
+import { useRouter } from 'next/router';
 import DoctorCard from '../components/DoctorCard/DoctorCard';
 import Navbar from '../components/Navbar/Navbar';
 
 export default function Home() {
+	const router = useRouter();
 	const { zipCode, areaOfExpertise } = router.query;
 
 	return (
