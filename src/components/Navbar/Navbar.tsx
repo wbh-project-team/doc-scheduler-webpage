@@ -51,24 +51,11 @@ export default function Navbar() {
 		};
 	}, []);
 
-	const Logo = ({ path, boxWidth }: LogoProps) => {
-		return (
-			<MuiLink
-				href={'/'}
-				sx={{ width: boxWidth, position: 'relative', height: '100%' }}
-				component={Link}>
-				<Image src={path} alt={'doc scheduler logo'} fill />
-			</MuiLink>
-		);
-	};
-
-	interface DynamicAppbarProps {
-		children: React.ReactElement;
-	}
-
 	return (
 		<>
-			<AppBar sx={[{ height: '70px', display: 'flex' }, scrolled ? {} : { boxShadow: 'none' }]} position={'fixed'}>
+			<AppBar
+				sx={[{ height: '80px', display: 'flex' }, scrolled ? {} : { boxShadow: 'none' }]}
+				position={'fixed'}>
 				<Container maxWidth={'desktop'} sx={{ height: '100%', padding: 0 }}>
 					<Toolbar sx={{ height: '100%', padding: 0 }}>
 						<Box

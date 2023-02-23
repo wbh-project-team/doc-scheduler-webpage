@@ -32,44 +32,26 @@ const StyledFab = styled(Fab)({
 	left: 0,
 	right: 0,
 	margin: '0 auto',
-  });
-
+});
 
 export default function Footer() {
 	//const [scrolled, setScrolled] = useState(false);
 	const router = useRouter();
-	const [currentPage, setCurrentPage] = useState<number>(0);
-	const isMobile = useMediaQuery('(max-width:550px)');
-
-	useEffect(() => {
-		for (let i = 0; i < links_left.length; i++) {
-			if (router.pathname === links_left[i].link) {
-				setCurrentPage(i);
-				return;
-			}
-		}
-		setCurrentPage(-1);
-		for (let i = 0; i < links_right.length; i++) {
-			if (router.pathname === links_right[i].link) {
-				setCurrentPage(i);
-				return;
-			}
-		}
-		setCurrentPage(-1);
-	}, [router.pathname]);
 
 	const [value, setValue] = React.useState(0);
 
-	return  (
-	<AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0, height:'70px', display: 'flex' }}>
-        <Toolbar sx={{ height: '100%', padding: 0 }}>
-			
-			{/* <IconButton color="inherit" aria-label="open drawer">
+	return (
+		<AppBar
+			position="fixed"
+			color="primary"
+			sx={{ top: 'auto', bottom: 0, height: '70px', display: 'flex' }}>
+			<Toolbar sx={{ height: '100%', padding: 0 }}>
+				{/* <IconButton color="inherit" aria-label="open drawer">
 				<FavoriteOutlinedIcon /><br/>
 			</IconButton>
 			 */}
 
-			{/* <Box sx={{
+				{/* <Box sx={{
 				width: '30%',
 				justifyContent: 'space-between',
 				alignItems: 'left',
@@ -79,56 +61,49 @@ export default function Footer() {
 					value={value}
 					sx={{
 						width: '100%',
-						backgroundColor: 'primary.main', 
+						backgroundColor: 'primary.main',
 						'& .MuiBottomNavigationAction-label': {
-							fontSize: theme => theme.typography.caption,
+							fontSize: (theme) => theme.typography.caption,
 							transition: 'none',
 							fontWeight: 'bold',
-							lineHeight: '20px'
-						  },
-						  '& .MuiSvgIcon-root, & .MuiBottomNavigationAction-label': {
-							color: theme => theme.palette.primary.contrastText
-						  }
-					 	}}
+							lineHeight: '20px',
+						},
+						'& .MuiSvgIcon-root, & .MuiBottomNavigationAction-label': {
+							color: (theme) => theme.palette.primary.contrastText,
+						},
+					}}
 					onChange={(event, newValue) => {
 						setValue(newValue);
-					}}
-				>
+					}}>
 					{links_left.map((item) => (
-						
 						<BottomNavigationAction
-							label = {item.name}
-							icon = {<item.icon/>} 
-							onClick={() => router.push('${item.link}')}
-						/>	
+							label={item.name}
+							icon={item.icon ? <item.icon /> : null}
+							onClick={() => router.push(`${item.link}`)}
+						/>
 					))}
 					<Box sx={{ flexGrow: 1 }} />
 					{links_right.map((item) => (
 						<Box>
-						<BottomNavigationAction
-						sx={{fontSize: 14, fontWeight: 600, padding: '16px 60px'}}
-							showLabel={false}
-							label = {item.name}
-							icon = {item.name} 
-							onClick={() => router.push('${item.link}')}
-						/>
-						{/* <BottomNavigationAction
+							<BottomNavigationAction
+								sx={{ fontSize: 14, fontWeight: 600, padding: '16px 60px' }}
+								showLabel={false}
+								label={item.name}
+								icon={item.name}
+								onClick={() => router.push(`${item.link}`)}
+							/>
+							{/* <BottomNavigationAction
 							showLabel={false}
 							icon = {<BorderVerticalSharpIcon/>}
 						/> */}
 						</Box>
 					))}
-				
 				</BottomNavigation>
-		  
-          
-		  
-		<StyledFab color="secondary" aria-label="home" sx={{ color: '#fff'}}>
-			<HomeIcon />
-		</StyledFab>
-		
-			
-        </Toolbar>
-      </AppBar>
+
+				<StyledFab color="secondary" aria-label="home" sx={{ color: '#fff' }}>
+					<HomeIcon />
+				</StyledFab>
+			</Toolbar>
+		</AppBar>
 	);
 }
