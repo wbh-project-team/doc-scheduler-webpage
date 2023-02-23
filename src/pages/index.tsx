@@ -127,7 +127,7 @@ export default function Home() {
 						//minHeight: '900px', // nicht notwendig, wird mit 100vh auf jeweilige Hoehe skaliert
 						height: '100vh',
 						//py: '256px', // nicht mehr notwendig
-						backgroundImage: 'url("/images/birch.jpg")',
+						backgroundImage: 'url("/images/background.png")',
 						backgroundSize: 'cover',
 						backgroundPosition: 'center',
 						gap: '32px',
