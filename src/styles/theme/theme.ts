@@ -49,11 +49,12 @@ let theme = createTheme({
 			default: '#fff',
 			paper: '#fcfcfc',
 		},
-		divider: 'rgba(255, 255, 255, 0.06)',
+		divider: 'rgba(166, 189, 166, 0.6)', //'rgba(255, 255, 255, 0.06)',
 		common: {
 			black: '#000',
 			white: '#fff',
 		},
+		
 		grey: {
 			'50': '#fafafa',
 			'100': '#f5f5f5',
@@ -84,7 +85,8 @@ let theme = createTheme({
 			fontWeight: 900,
 		},
 		button: {
-			fontWeight: 700,
+			fontWeight: 500,
+			// fontWeight: 700,
 			fontSize: 16,
 			textTransform: 'none',
 		},
@@ -111,7 +113,7 @@ let theme = createTheme({
 				style: {
 					borderRadius: 12,
 					fontSize: '16px',
-					textShadow: `#9e9e9e 0 0 3px, #9e9e9e 0 0 3px, #9e9e9e 0 0 3px, #9e9e9e 0 0 3px`,
+					// textShadow: `#9e9e9e 0 0 3px, #9e9e9e 0 0 3px, #9e9e9e 0 0 3px, #9e9e9e 0 0 3px`,
 				},
 			},
 			styleOverrides: {

@@ -16,6 +16,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Navbar from '../components/Navbar/Navbar';
+import Footer from '../components/Footer/Footer';
 
 const CustomTextField = styled(TextField)(({ theme }) => ({
 	'& .MuiInputBase-input': {
@@ -93,28 +94,46 @@ export default function Home() {
 				sx={{
 					display: 'flex',
 					flexDirection: 'column',
+					//position: 'relative',
 					alignItems: 'center',
-					width: '100vw',
-					mt: '70px',
+					// width: '100vw',
+					//mt: '70px', // nicht notwendig, Bild beginnt nach Navbar
+					height: '100vh',
 				}}>
+				<Box
+					sx={{
+						height: '400px',
+						width: '400px',
+						position: 'absolute',
+						zIndex: 0,
+						top: '50%',
+						left: '50%',
+						transform: 'translate(-50%, -50%)',
+						margin: '0 auto',
+						borderRadius: 150,
+						backgroundColor: 'divider',
+						//opacity: 0.6,
+					}}></Box>
 				<Container
 					component="section"
 					sx={{
-						position: 'relative',
+						//position: 'relative',
 						display: 'flex',
 						flexDirection: 'column',
 						alignItems: 'center',
-						minHeight: '900px',
-						py: '256px',
-						backgroundImage: 'url("/images/birch4.jpg")',
+						justifyContent: 'center',
+						//minHeight: '900px', // nicht notwendig, wird mit 100vh auf jeweilige Hoehe skaliert
+						height: '100vh',
+						//py: '256px', // nicht mehr notwendig
+						backgroundImage: 'url("/images/background.png")',
 						backgroundSize: 'cover',
 						backgroundPosition: 'center',
 						gap: '32px',
 					}}>
 					<Typography
-						sx={{ width: '500px', textAlign: 'center', textTransform: 'uppercase' }}
+						sx={{ width: '500px', textAlign: 'center', textTransform: 'uppercase', zIndex: 1 }}
 						variant="h1">
-						Arzt Termine Einfach Buchen
+						Arzt-Termine Einfach Buchen
 					</Typography>
 					<Box
 						sx={{
@@ -166,6 +185,7 @@ export default function Home() {
 					</Box>
 				</Container>
 			</Box>
+			<Footer />
 		</>
 	);
 }
