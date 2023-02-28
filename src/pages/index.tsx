@@ -15,6 +15,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { areaOfExpertise } from '../models/Doctors';
 import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
 
@@ -60,25 +61,15 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
 	},
 }));
 
-const areaOfExpertise = [
-	{
-		value: 'doctor',
-		label: 'Hausarzt',
-	},
-	{
-		value: 'dentist',
-		label: 'Zahnarzt',
-	},
-	{
-		value: 'surgeon',
-		label: 'Chirurg',
-	},
-];
-
 export default function Home() {
 	const [currentZipCode, setZipCode] = useState<string>('Postleitzahl');
-	const [currentAreaOfExpertise, setAreaOfExpertise] = useState<string>('Arzt');
+	const [currentAreaOfExpertise, setAreaOfExpertise] = useState<string>('doctor');
 	const router = useRouter();
+
+	// https://stackoverflow.com/questions/55601342/using-enumerations-in-react-select
+	const getEnumKeys = <T extends Object>(enumToDeconstruct: T): Array<keyof typeof enumToDeconstruct> => {
+		return Object.keys(enumToDeconstruct) as Array<keyof typeof enumToDeconstruct>;
+	};
 
 	return (
 		<>
@@ -163,13 +154,16 @@ export default function Home() {
 							input={<BootstrapInput />}
 							id="demo-simple-select-error"
 							value={currentAreaOfExpertise}
-							onChange={(event) => setAreaOfExpertise(event.target.value)}>
-							{areaOfExpertise.map((element) => (
+							label = {currentAreaOfExpertise}
+							onChange={(event) => setAreaOfExpertise(event.target.value)}
+						>
+							{getEnumKeys(areaOfExpertise).map((key, index)=> (
 								<MenuItem
 									sx={{ color: 'secondary.main' }}
-									key={element.value}
-									value={element.value}>
-									{element.label}
+									key={index}
+									value={key}
+								> 
+									{areaOfExpertise[key]}
 								</MenuItem>
 							))}
 						</Select>
@@ -177,7 +171,7 @@ export default function Home() {
 							variant={'contained'}
 							onClick={() =>
 								router.push(
-									`/Doctors?zipCode=${currentZipCode}&areaOfExpertise=${currentAreaOfExpertise}`,
+									`/Doctors?zipCode=${currentZipCode}&areaOfExpertise=${areaOfExpertise[currentAreaOfExpertise as keyof typeof areaOfExpertise]}`,
 								)
 							}>
 							Suchen
