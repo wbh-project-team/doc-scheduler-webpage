@@ -104,7 +104,7 @@ let theme = createTheme({
 		MuiTypography: {
 			defaultProps: {
 				style: {
-					textShadow: `#9e9e9e 0 0 3px, #9e9e9e 0 0 3px, #9e9e9e 0 0 3px, #9e9e9e 0 0 3px`,
+					//textShadow: `#9e9e9e 0 0 3px, #9e9e9e 0 0 3px, #9e9e9e 0 0 3px, #9e9e9e 0 0 3px`,
 				},
 			},
 		},

@@ -77,7 +77,7 @@ const areaOfExpertise = [
 
 export default function Home() {
 	const [currentZipCode, setZipCode] = useState<string>('Postleitzahl');
-	const [currentAreaOfExpertise, setAreaOfExpertise] = useState<string>('doctor');
+	const [currentAreaOfExpertise, setAreaOfExpertise] = useState<string>('Arzt');
 	const router = useRouter();
 
 	return (

@@ -44,7 +44,7 @@ export default function Footer() {
 		<AppBar
 			position="fixed"
 			color="primary"
-			sx={{ top: 'auto', bottom: 0, height: '70px', display: 'flex' }}>
+			sx={{ top: 'auto', bottom: 0, height: '60px', display: 'flex' }}>
 			<Toolbar sx={{ height: '100%', padding: 0 }}>
 				{/* <IconButton color="inherit" aria-label="open drawer">
 				<FavoriteOutlinedIcon /><br/>
@@ -57,7 +57,7 @@ export default function Footer() {
 				alignItems: 'left',
 			}}> */}
 				<BottomNavigation
-					showLabels
+					// showLabels
 					value={value}
 					sx={{
 						width: '100%',
@@ -77,30 +77,29 @@ export default function Footer() {
 					}}>
 					{links_left.map((item) => (
 						<BottomNavigationAction
+							key={item.name}
 							label={item.name}
+							showLabel={true}
 							icon={item.icon ? <item.icon /> : null}
 							onClick={() => router.push(`${item.link}`)}
 						/>
 					))}
 					<Box sx={{ flexGrow: 1 }} />
 					{links_right.map((item) => (
-						<Box>
+						
 							<BottomNavigationAction
+								key={item.name}
 								sx={{ fontSize: 14, fontWeight: 600, padding: '16px 60px' }}
 								showLabel={false}
 								label={item.name}
 								icon={item.name}
 								onClick={() => router.push(`${item.link}`)}
 							/>
-							{/* <BottomNavigationAction
-							showLabel={false}
-							icon = {<BorderVerticalSharpIcon/>}
-						/> */}
-						</Box>
+						
 					))}
 				</BottomNavigation>
 
-				<StyledFab color="secondary" aria-label="home" sx={{ color: '#fff' }}>
+				<StyledFab color="secondary" aria-label="home" sx={{ color: '#fff' }} onClick={() => router.push('/')}>
 					<HomeIcon />
 				</StyledFab>
 			</Toolbar>

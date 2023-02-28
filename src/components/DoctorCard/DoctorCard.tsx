@@ -1,24 +1,48 @@
-import { Avatar, Typography } from '@mui/material';
+import { Avatar, Typography, Link } from '@mui/material';
+
 import { Box } from '@mui/system';
 import { Doctor } from '../../models/Doctors';
+import { useRouter } from 'next/router';
+
+
 
 interface Props {
 	doctor: Doctor;
 }
 
 export default function DoctorCard({ doctor }: Props) {
+	const router = useRouter();
+
+	// function sendDetails(){
+	// 	console.log('docData: ',JSON.stringify(doctor));
+	// 	//router.push( `/DoctorDetails?doc=${ JSON.stringify(doctor) }`,)
+	// 	router.push( `/DoctorDetails`,)
+
+		
+	// }
+
 	return (
+		
 		<Box
+			
+			//onClick={() => router.push(`/DoctorDetails?DrId={doctor.Id}`)}
+			//onClick={() => sendDetails()}
+		
 			sx={{
 				display: 'flex',
 				flexDirection: 'column',
-				backgroundColor: 'background.main',
+				//backgroundColor: 'background.main',
+				backgroundColor: 'white',
 				p: '24px',
-				borderRadius: '12px',
+				//width: '450px',
+				//borderRadius: '12px',
 				gap: '24px',
-				boxShadow: '4px 6px 4px rgba(0, 0, 0, 0.25);',
-				border: 'solid 1px #808080',
+				color: 'secondary.main',
+				//boxShadow: '4px 6px 4px rgba(0, 0, 0, 0.25);',
+				//border: 'solid 1px #808080',
+				
 			}}>
+				
 			<Box
 				sx={{
 					display: 'flex',
@@ -33,7 +57,7 @@ export default function DoctorCard({ doctor }: Props) {
 						alignItems: 'center',
 						gap: '12px',
 					}}>
-					<Avatar src="/images/profil.png" sx={{ width: '80px', height: '80px' }} />
+					<Avatar src="/images/portrait.jpeg" sx={{ width: '80px', height: '80px' }} />
 					<Box sx={{ display: 'flex', flexDirection: 'column', gap: '0px' }}>
 						<Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
 							{doctor.name}
@@ -55,6 +79,7 @@ export default function DoctorCard({ doctor }: Props) {
 					<Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
 						{doctor.zipCode} {doctor.city}
 					</Typography>
+					
 				</Box>
 				<Box
 					sx={{
@@ -70,12 +95,14 @@ export default function DoctorCard({ doctor }: Props) {
 				sx={{
 					display: 'flex',
 					flexDirection: 'row',
+					justifyContent: 'space-between',
 					backgroundColor: 'primary.main',
-					border: 'solid 1px #808080',
+					color: 'primary.contrastText',
+					//border: 'solid 1px #808080',
 					p: '12px',
 					borderRadius: '12px',
 					gap: '24px',
-					boxShadow: '0px 6px 4px rgba(0, 0, 0, 0.25);',
+					//boxShadow: '0px 6px 4px rgba(0, 0, 0, 0.25);',
 				}}>
 				<Box
 					sx={{

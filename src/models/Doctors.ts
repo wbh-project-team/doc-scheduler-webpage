@@ -1,4 +1,5 @@
 export interface Doctor {
+	Id: number;
 	name: string;
 	zipCode: number;
 	address: string;

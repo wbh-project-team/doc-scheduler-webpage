@@ -68,7 +68,7 @@ export default function Navbar() {
 								mt: '2px',
 								padding: '16px 24px',
 							}}>
-							<Link style={{ height: '100%' }} href={'/'}>
+							<Link style={{ height: '100%', width:'282px'}} href={'/'}>
 								<img src="/images/logo.png" alt={'doc scheduler logo'} style={{ height: '100%' }} />
 							</Link>
 							<Box
@@ -98,6 +98,7 @@ export default function Navbar() {
 									);
 								})}
 							</Box>
+							<Box sx={{ width:'282px', textAlign: 'right'}}>
 							{!isLoggedIn ? (
 								<Button
 									onClick={async () => {
@@ -117,6 +118,7 @@ export default function Navbar() {
 									Logout
 								</Button>
 							)}
+							</Box>
 						</Box>
 					</Toolbar>
 				</Container>

@@ -1,12 +1,24 @@
-import { Box, InputBase, styled, TextField, Typography } from '@mui/material';
+import { Box, Container, InputBase, styled, TextField, Typography } from '@mui/material';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+//import { useState } from 'react';
 import DoctorCard from '../components/DoctorCard/DoctorCard';
 import Navbar from '../components/Navbar/Navbar';
+import Footer from '../components/Footer/Footer';
+
+const StyledBox = styled(Box)({
+	background: 'url("/images/background.png")',
+	'WebkitTextFillColor': 'transparent',
+  	'WebkitBackgroundClip': 'text',
+	
+	 // filter: drop-shadow(2px 2px #333);
+	//display:'block',
+});
 
 export default function Home() {
 	const router = useRouter();
 	const { zipCode, areaOfExpertise } = router.query;
+	//const [currentDoId, setDocId] = useState<string>('');
 
 	return (
 		<>
@@ -16,27 +28,107 @@ export default function Home() {
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
-			<Navbar />
+			<Navbar/>
 			<Box
 				component="main"
 				sx={{
 					display: 'flex',
-					flexDirection: 'column',
-					alignItems: 'center',
-					width: '100vw',
-					mt: '70px',
+					//flexDirection: 'column',
+					//alignItems: 'center',
+					//width: '100vw',
+					height: `calc(100vh - 60px)`,  // Footer ist 60 hoch
+					pt: '80px',		// Navbar ist 80 hoch
 				}}>
-				{/* <Typography variant="h2">{zipCode}</Typography>
-				<Typography variant="h2">{areaOfExpertise}</Typography> */}
-				<Box
+				
+				
+				<Container
+					component="section"
 					sx={{
-						display: 'grid',
-						gridTemplateColumns: 'auto auto',
-						gap: '24px',
+						//display: 'flex',
+						//flexDirection:'column',
+						alignItems:'center',
+						//justifyContent: 'center',
+
+						//gap: '50px',
+						//height: '90vh',
+						height: '100%',
 						p: '24px',
+						// background: 'url("/images/background.png")',
+						// backgroundSize: 'cover',
+						// backgroundPosition: 'center',
+						position: 'relative',
+						//backgroundAttachment: 'fixed',
+						//backgroundRepeat: "no-repeat",
+						'&::before': {
+							content: '""',
+							position:'fixed',
+							display:'block',
+							top: '0px',
+							left: '0px',
+							bottom: '0px',
+							right: '0px',
+							backgroundImage: 'url("/images/background.png")',
+							backgroundSize: 'cover',
+							backgroundRepeat: 'no-repeat',
+							backgroundPosition: 'center top',
+							//paddingBottom: '200px',
+							
+						  }
+						
 					}}>
+						<Box
+						sx={{
+							position: 'absolute',
+							left: '50%',
+							transform: 'translate(-50%)',
+							display: 'grid',
+							//gridTemplateColumns: 'auto auto',
+							gridTemplateColumns: 'repeat(auto-fill, minmax(500px, 1fr))',
+							gap: '15px',
+							width: '95%',
+						}}>
+
+							<Box
+							
+							sx={{
+								gridColumn: '1/-1',
+								color:'grey', 
+								backgroundColor:'white',
+								padding: '30px 10px',
+								overflow:'hidden',
+								fontSize: '200%',
+								fontWeight: 'light',
+								textAlign: 'center',
+								
+								
+							}}>
+										Deine Suchergebnisse zu: {areaOfExpertise} in {zipCode}
+							</Box>
+
+							<DoctorCard
+								
+								doctor={{
+									Id: 1,
+									name: 'Doktor MegaGut',
+									address: 'Bahnhofstraße 1',
+									zipCode: 90441,
+									city: 'Nuernberg',
+									openHours: [{ start: 8.3 * 60 * 60 * 1000, end: 16 * 60 * 60 * 1000 }],
+								}}
+							/>
+							<DoctorCard
+								doctor={{
+									Id: 2,
+									name: 'Doktor MegaGut',
+									address: 'Bahnhofstraße 1',
+									zipCode: 90441,
+									city: 'Nuernberg',
+									openHours: [{ start: 8.3 * 60 * 60 * 1000, end: 16 * 60 * 60 * 1000 }],
+								}}
+							/>
 					<DoctorCard
 						doctor={{
+							Id: 3,
 							name: 'Doktor MegaGut',
 							address: 'Bahnhofstraße 1',
 							zipCode: 90441,
@@ -46,6 +138,7 @@ export default function Home() {
 					/>
 					<DoctorCard
 						doctor={{
+							Id: 4,
 							name: 'Doktor MegaGut',
 							address: 'Bahnhofstraße 1',
 							zipCode: 90441,
@@ -53,26 +146,11 @@ export default function Home() {
 							openHours: [{ start: 8.3 * 60 * 60 * 1000, end: 16 * 60 * 60 * 1000 }],
 						}}
 					/>
-					<DoctorCard
-						doctor={{
-							name: 'Doktor MegaGut',
-							address: 'Bahnhofstraße 1',
-							zipCode: 90441,
-							city: 'Nuernberg',
-							openHours: [{ start: 8.3 * 60 * 60 * 1000, end: 16 * 60 * 60 * 1000 }],
-						}}
-					/>
-					<DoctorCard
-						doctor={{
-							name: 'Doktor MegaGut',
-							address: 'Bahnhofstraße 1',
-							zipCode: 90441,
-							city: 'Nuernberg',
-							openHours: [{ start: 8.3 * 60 * 60 * 1000, end: 16 * 60 * 60 * 1000 }],
-						}}
-					/>
-				</Box>
+					</Box>
+					
+				</Container>
 			</Box>
+			<Footer />
 		</>
 	);
 }
