@@ -1,10 +1,7 @@
 import { Box, Container, InputBase, styled, TextField, Typography } from '@mui/material';
-import Head from 'next/head';
 import { Doctor } from '../../models/Doctors';
 import { useRouter } from 'next/router';
-import Navbar from '../Navbar/Navbar';
-import Footer from '../Footer/Footer';
-import { useEffect } from 'react';
+//import { CalendarPicker } from '@mui/x-date-pickers/CalendarPicker';
 import DoctorCard from '../DoctorCard/DoctorCard';
 
 
@@ -98,7 +95,8 @@ export default function DoctorDetails({ doctor }: Props) {
 					}}>
 
 					
-						Kalender
+						<Typography sx={{fontSize:'100%'}}> Kalender </Typography>
+						{/* <CalendarPicker></CalendarPicker> */}
 					</Box>
 				</Container>
 			</Box>

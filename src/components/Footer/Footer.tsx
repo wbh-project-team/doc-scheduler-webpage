@@ -3,7 +3,8 @@ import { styled } from '@mui/material/styles';
 import { useContext, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Image from 'next/image';
-
+import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
+import SendIcon from '@mui/icons-material/Send';
 import {
 	AppBar,
 	BottomNavigation,
@@ -13,13 +14,13 @@ import {
 	Fab,
 	IconButton,
 	Link as MuiLink,
+	Modal,
 	Toolbar,
 	Typography,
 	useMediaQuery,
 } from '@mui/material';
 
 import HomeIcon from '@mui/icons-material/Home';
-import BorderVerticalSharpIcon from '@mui/icons-material/BorderVerticalSharp';
 
 //import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -34,11 +35,32 @@ const StyledFab = styled(Fab)({
 	margin: '0 auto',
 });
 
+const stylePopupBox = {
+	
+	display:'block',
+	position: 'fixed',
+	zIndex: 2,
+	top: '0',
+	left: '0',
+	transform: `translate(calc(50vw - 250px), calc(50vh - 100px))`,
+	width: '500px',
+	//height: '200px',
+	bgcolor: 'white',
+	color: 'secondary.main',
+	border: '2px solid #000',
+	borderRadius: '10px',
+	boxShadow: 24,
+	p: 4,
+  };
+
 export default function Footer() {
 	//const [scrolled, setScrolled] = useState(false);
+	const [open, setHotlineBoxOpen] = useState(false);
+	const handleHotlineBoxOpen = () => setHotlineBoxOpen(true);
+	const handleHotlineBoxClose = () => setHotlineBoxOpen(false);
 	const router = useRouter();
 
-	const [value, setValue] = React.useState(0);
+	const [value, setValue] = useState(0);
 
 	return (
 		<AppBar
@@ -50,12 +72,6 @@ export default function Footer() {
 				<FavoriteOutlinedIcon /><br/>
 			</IconButton>
 			 */}
-
-				{/* <Box sx={{
-				width: '30%',
-				justifyContent: 'space-between',
-				alignItems: 'left',
-			}}> */}
 				<BottomNavigation
 					// showLabels
 					value={value}
@@ -74,7 +90,22 @@ export default function Footer() {
 					}}
 					onChange={(event, newValue) => {
 						setValue(newValue);
-					}}>
+					}}
+					>
+					<BottomNavigationAction
+						label="Hotline"
+						showLabel={true}
+						icon= {<ContactPhoneIcon />}
+						onClick={() => {handleHotlineBoxOpen()}}
+						//handleOpen
+					/>
+					<BottomNavigationAction
+						
+						label="Email"
+						showLabel={true}
+						icon= {<SendIcon />}
+						onClick={() => {}}
+					/>
 					{links_left.map((item) => (
 						<BottomNavigationAction
 							key={item.name}
@@ -103,6 +134,29 @@ export default function Footer() {
 					<HomeIcon />
 				</StyledFab>
 			</Toolbar>
+			{/* <Box sx={styleHotlineBox}>
+				Teeeeeeest		
+			</Box> */}
+
+			<Modal
+				open={open}
+				onClose={handleHotlineBoxClose}
+				aria-labelledby="modal-modal-title"
+				aria-describedby="modal-modal-description"
+				>
+				<Box sx={stylePopupBox}>
+				<ContactPhoneIcon/> 
+				<Typography id="modal-modal-title" variant="h6" component="h2" sx={{ fontSize: '100%' }}>
+					Haben Sie Fragen?
+				</Typography>
+				<Typography id="modal-modal-description" sx={{ mt: 2 }}>
+					Ihre Frage wird in den FAQs nicht ausreichend beantwortet?
+					Kein Problem, wir sind für Sie da. Rufen Sie uns an!
+				</Typography>
+				<Typography>(Mo-Fr von 8-18Uhr)</Typography>
+				<Typography sx={{ mt: 2, fontWeight: '1000', fontSize: '150%' }}> Hotline: 0800 33 00000</Typography>
+				</Box>
+			</Modal>
 		</AppBar>
 	);
 }
