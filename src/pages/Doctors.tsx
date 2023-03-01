@@ -1,24 +1,57 @@
 import { Box, Container, InputBase, styled, TextField, Typography } from '@mui/material';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-//import { useState } from 'react';
+//import { useReducer } from 'react';
+import { useState } from 'react';
+import { areaOfExpertise, Doctor } from '../models/Doctors';
 import DoctorCard from '../components/DoctorCard/DoctorCard';
 import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
+import DoctorDetails from '../components/DoctorDetails/DoctorDetails';
 
-const StyledBox = styled(Box)({
-	background: 'url("/images/background.png")',
-	'WebkitTextFillColor': 'transparent',
-  	'WebkitBackgroundClip': 'text',
+
+// const StyledBox = styled(Box)({
+// 	background: 'url("/images/background.png")',
+// 	'WebkitTextFillColor': 'transparent',
+//   	'WebkitBackgroundClip': 'text',
 	
-	 // filter: drop-shadow(2px 2px #333);
-	//display:'block',
-});
+// 	 // filter: drop-shadow(2px 2px #333);
+// 	//display:'block',
+// });
+
+const docs: Doctor[] = [
+	{ Id: 1, name: 'Arzt 1', zipCode: 45481, address: 'Bahnhofstraße 1', city: 'Nuernberg', openHours: [{ start: 8.3 * 60 * 60 * 1000, end: 16 * 60 * 60 * 1000 }],specialization: "dentist", },
+	{ Id: 1, name: 'Arzt 2', zipCode: 78956, address: 'Bahnhofstraße 1', city: 'Nuernberg', openHours: [{ start: 8.3 * 60 * 60 * 1000, end: 16 * 60 * 60 * 1000 }],specialization: "doctor" },
+	{ Id: 1, name: 'Arzt Megagut', zipCode: 35627, address: 'Bahnhofstraße 1', city: 'Nuernberg', openHours: [{ start: 8.3 * 60 * 60 * 1000, end: 16 * 60 * 60 * 1000 }], specialization: "surgeon"},
+	{ Id: 1, name: 'Arzt Helmut', zipCode: 45481, address: 'Bahnhofstraße 1', city: 'Nuernberg', openHours: [{ start: 8.3 * 60 * 60 * 1000, end: 16 * 60 * 60 * 1000 }], specialization: "dentist"},
+];
+
+//const [tags, setTags] = useState([]);
+
+
+
+// useEffect(() => {
+//     setTags([...tags, {label: 'Jumbotron'}])
+//   }, []);
+const defaultDetailsVisible = false;
 
 export default function Home() {
 	const router = useRouter();
 	const { zipCode, areaOfExpertise } = router.query;
-	//const [currentDoId, setDocId] = useState<string>('');
+	const [detailsVisible, setDetailsVisible] = useState(defaultDetailsVisible);
+	const [docForDetails, setDocForDetails] = useState<Doctor>();
+
+	function handleCardClick(doc: Doctor){
+		setDocForDetails(doc);
+		setDetailsVisible(true);
+	}
+
+	function generateDetails(){
+		if (detailsVisible){
+			return (<DoctorDetails doctor={docForDetails!} ></DoctorDetails>);
+		}
+		return ("");
+	}
 
 	return (
 		<>
@@ -33,32 +66,35 @@ export default function Home() {
 				component="main"
 				sx={{
 					display: 'flex',
-					//flexDirection: 'column',
-					//alignItems: 'center',
-					//width: '100vw',
+					flexDirection: 'column',
+					alignItems:'center',
 					height: `calc(100vh - 60px)`,  // Footer ist 60 hoch
 					pt: '80px',		// Navbar ist 80 hoch
 				}}>
-				
+					{detailsVisible && (
+					<Box id="Details"
+						sx={{ 
+							zIndex: 1,
+							display: 'flex',
+							background: 'blue',
+							marginTop: '15px',
+							width: '95%',
+							fontSize: '200%',
+							fontWeight: 'light',
+						}}>
+							{generateDetails()}
+					</Box>
+					)}
 				
 				<Container
 					component="section"
 					sx={{
-						//display: 'flex',
-						//flexDirection:'column',
+						display: 'flex',
+						flexDirection: 'column',
 						alignItems:'center',
-						//justifyContent: 'center',
-
-						//gap: '50px',
-						//height: '90vh',
 						height: '100%',
 						p: '24px',
-						// background: 'url("/images/background.png")',
-						// backgroundSize: 'cover',
-						// backgroundPosition: 'center',
 						position: 'relative',
-						//backgroundAttachment: 'fixed',
-						//backgroundRepeat: "no-repeat",
 						'&::before': {
 							content: '""',
 							position:'fixed',
@@ -70,27 +106,26 @@ export default function Home() {
 							backgroundImage: 'url("/images/background.png")',
 							backgroundSize: 'cover',
 							backgroundRepeat: 'no-repeat',
-							backgroundPosition: 'center top',
-							//paddingBottom: '200px',
-							
+							backgroundPosition: 'center',
+							paddingBottom: '200px',
 						  }
+					}}
+				>
+					<Box
+					sx={{
+						position: 'absolute',
+						display: 'grid',
+						//gridTemplateColumns: 'auto auto',
+						gridTemplateColumns: 'repeat(auto-fill, minmax(500px, 1fr))',
+						gap: '15px',
+						width: '95%',
 						
 					}}>
-						<Box
-						sx={{
-							position: 'absolute',
-							left: '50%',
-							transform: 'translate(-50%)',
-							display: 'grid',
-							//gridTemplateColumns: 'auto auto',
-							gridTemplateColumns: 'repeat(auto-fill, minmax(500px, 1fr))',
-							gap: '15px',
-							width: '95%',
-						}}>
 
-							<Box
-							
+						<Box
+							id = 'results'
 							sx={{
+								zindex: 1,
 								gridColumn: '1/-1',
 								color:'grey', 
 								backgroundColor:'white',
@@ -98,54 +133,28 @@ export default function Home() {
 								overflow:'hidden',
 								fontSize: '200%',
 								fontWeight: 'light',
-								textAlign: 'center',
-								
-								
-							}}>
-										Deine Suchergebnisse zu: {areaOfExpertise} in {zipCode}
-							</Box>
-
+								textAlign: 'center',	
+							}}
+						>
+							Deine Suchergebnisse zu: {areaOfExpertise} in {zipCode}
+						</Box>
+						{docs.map((element) => (
 							<DoctorCard
-								
+								key={element.name}
 								doctor={{
-									Id: 1,
-									name: 'Doktor MegaGut',
-									address: 'Bahnhofstraße 1',
-									zipCode: 90441,
-									city: 'Nuernberg',
-									openHours: [{ start: 8.3 * 60 * 60 * 1000, end: 16 * 60 * 60 * 1000 }],
+									Id: element.Id,
+									name: element.name,
+									address: element.address,
+									zipCode: element.zipCode,
+									city: element.city,
+									openHours: element.openHours,
+									specialization: element.specialization,
 								}}
+								//onclick={() => dispatch(element)}
+								onclick={() =>handleCardClick(element)}
+								//onclick={() => {}}
 							/>
-							<DoctorCard
-								doctor={{
-									Id: 2,
-									name: 'Doktor MegaGut',
-									address: 'Bahnhofstraße 1',
-									zipCode: 90441,
-									city: 'Nuernberg',
-									openHours: [{ start: 8.3 * 60 * 60 * 1000, end: 16 * 60 * 60 * 1000 }],
-								}}
-							/>
-					<DoctorCard
-						doctor={{
-							Id: 3,
-							name: 'Doktor MegaGut',
-							address: 'Bahnhofstraße 1',
-							zipCode: 90441,
-							city: 'Nuernberg',
-							openHours: [{ start: 8.3 * 60 * 60 * 1000, end: 16 * 60 * 60 * 1000 }],
-						}}
-					/>
-					<DoctorCard
-						doctor={{
-							Id: 4,
-							name: 'Doktor MegaGut',
-							address: 'Bahnhofstraße 1',
-							zipCode: 90441,
-							city: 'Nuernberg',
-							openHours: [{ start: 8.3 * 60 * 60 * 1000, end: 16 * 60 * 60 * 1000 }],
-						}}
-					/>
+						))}
 					</Box>
 					
 				</Container>

@@ -8,9 +8,10 @@ import { useRouter } from 'next/router';
 
 interface Props {
 	doctor: Doctor;
+	onclick: any;
 }
 
-export default function DoctorCard({ doctor }: Props) {
+export default function DoctorCard({ doctor, onclick }: Props) {
 	const router = useRouter();
 
 	// function sendDetails(){
@@ -27,7 +28,7 @@ export default function DoctorCard({ doctor }: Props) {
 			
 			//onClick={() => router.push(`/DoctorDetails?DrId={doctor.Id}`)}
 			//onClick={() => sendDetails()}
-		
+			onClick={onclick}
 			sx={{
 				display: 'flex',
 				flexDirection: 'column',
