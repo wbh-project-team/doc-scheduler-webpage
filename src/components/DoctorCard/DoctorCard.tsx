@@ -11,23 +11,20 @@ interface Props {
 	onclick: any;
 }
 
+const weekdays = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag'];
+
 export default function DoctorCard({ doctor, onclick }: Props) {
 	const router = useRouter();
 
 	// function sendDetails(){
 	// 	console.log('docData: ',JSON.stringify(doctor));
 	// 	//router.push( `/DoctorDetails?doc=${ JSON.stringify(doctor) }`,)
-	// 	router.push( `/DoctorDetails`,)
-
-		
+	// 	router.push( `/DoctorDetails`,)	
 	// }
 
 	return (
 		
 		<Box
-			
-			//onClick={() => router.push(`/DoctorDetails?DrId={doctor.Id}`)}
-			//onClick={() => sendDetails()}
 			onClick={onclick}
 			sx={{
 				display: 'flex',
@@ -41,7 +38,6 @@ export default function DoctorCard({ doctor, onclick }: Props) {
 				color: 'secondary.main',
 				//boxShadow: '4px 6px 4px rgba(0, 0, 0, 0.25);',
 				//border: 'solid 1px #808080',
-				
 			}}>
 				
 			<Box
@@ -105,22 +101,24 @@ export default function DoctorCard({ doctor, onclick }: Props) {
 					gap: '24px',
 					//boxShadow: '0px 6px 4px rgba(0, 0, 0, 0.25);',
 				}}>
-				<Box
-					sx={{
-						display: 'flex',
-						flexDirection: 'column',
-						justifyContent: 'center',
-						alignItems: 'center',
-					}}>
-					<Typography variant="overline" sx={{ fontWeight: '1000' }}>
-						Montag
-					</Typography>
-					<Typography variant="h6" sx={{ fontWeight: '1000' }}>
-						{(doctor.openHours[0].start / 60 / 60 / 1000).toFixed(2)}-
-						{(doctor.openHours[0].end / 60 / 60 / 1000).toFixed(2)}
-					</Typography>
-				</Box>
-				<Box
+					{doctor.openHours.map((day, index) => (
+						<Box
+							sx={{
+								display: 'flex',
+								flexDirection: 'column',
+								justifyContent: 'center',
+								alignItems: 'center',
+							}}>
+							<Typography variant="overline" sx={{ fontWeight: '1000' }}>
+								{weekdays[index]}
+							</Typography>
+							<Typography variant="h6" sx={{ fontWeight: '1000' }}>
+								{(day.start / 60 / 60 / 1000).toFixed(2)}-
+								{(day.end / 60 / 60 / 1000).toFixed(2)}
+							</Typography>
+						</Box>
+					))}
+				{/* <Box
 					sx={{
 						display: 'flex',
 						flexDirection: 'column',
@@ -179,7 +177,7 @@ export default function DoctorCard({ doctor, onclick }: Props) {
 						{(doctor.openHours[0].start / 60 / 60 / 1000).toFixed(2)}-
 						{(doctor.openHours[0].end / 60 / 60 / 1000).toFixed(2)}
 					</Typography>
-				</Box>
+				</Box> */}
 			</Box>
 		</Box>
 	);

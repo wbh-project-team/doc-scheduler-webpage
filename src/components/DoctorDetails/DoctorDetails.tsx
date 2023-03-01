@@ -33,10 +33,44 @@ export default function DoctorDetails({ doctor }: Props) {
 		
 			<Box
 				component="main"
-				sx={{height: '200px'}}>
+				sx={{
 
-				Name: {doctor.name}
+					height: '200px',
+					backgroundColor: 'white',
+					width: '100%',
+					color: 'secondary.main'
+					
+				}}>
+				Auswahl:
+				<Container
+					sx={{
+						display: 'flex',
+						flexDirection: 'row',
+						justifyContent: 'space-between',
+					}}>
 
+				<Box
+					sx={{
+						display: 'flex',
+						flexGrow: '1',
+						
+					}}>
+
+				
+					Name: {doctor.name}
+				</Box>
+				<Box
+					sx={{
+						display: 'flex',
+						flexGrow: '1',
+						backgroundColor: 'lightblue',
+						
+					}}>
+
+				
+					Kalender
+				</Box>
+				</Container>
 			</Box>
 			
 

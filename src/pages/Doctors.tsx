@@ -20,10 +20,10 @@ import DoctorDetails from '../components/DoctorDetails/DoctorDetails';
 // });
 
 const docs: Doctor[] = [
-	{ Id: 1, name: 'Arzt 1', zipCode: 45481, address: 'Bahnhofstraße 1', city: 'Nuernberg', openHours: [{ start: 8.3 * 60 * 60 * 1000, end: 16 * 60 * 60 * 1000 }],specialization: "dentist", },
-	{ Id: 1, name: 'Arzt 2', zipCode: 78956, address: 'Bahnhofstraße 1', city: 'Nuernberg', openHours: [{ start: 8.3 * 60 * 60 * 1000, end: 16 * 60 * 60 * 1000 }],specialization: "doctor" },
-	{ Id: 1, name: 'Arzt Megagut', zipCode: 35627, address: 'Bahnhofstraße 1', city: 'Nuernberg', openHours: [{ start: 8.3 * 60 * 60 * 1000, end: 16 * 60 * 60 * 1000 }], specialization: "surgeon"},
-	{ Id: 1, name: 'Arzt Helmut', zipCode: 45481, address: 'Bahnhofstraße 1', city: 'Nuernberg', openHours: [{ start: 8.3 * 60 * 60 * 1000, end: 16 * 60 * 60 * 1000 }], specialization: "dentist"},
+	{ Id: 1, name: 'Arzt 1', zipCode: 45481, address: 'Bahnhofstraße 1', city: 'Nuernberg', openHours: Array.apply(null, Array(5)).map(()=>( {start:8.3 * 60 * 60 * 1000, end: 16 * 60 * 60 * 1000} )),specialization: "dentist" },
+	{ Id: 1, name: 'Arzt 2', zipCode: 78956, address: 'Bahnhofstraße 1', city: 'Nuernberg', openHours: Array.apply(null, Array(5)).map(()=>( {start:8.3 * 60 * 60 * 1000, end: 16 * 60 * 60 * 1000} )),specialization: "doctor" },
+	{ Id: 1, name: 'Arzt Megagut', zipCode: 35627, address: 'Bahnhofstraße 1', city: 'Nuernberg', openHours: Array.apply(null, Array(5)).map(()=>( {start:8.3 * 60 * 60 * 1000, end: 16 * 60 * 60 * 1000} )),specialization: "surgeon" },
+	{ Id: 1, name: 'Arzt Helmut', zipCode: 45481, address: 'Bahnhofstraße 1', city: 'Nuernberg', openHours: Array.apply(null, Array(5)).map(()=>( {start:8.3 * 60 * 60 * 1000, end: 16 * 60 * 60 * 1000} )),specialization: "doctor" },
 ];
 
 //const [tags, setTags] = useState([]);
@@ -125,9 +125,9 @@ export default function Home() {
 						<Box
 							id = 'results'
 							sx={{
-								zindex: 1,
+								//zindex: 1,
 								gridColumn: '1/-1',
-								color:'grey', 
+								color:'secondary.main', 
 								backgroundColor:'white',
 								padding: '30px 10px',
 								overflow:'hidden',
