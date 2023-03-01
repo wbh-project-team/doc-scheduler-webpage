@@ -3,7 +3,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 //import { useReducer } from 'react';
 import { useState } from 'react';
-import { areaOfExpertise, Doctor } from '../models/Doctors';
+import { areaOfExpertise, Doctor, docs } from '../models/Doctors';
 import DoctorCard from '../components/DoctorCard/DoctorCard';
 import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
@@ -19,20 +19,6 @@ import DoctorDetails from '../components/DoctorDetails/DoctorDetails';
 // 	//display:'block',
 // });
 
-const docs: Doctor[] = [
-	{ Id: 1, name: 'Arzt 1', zipCode: 45481, address: 'Bahnhofstraße 1', city: 'Nuernberg', openHours: Array.apply(null, Array(5)).map(()=>( {start:8.3 * 60 * 60 * 1000, end: 16 * 60 * 60 * 1000} )),specialization: "dentist" },
-	{ Id: 1, name: 'Arzt 2', zipCode: 78956, address: 'Bahnhofstraße 1', city: 'Nuernberg', openHours: Array.apply(null, Array(5)).map(()=>( {start:8.3 * 60 * 60 * 1000, end: 16 * 60 * 60 * 1000} )),specialization: "doctor" },
-	{ Id: 1, name: 'Arzt Megagut', zipCode: 35627, address: 'Bahnhofstraße 1', city: 'Nuernberg', openHours: Array.apply(null, Array(5)).map(()=>( {start:8.3 * 60 * 60 * 1000, end: 16 * 60 * 60 * 1000} )),specialization: "surgeon" },
-	{ Id: 1, name: 'Arzt Helmut', zipCode: 45481, address: 'Bahnhofstraße 1', city: 'Nuernberg', openHours: Array.apply(null, Array(5)).map(()=>( {start:8.3 * 60 * 60 * 1000, end: 16 * 60 * 60 * 1000} )),specialization: "doctor" },
-];
-
-//const [tags, setTags] = useState([]);
-
-
-
-// useEffect(() => {
-//     setTags([...tags, {label: 'Jumbotron'}])
-//   }, []);
 const defaultDetailsVisible = false;
 
 export default function Home() {
@@ -44,6 +30,7 @@ export default function Home() {
 	function handleCardClick(doc: Doctor){
 		setDocForDetails(doc);
 		setDetailsVisible(true);
+		document.body.scrollTo({ top: 0, behavior: "smooth" });
 	}
 
 	function generateDetails(){
@@ -76,7 +63,7 @@ export default function Home() {
 						sx={{ 
 							zIndex: 1,
 							display: 'flex',
-							background: 'blue',
+							backgroundColor: 'tomato',
 							marginTop: '15px',
 							width: '95%',
 							fontSize: '200%',
@@ -132,8 +119,8 @@ export default function Home() {
 								padding: '30px 10px',
 								overflow:'hidden',
 								fontSize: '200%',
-								fontWeight: 'light',
-								textAlign: 'center',	
+								fontWeight: 'bold',
+								textAlign: 'center',
 							}}
 						>
 							Deine Suchergebnisse zu: {areaOfExpertise} in {zipCode}
@@ -149,6 +136,8 @@ export default function Home() {
 									city: element.city,
 									openHours: element.openHours,
 									specialization: element.specialization,
+									description: "",
+									rating: element.rating,
 								}}
 								//onclick={() => dispatch(element)}
 								onclick={() =>handleCardClick(element)}

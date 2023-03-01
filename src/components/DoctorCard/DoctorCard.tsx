@@ -32,6 +32,7 @@ export default function DoctorCard({ doctor, onclick }: Props) {
 				//backgroundColor: 'background.main',
 				backgroundColor: 'white',
 				p: '24px',
+				//minWidth: ''
 				//width: '450px',
 				//borderRadius: '12px',
 				gap: '24px',
@@ -56,11 +57,11 @@ export default function DoctorCard({ doctor, onclick }: Props) {
 					}}>
 					<Avatar src="/images/portrait.jpeg" sx={{ width: '80px', height: '80px' }} />
 					<Box sx={{ display: 'flex', flexDirection: 'column', gap: '0px' }}>
-						<Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
+						<Typography variant="subtitle1" sx={{ fontWeight: 700, fontSize: '2em' }}>
 							{doctor.name}
 						</Typography>
 						<Typography variant="caption" sx={{ fontWeight: 700 }}>
-							4.5 / 5
+							{doctor.rating} / 5
 						</Typography>
 					</Box>
 				</Box>
@@ -109,11 +110,15 @@ export default function DoctorCard({ doctor, onclick }: Props) {
 								justifyContent: 'center',
 								alignItems: 'center',
 							}}>
-							<Typography variant="overline" sx={{ fontWeight: '1000' }}>
+							<Typography variant="overline" sx={{ fontWeight: 'normal' }}>
 								{weekdays[index]}
 							</Typography>
 							<Typography variant="h6" sx={{ fontWeight: '1000' }}>
 								{(day.start / 60 / 60 / 1000).toFixed(2)}-
+								{(day.lunchStart / 60 / 60 / 1000).toFixed(2)}
+							</Typography>
+							<Typography variant="h6" sx={{ fontWeight: '1000' }}>
+								{(day.lunchEnd / 60 / 60 / 1000).toFixed(2)}-
 								{(day.end / 60 / 60 / 1000).toFixed(2)}
 							</Typography>
 						</Box>

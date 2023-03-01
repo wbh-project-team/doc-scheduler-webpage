@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import Navbar from '../Navbar/Navbar';
 import Footer from '../Footer/Footer';
 import { useEffect } from 'react';
+import DoctorCard from '../DoctorCard/DoctorCard';
 
 
 interface Props {
@@ -35,41 +36,70 @@ export default function DoctorDetails({ doctor }: Props) {
 				component="main"
 				sx={{
 
-					height: '200px',
+					//height: '200px',
 					backgroundColor: 'white',
 					width: '100%',
-					color: 'secondary.main'
-					
+					//color: 'secondary.main',
+					color: 'tomato',
+					margin: '15px',
+					padding: '1vh',
 				}}>
-				Auswahl:
+				<Typography sx={{fontSize: '100%'}}>
+					Buche schnell einen Termin bei {doctor.name}!
+				</Typography>
 				<Container
 					sx={{
-						display: 'flex',
-						flexDirection: 'row',
-						justifyContent: 'space-between',
-					}}>
-
-				<Box
-					sx={{
-						display: 'flex',
-						flexGrow: '1',
+						display: 'grid',
+						gridTemplateColumns: '50% 50%',
 						
-					}}>
-
-				
-					Name: {doctor.name}
-				</Box>
-				<Box
-					sx={{
-						display: 'flex',
-						flexGrow: '1',
-						backgroundColor: 'lightblue',
+					}}
+				>
+					<Box
+						sx={{				
+							
+							color: 'secondary.main',
+							fontSize: '0.8rem',
+						}}
+					>
 						
+						
+							<DoctorCard
+								key={doctor.name}
+								doctor={{
+									Id: doctor.Id,
+									name: doctor.name,
+									address: doctor.address,
+									zipCode: doctor.zipCode,
+									city: doctor.city,
+									openHours: doctor.openHours,
+									specialization: doctor.specialization,
+									description: doctor.description,
+									rating: doctor.rating,
+								}}
+								onclick={() => {}}
+								
+
+							
+							/>
+						
+						<Typography
+							sx={{ fonSize: '30%', pr: '1vw'}}
+						>
+							{doctor.description}
+						</Typography>	
+						
+					</Box>
+					<Box
+						sx={{
+							display: 'flex',
+							flexGrow: '1',
+							backgroundColor: 'lightblue',
+							
 					}}>
 
-				
-					Kalender
-				</Box>
+					
+						Kalender
+					</Box>
 				</Container>
 			</Box>
 			
