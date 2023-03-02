@@ -1,5 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import Head from 'next/head';
+import Footer from '../components/Footer/Footer';
 import Navbar from '../components/Navbar/Navbar';
 import styles from '../styles/YourAppointments.module.css';
 
@@ -22,6 +23,7 @@ export default function YourAppointments() {
 					width: '100vw',
 					mt: '70px',
 				}}></Box>
+			<Footer />
 		</>
 	);
 }

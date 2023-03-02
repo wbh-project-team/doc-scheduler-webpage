@@ -4,8 +4,6 @@ import {
 	Container,
 	InputBase,
 	MenuItem,
-	InputLabel,
-	FormControl,
 	Select,
 	styled,
 	TextField,

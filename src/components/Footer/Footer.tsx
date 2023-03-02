@@ -54,7 +54,7 @@ const stylePopupBox = {
   };
 
 export default function Footer() {
-	//const [scrolled, setScrolled] = useState(false);
+	const [scrolled, setScrolled] = useState(false);
 	const [open, setHotlineBoxOpen] = useState(false);
 	const handleHotlineBoxOpen = () => setHotlineBoxOpen(true);
 	const handleHotlineBoxClose = () => setHotlineBoxOpen(false);
@@ -62,11 +62,23 @@ export default function Footer() {
 
 	const [value, setValue] = useState(0);
 
+	useEffect(() => {
+		const handleScroll = () => {
+			setScrolled(window.scrollY > 0);
+		};
+		window.addEventListener('scroll', handleScroll);
+
+		return () => {
+			window.removeEventListener('scroll', handleScroll);
+		};
+	}, []);
+
 	return (
 		<AppBar
+			
 			position="fixed"
 			color="primary"
-			sx={{ top: 'auto', bottom: 0, height: '60px', display: 'flex' }}>
+			sx={[{ top: 'auto', bottom: 0, height: '60px', display: 'flex'},scrolled ? {} : { boxShadow: '0 -10px 15px -5px rgba(0,0,0,0.5);' }] }>
 			<Toolbar sx={{ height: '100%', padding: 0 }}>
 				{/* <IconButton color="inherit" aria-label="open drawer">
 				<FavoriteOutlinedIcon /><br/>

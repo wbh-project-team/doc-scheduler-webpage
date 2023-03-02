@@ -54,7 +54,7 @@ export default function Navbar() {
 	return (
 		<>
 			<AppBar
-				sx={[{ height: '80px', display: 'flex' }, scrolled ? {} : { boxShadow: 'none' }]}
+				sx={[{ height: '80px', display: 'flex' }, scrolled ? {} : { boxShadow: '0 10px 15px -5px rgba(0,0,0,0.5);' }]}
 				position={'fixed'}>
 				<Container maxWidth={'desktop'} sx={{ height: '100%', padding: 0 }}>
 					<Toolbar sx={{ height: '100%', padding: 0 }}>

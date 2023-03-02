@@ -12,6 +12,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
+import Calendar from '../components/Calendar/Calendar';
 
 export default function Home() {
 	const router = useRouter();
@@ -66,6 +67,8 @@ export default function Home() {
                     }}
                 >
                     Impressum
+
+                <Calendar ></Calendar>
                     
                 </Container>
 

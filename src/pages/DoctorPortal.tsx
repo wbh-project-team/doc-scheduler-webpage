@@ -1,9 +1,41 @@
-import { Box, Typography } from '@mui/material';
+import {
+	Box,
+	Button,
+	Container,
+	Typography,
+    ListItem,
+    ListItemText,
+    
+} from '@mui/material';
 import Head from 'next/head';
-import Navbar from '../components/Navbar/Navbar';
-import styles from '../styles/DoctorsOffice.module.css';
 
-export default function DoctorPortal() {
+import { useRouter } from 'next/router';
+import Navbar from '../components/Navbar/Navbar';
+import Footer from '../components/Footer/Footer';
+import OfficeForm from '../components/OfficeForm/OfficeForm';
+import { useState } from 'react';
+
+export default function Home() {
+	//const router = useRouter();
+	const [OfficeFormVisible, setOfficeFormVisible] = useState(false);
+	
+	//const [docForForm, setDocForForm] = useState<Doctor>();
+
+	function handleCreateOfficeClick(){
+		
+		setOfficeFormVisible(true);
+		document.body.scrollTo({ top: 0, behavior: "smooth" });
+	}
+
+	function generateCreateOfficeForm(){
+		if (OfficeFormVisible){
+			//let docForForm = null;
+			//return (<OfficeForm doctor={docForForm!} ></OfficeForm>);
+			return (<OfficeForm ></OfficeForm>);
+		}
+		return ("");
+	}
+
 	return (
 		<>
 			<Head>
@@ -14,14 +46,69 @@ export default function DoctorPortal() {
 			</Head>
 			<Navbar />
 			<Box
-				component="main"
-				sx={{
-					display: 'flex',
-					flexDirection: 'column',
-					alignItems: 'center',
-					width: '100vw',
-					mt: '70px',
-				}}></Box>
+                component="main"
+                sx={{
+                    
+                    height: '100vh',
+                    position: 'relative',
+                    gap: '32px',
+                    '&::before': {
+                        content: '""',
+                        position:'fixed',
+                        display:'block',
+                        top: '0px',
+                        left: '0px',
+                        bottom: '0px',
+                        right: '0px',
+                        backgroundImage: 'url("/images/background.png")',
+                        backgroundSize: 'cover',
+                        backgroundRepeat: 'no-repeat',
+                        backgroundPosition: 'center',
+                        paddingBottom: '200px',
+                      }
+                
+                }}
+            >
+                
+                <Container 
+                    sx={{
+                        position: 'absolute',
+                        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                        width: '95%',
+                        //height: '120vh',
+                        color: 'secondary.main',
+                        fontSize: '120%',
+                        padding: '2vw',
+                        mt: '100px',
+                        mb: '120px',
+                        transform: 'translate(2.5%, 0%)',
+						display: "flex",
+						flexDirection: 'row',
+                    }}
+                >
+					{OfficeFormVisible && (
+					<Box id="Details"
+						sx={{ 
+							zIndex: 1,
+							display: 'flex',
+							backgroundColor: 'tomato',
+							marginTop: '15px',
+							width: '95%',
+							fontSize: '200%',
+							fontWeight: 'light',
+						}}>
+							{generateCreateOfficeForm()}
+					</Box>
+					)}
+
+					{/* {!Navbar.isLoggedIn} */}
+                    
+                    
+                </Container>
+
+            </Box>
+            
+			<Footer />
 		</>
 	);
 }

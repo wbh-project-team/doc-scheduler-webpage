@@ -103,7 +103,7 @@ export default function DoctorCard({ doctor, onclick }: Props) {
 					//boxShadow: '0px 6px 4px rgba(0, 0, 0, 0.25);',
 				}}>
 					{doctor.openHours.map((day, index) => (
-						<Box
+						<Box key={index}
 							sx={{
 								display: 'flex',
 								flexDirection: 'column',
@@ -123,66 +123,7 @@ export default function DoctorCard({ doctor, onclick }: Props) {
 							</Typography>
 						</Box>
 					))}
-				{/* <Box
-					sx={{
-						display: 'flex',
-						flexDirection: 'column',
-						justifyContent: 'center',
-						alignItems: 'center',
-					}}>
-					<Typography variant="overline" sx={{ fontWeight: '1000' }}>
-						Dienstag
-					</Typography>
-					<Typography variant="h6" sx={{ fontWeight: '1000' }}>
-						{(doctor.openHours[0].start / 60 / 60 / 1000).toFixed(2)}-
-						{(doctor.openHours[0].end / 60 / 60 / 1000).toFixed(2)}
-					</Typography>
-				</Box>
-				<Box
-					sx={{
-						display: 'flex',
-						flexDirection: 'column',
-						justifyContent: 'center',
-						alignItems: 'center',
-					}}>
-					<Typography variant="overline" sx={{ fontWeight: '1000' }}>
-						Mitwoch
-					</Typography>
-					<Typography variant="h6" sx={{ fontWeight: '1000' }}>
-						{(doctor.openHours[0].start / 60 / 60 / 1000).toFixed(2)}-
-						{(doctor.openHours[0].end / 60 / 60 / 1000).toFixed(2)}
-					</Typography>
-				</Box>
-				<Box
-					sx={{
-						display: 'flex',
-						flexDirection: 'column',
-						justifyContent: 'center',
-						alignItems: 'center',
-					}}>
-					<Typography variant="overline" sx={{ fontWeight: '1000' }}>
-						Donnerstag
-					</Typography>
-					<Typography variant="h6" sx={{ fontWeight: '1000' }}>
-						{(doctor.openHours[0].start / 60 / 60 / 1000).toFixed(2)}-
-						{(doctor.openHours[0].end / 60 / 60 / 1000).toFixed(2)}
-					</Typography>
-				</Box>
-				<Box
-					sx={{
-						display: 'flex',
-						flexDirection: 'column',
-						justifyContent: 'center',
-						alignItems: 'center',
-					}}>
-					<Typography variant="overline" sx={{ fontWeight: '1000' }}>
-						Freitag
-					</Typography>
-					<Typography variant="h6" sx={{ fontWeight: '1000' }}>
-						{(doctor.openHours[0].start / 60 / 60 / 1000).toFixed(2)}-
-						{(doctor.openHours[0].end / 60 / 60 / 1000).toFixed(2)}
-					</Typography>
-				</Box> */}
+				
 			</Box>
 		</Box>
 	);
