@@ -139,7 +139,6 @@ export default function Home() {
 									description: "",
 									rating: element.rating,
 								}}
-								//onclick={() => dispatch(element)}
 								onclick={() =>handleCardClick(element)}
 								//onclick={() => {}}
 							/>

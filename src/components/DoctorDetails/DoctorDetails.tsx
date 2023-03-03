@@ -12,7 +12,7 @@ interface Props {
 
 export default function DoctorDetails({ doctor }: Props) {
 	//{ doctor }: Props
-	const router = useRouter();
+	//const router = useRouter();
 	//const { doctor } = router.query;
 	// const {
 	// 	query: { data },

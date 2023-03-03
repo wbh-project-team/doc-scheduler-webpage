@@ -23,9 +23,12 @@
   
   .timeline {
     /* ‚background-color: blue; */
-    
+    /* border: 1px solid black; */
     display: grid;
-    grid-template-rows: repeat(52, 15px);
+    grid-template-rows: repeat(56, 15px);
+    align-content: start;
+    padding-top: 0px;
+    margin-top: 0px;
   }
   
   .days {
@@ -44,8 +47,8 @@
   }
   
   /* // Place on Timeline */
-  .start-10 {
-    grid-row-start: 2;
+  .start10 {
+    grid-row-start: 17;
   }
   
   .start-12 {
@@ -60,8 +63,8 @@
     grid-row-start: 6;
   }
   
-  .end-12 {
-    grid-row-end: 4;
+  .end12 {
+    grid-row-end: 25;
   }
   
   .end-1 {
@@ -97,6 +100,11 @@
   
   .space,
   .date {
+    height: 60px
+  }
+
+  .spacer {
+    display: grid;
     height: 60px
   }
   
