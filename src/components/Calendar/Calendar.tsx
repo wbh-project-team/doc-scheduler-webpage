@@ -39,11 +39,14 @@ export default function Calendar() {
 	const [selectedKW, setSelectedKW] = useState<string>('9');
 	const [kwValues, setkwValues] = useState<string[]>(["9","10","11","12"]);
 
-	const [dateMonday, setDateMonday] = useState<number>(27);
-	const [dateTuesday, setDateTuesday] = useState<number>(28);
-	const [dateWednesday, setDateWednesday] = useState<number>(1);
-	const [dateThursday, setDateThursday] = useState<number>(2);
-	const [dateFriday, setDateFriday] = useState<number>(3);
+	const [dateMonday, setDateMonday] = useState<number[]>([27,0,0]);
+	const [dateTuesday, setDateTuesday] = useState<number[]>([28,0,0]);
+	const [dateWednesday, setDateWednesday] = useState<number[]>([1,0,0]);
+	const [dateThursday, setDateThursday] = useState<number[]>([2,0,0]);
+	const [dateFriday, setDateFriday] = useState<number[]>([3,0,0]);
+
+	const [weekAppointments, setWeekappointments] = useState<IAppointment[]>([]);
+	const [newAppointment, setNewAppointment] = useState<IAppointment | null>(null);
 
 	useEffect(() => {
 		let firstKW = calcKwFromSelectedMonth();
@@ -59,23 +62,60 @@ export default function Calendar() {
 		calcWeekStartDate();
 	}, [selectedKW, selectedYear]);
 
+
 	useEffect(() => {
+		//auf dateMonday[0]
 		let endOfMonth = 0;
 		if(calcKwFromSelectedMonth() == Number(selectedKW)){
 			endOfMonth = calcEndOfMonth(monthsMap.get(selectedMonth)!-1> 0 ? monthsMap.get(selectedMonth)!-1 : 12);
 		} else {
 			endOfMonth = calcEndOfMonth(monthsMap.get(selectedMonth)!);
 		}
-		let tuesday = (dateMonday<endOfMonth) ? dateMonday + 1 : 1;
-		let wednesday = (tuesday<endOfMonth) ? tuesday + 1 : 1;
-		let thursday = (wednesday<endOfMonth) ? wednesday + 1 : 1;
-		let friday = (thursday<endOfMonth) ? thursday + 1 : 1;
+		let daytuesday = (dateMonday[0]<endOfMonth) ? dateMonday[0] + 1 : 1;
+		let daywednesday = (daytuesday<endOfMonth) ? daytuesday + 1 : 1;
+		let daythursday = (daywednesday<endOfMonth) ? daywednesday + 1 : 1;
+		let dayfriday = (daythursday<endOfMonth) ? daythursday + 1 : 1;
+		
+		let monthMonday = 0;
+		let monthFriday = monthsMap.get(selectedMonth);
+		let yearMonday = 0;
+		let yearFriday = Number(selectedYear);
+
+		if (dateMonday[0] < dayfriday){
+			monthMonday = monthFriday!;
+			yearMonday = yearFriday;
+		} else {
+			if (monthFriday!-1 > 0) {
+				monthMonday = monthFriday! - 1;
+				yearMonday = yearFriday;
+			}
+			else{
+				monthMonday = 12;
+				yearMonday = yearFriday - 1;
+			}
+		}
+		
+		//zB monday: 230227 friday: 230303 => da das Jahr vorne steht, wird immer weiter hochgezählt
+		let checkNumberMonday = yearMonday*10000+monthMonday*100+dateMonday[0];
+		let checkNumberFriday = yearFriday*10000+monthFriday!*100+dayfriday;
+		
+		let weekAppointmentsArray = appointmentsArray.filter(function(obj) {
+			//alert(checkNumberMonday + checkNumberFriday + obj.dateTime[2]*10000+obj.dateTime[1]*100+obj.dateTime[0])
+			if(
+				obj.dateTime[2]*10000+obj.dateTime[1]*100+obj.dateTime[0] >=checkNumberMonday &&
+				obj.dateTime[2]*10000+obj.dateTime[1]*100+obj.dateTime[0] <= checkNumberFriday
+			){
+				return obj;
+			}
+		});
+
 		//useState hook works asynchronuous!
-		setDateTuesday(tuesday);
-		setDateWednesday(wednesday);
-		setDateThursday(thursday);
-		setDateFriday(friday);
-	}, [dateMonday]);
+		setDateTuesday([daytuesday, (daytuesday > dateMonday[0] ? monthMonday : monthFriday)!, (daytuesday > dateMonday[0] ? yearMonday : yearFriday)]);
+		setDateWednesday([daywednesday, (daywednesday > daytuesday ? monthMonday : monthFriday)!, (daywednesday > daytuesday ? yearMonday : yearFriday)]);
+		setDateThursday([daythursday, (daythursday > daywednesday ? monthMonday : monthFriday)!, (daythursday > daywednesday ? yearMonday : yearFriday)]);
+		setDateFriday([dayfriday, (dayfriday > daythursday ? monthMonday : monthFriday)!, (dayfriday > daythursday ? yearMonday : yearFriday)]);
+		setWeekappointments(weekAppointmentsArray);
+	}, [dateMonday[0]]);
 
 	function calcKwFromSelectedMonth(){
 		let firstdayKW1 = [2,1]; // starts with 2023
@@ -105,7 +145,7 @@ export default function Calendar() {
 		}
 		let mondaydate= value + firstdayKW1[year-2023];
 		if (mondaydate < 1) mondaydate += calcEndOfMonth(month!-1);
-		setDateMonday(mondaydate);
+		setDateMonday([mondaydate,0,0]);
 	}
 
 	function leapYear() {
@@ -131,22 +171,78 @@ export default function Calendar() {
 
 	// Click on Calendar:
 
-	const [selectedDay, setSelectedDay] = useState<number>(0);
+	const [selectedDay, setSelectedDay] = useState<number[]>([0,0,0,0]);
+
 	const handleDayClick = (day: number) => {
-		setSelectedDay(day); // 1=Monday
+		let selectedDate=[0,0,0];
+		if(day == 1) selectedDate = dateMonday;
+		else if(day == 2) selectedDate = dateTuesday;
+		else if(day == 3) selectedDate = dateWednesday;
+		else if(day == 4) selectedDate = dateThursday;
+		else if(day == 5) selectedDate = dateFriday;
+		//alert([day, selectedDate[0], selectedDate[1], selectedDate[2]]);
+		setSelectedDay([day, selectedDate[0], selectedDate[1], selectedDate[2]]); // day: 1=Monday
 	}
 
 	useEffect(() => {
-		if (selectedDay > 0){
+		if (selectedDay[0] > 0){
 			setInputFormOpen(true);
 		}
-	},[selectedDay]);
+	},[selectedDay[0]]);
 
 	const [inputFormOpen, setInputFormOpen] = useState(false);
+
 	const handleInputFormClose = () => {
 		setInputFormOpen(false);
-		setSelectedDay(0);
 		document.body.scrollTo({ top: 0, behavior: "smooth" });
+	}
+	
+	const putAppointmentToCalendar = (date: IAppointment) => {
+		let tempAppointment = date;
+		//alert("put to calendar: " + [selectedDay[0], selectedDay[1], selectedDay[2], tempAppointment.dateTime[3], tempAppointment.dateTime[4] ])
+		
+		tempAppointment.dateTime = [selectedDay[1], selectedDay[2], selectedDay[3], tempAppointment.dateTime[3], tempAppointment.dateTime[4] ];
+		alert("put to calendar: " + "selectedDay: "+selectedDay+ "datetime"+ tempAppointment.dateTime + "duration " + tempAppointment.durationInSecs);
+		setNewAppointment(tempAppointment);
+		//setSelectedDay([0,0,0,0]);  // auch in generateNewAppointment
+	}
+
+	useEffect(() => {
+		if (newAppointment){
+		let tempApps = weekAppointments;
+		let tempweekApps = tempApps.concat(newAppointment!)
+		
+		alert("put new appointment to list " + tempweekApps);
+		setWeekappointments(tempweekApps);
+		
+		setSelectedDay([0,0,0,0]);
+		setNewAppointment(null);
+		}
+	}, [newAppointment]);
+
+	function generateNewAppointment(day: number){
+		
+		//if (newAppointment && weekDay(newAppointment.dateTime[0], newAppointment.dateTime[1], newAppointment.dateTime[2])+1 == day){
+		if (newAppointment && selectedDay[0] == day ){
+			alert("in generate new App : " + selectedDay + "time: " + newAppointment.dateTime+ " duration: "+ newAppointment.durationInSecs);
+			let tempSelectedDay = selectedDay;
+			let tempAppointment = newAppointment;
+			
+			// setSelectedDay([0,0,0,0]);
+			// setNewAppointment(null);
+			return (
+				<Appointment 
+				appmnt={{
+					ownerWalletId: tempAppointment.ownerWalletId, // ToDo: aktuelle WalletId eintragen
+					dateTime: tempAppointment.dateTime,
+					durationInSecs: tempAppointment.durationInSecs,
+					docWalletID: tempAppointment.docWalletID, // ToDo: aktuelle WalletId eintragen
+				}}
+				
+			/> );
+			// dateTime: [tempSelectedDay[1], tempSelectedDay[2], tempSelectedDay[3], tempAppointment.dateTime[3], tempAppointment.dateTime[4]],
+		}
+		return ("");
 	}
 
 	const numRows = 13*4; // 7-20Uhr, pro Stunde 4*15 Minuten (1/4 Stunde timeslots)
@@ -165,7 +261,7 @@ export default function Calendar() {
 					}}>
 					
 					{yearValues.map((value, index) => {
-					return <MenuItem key={index} value={value} sx={{ color: 'secondary.main' }}>{value}</MenuItem>;
+						return <MenuItem key={index} value={value} sx={{ color: 'secondary.main' }}>{value}</MenuItem>;
 					})}
 
 				</Select>
@@ -205,7 +301,6 @@ export default function Calendar() {
 			<InputLabel sx={{ color: 'secondary.main',fontSize:'0.8rem', textAlign: 'center' }}>KW</InputLabel>
 		</Box>
 		</Container >
-		{/* <Container sx={{width: '100%'}}> */}
 		<Box className={mystyles.calendar}>
 			<Box id='timeline' className={mystyles.timeline}>
 				{/* <Box sx={{backgroundColor: 'pink'}}></Box> */}
@@ -226,13 +321,12 @@ export default function Calendar() {
 			<Box id='days'className={mystyles.days}>
 				<Box id='mo'>
 					<Box className={mystyles.date}>
-						<Box className={mystyles.datenum}>{dateMonday} </Box>
+						<Box className={mystyles.datenum}>{dateMonday[0]} </Box>
 						<Box className={mystyles.dateday}>Mon</Box>
 					</Box>
 					<Box className={mystyles.events} onClick={() => {handleDayClick(1)}}>
-						{appointmentsArray.filter(function(obj) {
+						{weekAppointments.filter(function(obj) {
 							if(weekDay(obj.dateTime[0],obj.dateTime[1], obj.dateTime[2]) == 0 ){
-								//alert(obj.id);
 								return obj;
 							}
 						 }).map((item) => (
@@ -244,59 +338,110 @@ export default function Calendar() {
 									durationInSecs: item.durationInSecs,
 									docWalletID: item.docWalletID,
 								}}
-								day={1}
 							/> 
-							
 						))}
+						{generateNewAppointment(1)}
 					</Box>
 				</Box>
 				<Box id='di'>
 					<Box className={mystyles.date}>
-						<Box className={mystyles.datenum}>{dateTuesday} </Box>
+						<Box className={mystyles.datenum}>{dateTuesday[0]} </Box>
 						<Box className={mystyles.dateday}>Die</Box>
 					</Box>
 					<Box className={mystyles.events} onClick={() => {handleDayClick(2)}}>
-						{/* {generateAppointments(2)} */}
+					{weekAppointments.filter(function(obj) {
+							if(weekDay(obj.dateTime[0],obj.dateTime[1], obj.dateTime[2]) == 1 ){
+								return obj;
+							}
+						 }).map((item) => (
+							<Appointment 
+								appmnt={{
+									id: item.id,
+									ownerWalletId: item.ownerWalletId,
+									dateTime: item.dateTime,
+									durationInSecs: item.durationInSecs,
+									docWalletID: item.docWalletID,
+								}}
+							/> 
+						))}
+						{generateNewAppointment(2)}
 					</Box>
 				</Box>
 				<Box id='mi'>
 					<Box className={mystyles.date}>
-						<Box className={mystyles.datenum}>{dateWednesday} </Box>
+						<Box className={mystyles.datenum}>{dateWednesday[0]} </Box>
 						<Box className={mystyles.dateday}>Mit</Box>
 					</Box>
 					<Box className={mystyles.events} onClick={() => {handleDayClick(3)}}>
-						{/* {generateAppointments(3)} */}
+					{weekAppointments.filter(function(obj) {
+							if(weekDay(obj.dateTime[0],obj.dateTime[1], obj.dateTime[2]) == 2 ){
+								return obj;
+							}
+						 }).map((item) => (
+							<Appointment 
+								appmnt={{
+									id: item.id,
+									ownerWalletId: item.ownerWalletId,
+									dateTime: item.dateTime,
+									durationInSecs: item.durationInSecs,
+									docWalletID: item.docWalletID,
+								}}
+							/> 
+						))}
+						{generateNewAppointment(3)}
 					</Box>
 				</Box>
 				<Box id='do'>
 					<Box className={mystyles.date}>
-						<Box className={mystyles.datenum}>{dateThursday} </Box>
+						<Box className={mystyles.datenum}>{dateThursday[0]} </Box>
 						<Box className={mystyles.dateday}>Don</Box>
 					</Box>
 					<Box className={mystyles.events} onClick={() => {handleDayClick(4)}}>
-					{/* <Box className={mystyles.event} sx={{gridRow: '2/10', backgroundColor: 'lightblue'}}></Box> */}
-						{/* {generateAppointments(4)} */}
+					{weekAppointments.filter(function(obj) {
+							if(weekDay(obj.dateTime[0],obj.dateTime[1], obj.dateTime[2]) == 3 ){
+								return obj;
+							}
+						 }).map((item) => (
+							<Appointment 
+								appmnt={{
+									id: item.id,
+									ownerWalletId: item.ownerWalletId,
+									dateTime: item.dateTime,
+									durationInSecs: item.durationInSecs,
+									docWalletID: item.docWalletID,
+								}}
+							/> 
+						))}
+						{generateNewAppointment(4)}
 					</Box>
 				</Box>
 				<Box id='fr'>
 					<Box className={mystyles.date}>
-						<Box className={mystyles.datenum}>{dateFriday} </Box>
+						<Box className={mystyles.datenum}>{dateFriday[0]} </Box>
 						<Box className={mystyles.dateday}>Fr</Box>
 					</Box>
 					<Box className={mystyles.events} onClick={() => {handleDayClick(5)}}>
-						{/* {generateAppointments(5)} */}
+					{weekAppointments.filter(function(obj) {
+							if(weekDay(obj.dateTime[0],obj.dateTime[1], obj.dateTime[2]) == 4 ){
+								return obj;
+							}
+						 }).map((item) => (
+							<Appointment 
+								appmnt={{
+									id: item.id,
+									ownerWalletId: item.ownerWalletId,
+									dateTime: item.dateTime,
+									durationInSecs: item.durationInSecs,
+									docWalletID: item.docWalletID,
+								}}
+							/> 
+						))}
+						{generateNewAppointment(5)}
 					</Box>
 				</Box>
-
-
-				
 			</Box>
-				
-			
-			
 		</Box>
-		<AppointmentInputForm open={inputFormOpen} handleClose={handleInputFormClose} />
+		<AppointmentInputForm open={inputFormOpen} handleClose={handleInputFormClose} putAppointmentToCalendar={putAppointmentToCalendar} />
 	</Box>
-	
 	);
 }

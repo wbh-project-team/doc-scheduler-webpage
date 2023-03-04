@@ -10,7 +10,7 @@ import { Doctor, docs } from './Doctors';
 		//   }
 
 export interface IAppointment {
-	id: number;  // contractNumber?
+	id?: number;  // contractNumber?
 	ownerWalletId: number;
 	dateTime: number[];  // minute darf nur 0, 15, 30 oder 45 sein
 	durationInSecs: number;
@@ -18,8 +18,8 @@ export interface IAppointment {
     doc? : Doctor;
 }
 
-// Nur vorlaeufig eine Liste mit Aerzten:
-export const appointmentsArray: IAppointment[] = [
+// Nur vorlaeufig eine Liste mit Appointments:
+export var appointmentsArray: IAppointment[] = [
 	{
 		id: 0, 
 		ownerWalletId: 11111111111, 
@@ -33,6 +33,22 @@ export const appointmentsArray: IAppointment[] = [
 		ownerWalletId: 11111111111, 
 		dateTime: [27,2,2023,15,0], 
 		durationInSecs: 900, 
+		docWalletID: 2222222222, 
+		doc: docs[0]
+	},
+	{
+		id: 2, 
+		ownerWalletId: 11111111111, 
+		dateTime: [3,3,2023,7,30], 
+		durationInSecs: 1800, 
+		docWalletID: 2222222222, 
+		doc: docs[0]
+	},
+	{
+		id: 3, 
+		ownerWalletId: 11111111111, 
+		dateTime: [6,3,2023,13,0], 
+		durationInSecs: 1800, 
 		docWalletID: 2222222222, 
 		doc: docs[0]
 	},
