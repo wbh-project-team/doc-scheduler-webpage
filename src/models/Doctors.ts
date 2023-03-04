@@ -1,5 +1,5 @@
 export interface Doctor {
-	Id: number;
+	Id: number;  // WalletID?
 	name: string;
 	zipCode: number;
 	address: string;

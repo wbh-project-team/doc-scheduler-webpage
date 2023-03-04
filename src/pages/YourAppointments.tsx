@@ -3,8 +3,21 @@ import Head from 'next/head';
 import Footer from '../components/Footer/Footer';
 import Navbar from '../components/Navbar/Navbar';
 import styles from '../styles/YourAppointments.module.css';
+import { appointmentsArray, IAppointment } from '../models/Appointments';
+import Appointment from '../components/Appointment/Appointment';
 
 export default function YourAppointments() {
+	// TODO: anpassen
+	// let weekAppointmentsArray = appointmentsArray.filter(function(obj) {
+	// 	//alert(checkNumberMonday + checkNumberFriday + obj.dateTime[2]*10000+obj.dateTime[1]*100+obj.dateTime[0])
+	// 	if(
+	// 		obj.docWalletID == docId &&
+	// 		obj.dateTime[2]*10000+obj.dateTime[1]*100+obj.dateTime[0] >=checkNumberMonday &&
+	// 		obj.dateTime[2]*10000+obj.dateTime[1]*100+obj.dateTime[0] <= checkNumberFriday
+	// 	){
+	// 		return obj;
+	// 	}
+	// });
 	return (
 		<>
 			<Head>

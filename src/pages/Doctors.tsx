@@ -2,7 +2,7 @@ import { Box, Container, InputBase, styled, TextField, Typography } from '@mui/m
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 //import { useReducer } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { areaOfExpertise, Doctor, docs } from '../models/Doctors';
 import DoctorCard from '../components/DoctorCard/DoctorCard';
 import Navbar from '../components/Navbar/Navbar';
@@ -25,13 +25,19 @@ export default function Home() {
 	const router = useRouter();
 	const { zipCode, areaOfExpertise } = router.query;
 	const [detailsVisible, setDetailsVisible] = useState(defaultDetailsVisible);
-	const [docForDetails, setDocForDetails] = useState<Doctor>();
+	const [docForDetails, setDocForDetails] = useState<Doctor | null>(null);
 
 	function handleCardClick(doc: Doctor){
+		setDetailsVisible(false);
 		setDocForDetails(doc);
-		setDetailsVisible(true);
-		document.body.scrollTo({ top: 0, behavior: "smooth" });
 	}
+
+	useEffect(() => {
+		if(docForDetails){
+			setDetailsVisible(true);
+			document.body.scrollTo({ top: 0, behavior: "smooth" });
+		}
+	},[docForDetails]);
 
 	function generateDetails(){
 		if (detailsVisible){

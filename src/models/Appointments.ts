@@ -14,7 +14,7 @@ export interface IAppointment {
 	ownerWalletId: number;
 	dateTime: number[];  // minute darf nur 0, 15, 30 oder 45 sein
 	durationInSecs: number;
-	docWalletID: number;
+	docWalletID: number;  // Doctor.id
     doc? : Doctor;
 }
 
@@ -25,7 +25,7 @@ export var appointmentsArray: IAppointment[] = [
 		ownerWalletId: 11111111111, 
 		dateTime: [1,3,2023,10,15],
 		durationInSecs: 3600, 
-		docWalletID: 2222222222, 
+		docWalletID: 0, 
 		doc: docs[0]
 	},
     {
@@ -33,7 +33,7 @@ export var appointmentsArray: IAppointment[] = [
 		ownerWalletId: 11111111111, 
 		dateTime: [27,2,2023,15,0], 
 		durationInSecs: 900, 
-		docWalletID: 2222222222, 
+		docWalletID: 0, 
 		doc: docs[0]
 	},
 	{
@@ -41,7 +41,7 @@ export var appointmentsArray: IAppointment[] = [
 		ownerWalletId: 11111111111, 
 		dateTime: [3,3,2023,7,30], 
 		durationInSecs: 1800, 
-		docWalletID: 2222222222, 
+		docWalletID: 0, 
 		doc: docs[0]
 	},
 	{
@@ -49,7 +49,7 @@ export var appointmentsArray: IAppointment[] = [
 		ownerWalletId: 11111111111, 
 		dateTime: [6,3,2023,13,0], 
 		durationInSecs: 1800, 
-		docWalletID: 2222222222, 
+		docWalletID: 1, 
 		doc: docs[0]
 	},
 ]

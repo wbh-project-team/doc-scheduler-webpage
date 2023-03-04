@@ -1,6 +1,7 @@
 import { Avatar, Box, Container, InputBase, styled, TextField, Typography } from '@mui/material';
 import { Doctor } from '../../models/Doctors';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 //import { CalendarPicker } from '@mui/x-date-pickers/CalendarPicker';
 import DoctorCard from '../DoctorCard/DoctorCard';
 import Calendar from '../Calendar/Calendar';
@@ -11,25 +12,12 @@ interface Props {
 }
 
 export default function DoctorDetails({ doctor }: Props) {
-	//{ doctor }: Props
-	//const router = useRouter();
-	//const { doctor } = router.query;
-	// const {
-	// 	query: { data },
-	// 	} = router;
+	const [selectedDocId, setSelectedDocId] = useState(doctor.Id);
 	// useEffect(() => {
-	// 	if (!router.isReady) return;
-	// 	console.log(router.query);
-	// 	console.log(JSON.parse(router.query.doc))
-	//   }, [router.isReady]);
-	//const rawData = router.query.doc!;
-	//const {docdata} = "";
-	//if (typeof rawData === "string" && rawData !== "undefined") {
-		//const docdata = JSON.parse(router.query.doc as string) || [];
-		//JSON.parse(props.router.query.data);
-	//}
+	// 	calcWeekStartDate();
+	// }, [selectedDocId])
+	
 	return <>
-		
 			<Box
 				component="main"
 				sx={{
@@ -49,7 +37,6 @@ export default function DoctorDetails({ doctor }: Props) {
 					sx={{
 						display: 'grid',
 						gridTemplateColumns: '25% 75%',
-						
 					}}
 				>
 					<Box
@@ -108,18 +95,13 @@ export default function DoctorDetails({ doctor }: Props) {
 								</Box>
 								</Box>
 							</Box>
-							
-							
+
 							<Box sx={{display: 'grid', backgroundColor: 'white'}}> Öffnungszeiten:</Box>
 							<Box sx={{display: 'grid', backgroundColor: 'white'}}> :</Box>
-							
-							
-
-							
+	
 							<Typography sx={{ fonSize: '30%', pr: '1vw', backgroundColor: 'white',}}>
 								{doctor.description}
 							</Typography>	
-							
 						</Box>
 					<Box
 						sx={{
@@ -130,14 +112,11 @@ export default function DoctorDetails({ doctor }: Props) {
 							fontSize: '60%',
 					}}>
 						<Box sx={{ width: '100%'}}>
-						<Calendar></Calendar>
+						<Calendar docId={selectedDocId} ></Calendar>
 						</Box>
 					</Box>
 				</Container>
 			</Box>
-			
-
-	
-	
 	</>;
 }
+

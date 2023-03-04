@@ -7,10 +7,6 @@ import AppointmentInputForm from '../AppointmentInputForm/AppointmentInputForm';
 import mystyles from './calendarStyle.module.css';
 import Appointment from '../Appointment/Appointment';
 
-// interface Props {
-// 	//onclick: any;
-// }
-
 const monthsMap = new Map([
 	['Januar', 1],
 	['Februar', 2],
@@ -26,8 +22,13 @@ const monthsMap = new Map([
 	['Dezember',12],
 ])
 
-export default function Calendar() {
+interface Props {
+	docId: number;
+}
+
+export default function Calendar({ docId }: Props) {
 	//const router = useRouter();
+	//const [selectedDocId, setSelectedDocId] = useState(docId);
 	const [selectedYear, setSelectedYear] = useState<string>('2023');
 	const [yearValues, setYearValues] = useState<string[]>([
 		'2023',
@@ -47,6 +48,10 @@ export default function Calendar() {
 
 	const [weekAppointments, setWeekappointments] = useState<IAppointment[]>([]);
 	const [newAppointment, setNewAppointment] = useState<IAppointment | null>(null);
+	
+	// useEffect(() => {
+	// 	calcWeekStartDate();
+	// }, [selectedDocId])
 
 	useEffect(() => {
 		let firstKW = calcKwFromSelectedMonth();
@@ -102,6 +107,7 @@ export default function Calendar() {
 		let weekAppointmentsArray = appointmentsArray.filter(function(obj) {
 			//alert(checkNumberMonday + checkNumberFriday + obj.dateTime[2]*10000+obj.dateTime[1]*100+obj.dateTime[0])
 			if(
+				obj.docWalletID == docId &&
 				obj.dateTime[2]*10000+obj.dateTime[1]*100+obj.dateTime[0] >=checkNumberMonday &&
 				obj.dateTime[2]*10000+obj.dateTime[1]*100+obj.dateTime[0] <= checkNumberFriday
 			){
@@ -110,6 +116,7 @@ export default function Calendar() {
 		});
 
 		//useState hook works asynchronuous!
+		setDateMonday([dateMonday[0], monthMonday, yearMonday])
 		setDateTuesday([daytuesday, (daytuesday > dateMonday[0] ? monthMonday : monthFriday)!, (daytuesday > dateMonday[0] ? yearMonday : yearFriday)]);
 		setDateWednesday([daywednesday, (daywednesday > daytuesday ? monthMonday : monthFriday)!, (daywednesday > daytuesday ? yearMonday : yearFriday)]);
 		setDateThursday([daythursday, (daythursday > daywednesday ? monthMonday : monthFriday)!, (daythursday > daywednesday ? yearMonday : yearFriday)]);
@@ -202,7 +209,7 @@ export default function Calendar() {
 		//alert("put to calendar: " + [selectedDay[0], selectedDay[1], selectedDay[2], tempAppointment.dateTime[3], tempAppointment.dateTime[4] ])
 		
 		tempAppointment.dateTime = [selectedDay[1], selectedDay[2], selectedDay[3], tempAppointment.dateTime[3], tempAppointment.dateTime[4] ];
-		alert("put to calendar: " + "selectedDay: "+selectedDay+ "datetime"+ tempAppointment.dateTime + "duration " + tempAppointment.durationInSecs);
+		//alert("put to calendar: " + "selectedDay: "+selectedDay+ " datetime"+ tempAppointment.dateTime + "duration " + tempAppointment.durationInSecs);
 		setNewAppointment(tempAppointment);
 		//setSelectedDay([0,0,0,0]);  // auch in generateNewAppointment
 	}
@@ -212,7 +219,7 @@ export default function Calendar() {
 		let tempApps = weekAppointments;
 		let tempweekApps = tempApps.concat(newAppointment!)
 		
-		alert("put new appointment to list " + tempweekApps);
+		//alert("put new appointment to list " + tempweekApps);
 		setWeekappointments(tempweekApps);
 		
 		setSelectedDay([0,0,0,0]);
@@ -220,30 +227,31 @@ export default function Calendar() {
 		}
 	}, [newAppointment]);
 
-	function generateNewAppointment(day: number){
+	// funktioniert automatisch, da Termin in Terminliste aufgenommen wird!
+	// function generateNewAppointment(day: number){
 		
-		//if (newAppointment && weekDay(newAppointment.dateTime[0], newAppointment.dateTime[1], newAppointment.dateTime[2])+1 == day){
-		if (newAppointment && selectedDay[0] == day ){
-			alert("in generate new App : " + selectedDay + "time: " + newAppointment.dateTime+ " duration: "+ newAppointment.durationInSecs);
-			let tempSelectedDay = selectedDay;
-			let tempAppointment = newAppointment;
+	// 	//if (newAppointment && weekDay(newAppointment.dateTime[0], newAppointment.dateTime[1], newAppointment.dateTime[2])+1 == day){
+	// 	if (newAppointment && selectedDay[0] == day ){
+	// 		alert("in generate new App : " + selectedDay + "time: " + newAppointment.dateTime+ " duration: "+ newAppointment.durationInSecs);
+	// 		let tempSelectedDay = selectedDay;
+	// 		let tempAppointment = newAppointment;
 			
-			// setSelectedDay([0,0,0,0]);
-			// setNewAppointment(null);
-			return (
-				<Appointment 
-				appmnt={{
-					ownerWalletId: tempAppointment.ownerWalletId, // ToDo: aktuelle WalletId eintragen
-					dateTime: tempAppointment.dateTime,
-					durationInSecs: tempAppointment.durationInSecs,
-					docWalletID: tempAppointment.docWalletID, // ToDo: aktuelle WalletId eintragen
-				}}
+	// 		// setSelectedDay([0,0,0,0]);
+	// 		// setNewAppointment(null);
+	// 		return (
+	// 			<Appointment 
+	// 			appmnt={{
+	// 				ownerWalletId: tempAppointment.ownerWalletId, // ToDo: aktuelle WalletId eintragen
+	// 				dateTime: tempAppointment.dateTime,
+	// 				durationInSecs: tempAppointment.durationInSecs,
+	// 				docWalletID: tempAppointment.docWalletID, // ToDo: aktuelle WalletId eintragen
+	// 			}}
 				
-			/> );
-			// dateTime: [tempSelectedDay[1], tempSelectedDay[2], tempSelectedDay[3], tempAppointment.dateTime[3], tempAppointment.dateTime[4]],
-		}
-		return ("");
-	}
+	// 		/> );
+	// 		// dateTime: [tempSelectedDay[1], tempSelectedDay[2], tempSelectedDay[3], tempAppointment.dateTime[3], tempAppointment.dateTime[4]],
+	// 	}
+	// 	return ("");
+	// }
 
 	const numRows = 13*4; // 7-20Uhr, pro Stunde 4*15 Minuten (1/4 Stunde timeslots)
 	
@@ -340,7 +348,7 @@ export default function Calendar() {
 								}}
 							/> 
 						))}
-						{generateNewAppointment(1)}
+						{/* {generateNewAppointment(1)} */}
 					</Box>
 				</Box>
 				<Box id='di'>
@@ -364,7 +372,7 @@ export default function Calendar() {
 								}}
 							/> 
 						))}
-						{generateNewAppointment(2)}
+						{/* {generateNewAppointment(2)} */}
 					</Box>
 				</Box>
 				<Box id='mi'>
@@ -388,7 +396,7 @@ export default function Calendar() {
 								}}
 							/> 
 						))}
-						{generateNewAppointment(3)}
+						{/* {generateNewAppointment(3)} */}
 					</Box>
 				</Box>
 				<Box id='do'>
@@ -412,7 +420,7 @@ export default function Calendar() {
 								}}
 							/> 
 						))}
-						{generateNewAppointment(4)}
+						{/* {generateNewAppointment(4)} */}
 					</Box>
 				</Box>
 				<Box id='fr'>
@@ -436,12 +444,17 @@ export default function Calendar() {
 								}}
 							/> 
 						))}
-						{generateNewAppointment(5)}
+						{/* {generateNewAppointment(5)} */}
 					</Box>
 				</Box>
 			</Box>
 		</Box>
-		<AppointmentInputForm open={inputFormOpen} handleClose={handleInputFormClose} putAppointmentToCalendar={putAppointmentToCalendar} />
+		<AppointmentInputForm 
+			open={inputFormOpen} 
+			handleClose={handleInputFormClose}
+			date= {selectedDay}
+			docId={docId}
+			putAppointmentToCalendar={putAppointmentToCalendar} />
 	</Box>
 	);
 }
