@@ -14,12 +14,14 @@ import {
 } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { IAppointment } from '../../models/Appointments'
+import { IConsultationCategory } from '../../models/Doctors'
 
 interface Props {
   open: any
   handleClose: any
   date: number[]
   docId: number
+  consultationCategories: IConsultationCategory[];
   putAppointmentToCalendar: any
 }
 
@@ -28,6 +30,7 @@ export default function AppointmentInputForm({
   handleClose,
   date,
   docId,
+  consultationCategories,
   putAppointmentToCalendar
 }: Props) {
   const [appointment, setAppointment] = useState<IAppointment>()
@@ -39,6 +42,7 @@ export default function AppointmentInputForm({
     // TODO: put ownerWalletID from Login
     // Abfrage: LoggedIn?
     let submittedDate = {
+      // what about contractNumber ?
       ownerWalletId: 1111111,
       dateTime: [0, 0, 0, hour, minutes],
       durationInSecs: duration * 60,
@@ -124,7 +128,7 @@ export default function AppointmentInputForm({
               id="duration-label"
               sx={{ color: 'secondary.main', backgroundColor: 'white' }}
             >
-              Dauer
+              Terminkategorie
             </InputLabel>
             <Select
               sx={{ color: 'secondary.main' }}
@@ -133,18 +137,17 @@ export default function AppointmentInputForm({
               value={duration}
               onChange={(event) => setDuration(Number(event.target.value))}
             >
-              <MenuItem value={15} sx={{ color: 'secondary.main' }}>
-                15
-              </MenuItem>
-              <MenuItem value={30} sx={{ color: 'secondary.main' }}>
-                30
-              </MenuItem>
-              <MenuItem value={45} sx={{ color: 'secondary.main' }}>
-                45
-              </MenuItem>
-              <MenuItem value={60} sx={{ color: 'secondary.main' }}>
-                60
-              </MenuItem>
+              {consultationCategories.map((item, index) => {
+                return (
+                  <MenuItem
+                    key={index}
+                    value={item.durationInSecs/60}
+                    sx={{ color: 'secondary.main' }}
+                  >
+                    {item.category}
+                  </MenuItem>
+                )
+              })}
             </Select>
           </FormControl>
         </DialogContent>

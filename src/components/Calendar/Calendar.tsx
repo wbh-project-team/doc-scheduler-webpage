@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import AppointmentInputForm from '../AppointmentInputForm/AppointmentInputForm'
 import mystyles from './calendarStyle.module.css'
 import Appointment from '../Appointment/Appointment'
+import { BusinessHours, IConsultationCategory } from '../../models/Doctors'
 
 const monthsMap = new Map([
   ['Januar', 1],
@@ -24,9 +25,11 @@ const monthsMap = new Map([
 
 interface Props {
   docId: number
+  openHours: BusinessHours[];
+  consultationCategories: IConsultationCategory[];
 }
 
-export default function Calendar({ docId }: Props) {
+export default function Calendar({ docId, openHours, consultationCategories }: Props) {
   //const router = useRouter();
   //const [selectedDocId, setSelectedDocId] = useState(docId);
   const [selectedYear, setSelectedYear] = useState<string>('2023')
@@ -122,27 +125,49 @@ export default function Calendar({ docId }: Props) {
     })
 
     //useState hook works asynchronuous!
-    setDateMonday([dateMonday[0], monthMonday, yearMonday])
-    setDateTuesday([
-      daytuesday,
-      (daytuesday > dateMonday[0] ? monthMonday : monthFriday)!,
-      daytuesday > dateMonday[0] ? yearMonday : yearFriday
-    ])
-    setDateWednesday([
-      daywednesday,
-      (daywednesday > daytuesday ? monthMonday : monthFriday)!,
-      daywednesday > daytuesday ? yearMonday : yearFriday
-    ])
-    setDateThursday([
-      daythursday,
-      (daythursday > daywednesday ? monthMonday : monthFriday)!,
-      daythursday > daywednesday ? yearMonday : yearFriday
-    ])
-    setDateFriday([
-      dayfriday,
-      (dayfriday > daythursday ? monthMonday : monthFriday)!,
-      dayfriday > daythursday ? yearMonday : yearFriday
-    ])
+	let dayDates: Array<Array<number>> = [
+		[dateMonday[0], monthMonday, yearMonday],
+		[
+			daytuesday,
+			(daytuesday > dateMonday[0] ? monthMonday : monthFriday)!,
+			daytuesday > dateMonday[0] ? yearMonday : yearFriday
+		],
+		[
+			daywednesday,
+			(daywednesday > daytuesday ? monthMonday : monthFriday)!,
+			daywednesday > daytuesday ? yearMonday : yearFriday
+		],
+		[
+			daythursday,
+			(daythursday > daywednesday ? monthMonday : monthFriday)!,
+			daythursday > daywednesday ? yearMonday : yearFriday
+		],
+		[
+			dayfriday,
+			(dayfriday > daythursday ? monthMonday : monthFriday)!,
+			dayfriday > daythursday ? yearMonday : yearFriday
+		]
+	];
+
+    setDateMonday(dayDates[0]);
+    setDateTuesday(dayDates[1]);
+    setDateWednesday(dayDates[2]);
+    setDateThursday(dayDates[3]);
+    setDateFriday(dayDates[3]);
+
+	//let dayDates: Array<Array<number>> = [[dateMonday[0], monthMonday, yearMonday],]
+	// let closingTimes: Array<IAppointment> = [];
+	// openHours.map((element, index) => (
+	// 	let durationBefore = openHours[{index}].start - 7 * 60 * 60 * 1000;
+	// 	closingTimes.push({
+	// 		ownerWalletId: 111,
+	// 		dateTime: [dayDates[index][0], dayDates[index][1], dayDates[index][2], 7,0],
+	// 		durationInSecs:0,
+	// 		docWalletID: 0,
+	// 	})
+	// ));
+	// weekAppointmentsArray.concat(closingTimes);
+
     setWeekappointments(weekAppointmentsArray)
   }, [dateMonday[0]])
 
@@ -445,7 +470,7 @@ export default function Calendar({ docId }: Props) {
                     }}
                   />
                 ))}
-              {/* {generateNewAppointment(1)} */}
+              {/* {generateBlockClosingTimes(1)} */}
             </Box>
           </Box>
           <Box id="di">
@@ -603,6 +628,7 @@ export default function Calendar({ docId }: Props) {
         handleClose={handleInputFormClose}
         date={selectedDay}
         docId={docId}
+		consultationCategories={consultationCategories}
         putAppointmentToCalendar={putAppointmentToCalendar}
       />
     </Box>

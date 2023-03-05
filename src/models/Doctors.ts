@@ -6,6 +6,7 @@ export interface Doctor {
 	city: string;
 	openHours: BusinessHours[];
 	specialization: keyof typeof areaOfExpertise;
+	consultationCategories: IConsultationCategory[];
 	description: string;
 	rating: number;
 }
@@ -15,6 +16,11 @@ export interface BusinessHours {
 	end: number;
 	lunchStart:number;
 	lunchEnd:number;
+}
+
+export interface IConsultationCategory {
+	category : string;
+	durationInSecs: number;
 }
 
 export enum areaOfExpertise {
@@ -33,6 +39,7 @@ export const docs: Doctor[] = [
 		city: 'Mülheim an der Ruhr', 
 		openHours: Array.apply(null, Array(5)).map(()=>( {start:8.3 * 60 * 60 * 1000, end: 16 * 60 * 60 * 1000, lunchStart: 12*60*60*1000, lunchEnd: 13*60*60*1000} )),
 		specialization: "surgeon",
+		consultationCategories: [{category: "Beratung", durationInSecs: 1800 }, {category: "Chirurgischer Eingriff", durationInSecs: 3600 }, {category: "Nachsorge", durationInSecs: 900 }],
 		description:"",
 		rating: 4.5,
 	},
@@ -44,6 +51,7 @@ export const docs: Doctor[] = [
 		city: 'Nürnberg', 
 		openHours: Array.apply(null, Array(5)).map(()=>( {start:8.3 * 60 * 60 * 1000, end: 16 * 60 * 60 * 1000, lunchStart: 12*60*60*1000, lunchEnd: 13*60*60*1000} )),
 		specialization: "dentist",
+		consultationCategories: [{category: "Routineuntersuchung", durationInSecs: 900 }, {category: "Zahnreinigung", durationInSecs: 1800 }, {category: "Kariesbehandlung", durationInSecs: 1800 }, {category: "Wurzelbehandlung", durationInSecs: 2700 }],
 		description:"",
 		rating: 4.9,
 	},
@@ -55,6 +63,7 @@ export const docs: Doctor[] = [
 		city: 'Darmstadt', 
 		openHours: Array.apply(null, Array(5)).map(()=>( {start:8.3 * 60 * 60 * 1000, end: 16 * 60 * 60 * 1000, lunchStart: 12*60*60*1000, lunchEnd: 13*60*60*1000} )),
 		specialization: "doctor",
+		consultationCategories: [{category: "Check-Up", durationInSecs: 1800 }, {category: "Akut-Untersuchung", durationInSecs: 900 }, {category: "Beratung", durationInSecs: 900 }, {category: "Wurzelbehandlung", durationInSecs: 900 }],
 		description:"",
 		rating: 3,
 	},
@@ -66,6 +75,7 @@ export const docs: Doctor[] = [
 		city: 'Berlin', 
 		openHours: Array.apply(null, Array(5)).map(()=>( {start:8.3 * 60 * 60 * 1000, end: 16 * 60 * 60 * 1000, lunchStart: 12*60*60*1000, lunchEnd: 13*60*60*1000} )),
 		specialization: "dentist",
+		consultationCategories: [{category: "Routineuntersuchung", durationInSecs: 900 }, {category: "Zahnreinigung", durationInSecs: 1800 }, {category: "Kariesbehandlung", durationInSecs: 900 }, {category: "Wurzelbehandlung", durationInSecs: 900 }],
 		description:"",
 		rating: 5,
 	},
@@ -77,6 +87,7 @@ export const docs: Doctor[] = [
 		city: 'Essen', 
 		openHours: Array.apply(null, Array(5)).map(()=>( {start:8.3 * 60 * 60 * 1000, end: 16 * 60 * 60 * 1000, lunchStart: 12*60*60*1000, lunchEnd: 13*60*60*1000} )),
 		specialization: "doctor",
+		consultationCategories: [{category: "Check-Up", durationInSecs: 1800 }, {category: "Akut-Untersuchung", durationInSecs: 900 }, {category: "Beratung", durationInSecs: 900 }, {category: "Wurzelbehandlung", durationInSecs: 900 }],
 		description:"Liebe Patientinnen und Patienten, \
 		als Hausärztin verstehe ich mich als Ihre Begleiterin in allen Gesundheitsfragen. \
 		Dazu zählen Vorsorgemaßnahmen genauso wie eine individuelle Beratung und die Kenntnis \
@@ -96,6 +107,7 @@ export const docs: Doctor[] = [
 		city: 'Darmstadt', 
 		openHours: Array.apply(null, Array(5)).map(()=>( {start:7 * 60 * 60 * 1000, end: 18 * 60 * 60 * 1000, lunchStart: 12*60*60*1000, lunchEnd: 13*60*60*1000} )),
 		specialization: "doctor",
+		consultationCategories: [{category: "Check-Up", durationInSecs: 1800 }, {category: "Akut-Untersuchung", durationInSecs: 900 }, {category: "Beratung", durationInSecs: 900 }, {category: "Wurzelbehandlung", durationInSecs: 900 }],
 		description:"Arzt in Darmstadt, Hessen",
 		rating: 4.5,
 	},

@@ -1,14 +1,13 @@
 import { Avatar, Typography, Link } from '@mui/material'
 
 import { Box } from '@mui/system'
-import { Doctor } from '../../models/Doctors'
+import { areaOfExpertise, Doctor } from '../../models/Doctors'
 import { useRouter } from 'next/router'
 
 interface Props {
   doctor: Doctor
   onclick: any
 }
-
 const weekdays = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag']
 
 export default function DoctorCard({ doctor, onclick }: Props) {
@@ -38,6 +37,7 @@ export default function DoctorCard({ doctor, onclick }: Props) {
         //border: 'solid 1px #808080',
       }}
     >
+      {areaOfExpertise[doctor.specialization]}
       <Box
         sx={{
           display: 'flex',
