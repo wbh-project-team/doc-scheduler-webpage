@@ -111,7 +111,8 @@ export default function Calendar({ docId, openHours, consultationCategories }: P
       yearMonday * 10000 + monthMonday * 100 + dateMonday[0]
     let checkNumberFriday = yearFriday * 10000 + monthFriday! * 100 + dayfriday
 
-    let weekAppointmentsArray = appointmentsArray.filter(function (obj) {
+    let weekAppointmentsArray: Array<IAppointment> = [];
+	weekAppointmentsArray = appointmentsArray.filter(function (obj) {
       //alert(checkNumberMonday + checkNumberFriday + obj.dateTime[2]*10000+obj.dateTime[1]*100+obj.dateTime[0])
       if (
         obj.docWalletID == docId &&
@@ -125,6 +126,7 @@ export default function Calendar({ docId, openHours, consultationCategories }: P
     })
 
     //useState hook works asynchronuous!
+	// Fehler: bei Monatswechsel: nur erster Tag bekommt den neuen Monat
 	let dayDates: Array<Array<number>> = [
 		[dateMonday[0], monthMonday, yearMonday],
 		[
@@ -134,40 +136,67 @@ export default function Calendar({ docId, openHours, consultationCategories }: P
 		],
 		[
 			daywednesday,
-			(daywednesday > daytuesday ? monthMonday : monthFriday)!,
-			daywednesday > daytuesday ? yearMonday : yearFriday
+			(daywednesday > dateMonday[0] ? monthMonday : monthFriday)!,
+			daywednesday > dateMonday[0] ? yearMonday : yearFriday
 		],
 		[
 			daythursday,
-			(daythursday > daywednesday ? monthMonday : monthFriday)!,
-			daythursday > daywednesday ? yearMonday : yearFriday
+			(daythursday > dateMonday[0] ? monthMonday : monthFriday)!,
+			daythursday > dateMonday[0] ? yearMonday : yearFriday
 		],
-		[
-			dayfriday,
-			(dayfriday > daythursday ? monthMonday : monthFriday)!,
-			dayfriday > daythursday ? yearMonday : yearFriday
-		]
+		[dayfriday, monthFriday!, yearFriday]
 	];
 
     setDateMonday(dayDates[0]);
     setDateTuesday(dayDates[1]);
     setDateWednesday(dayDates[2]);
     setDateThursday(dayDates[3]);
-    setDateFriday(dayDates[3]);
+    setDateFriday(dayDates[4]);
 
 	//let dayDates: Array<Array<number>> = [[dateMonday[0], monthMonday, yearMonday],]
-	// let closingTimes: Array<IAppointment> = [];
-	// openHours.map((element, index) => (
-	// 	let durationBefore = openHours[{index}].start - 7 * 60 * 60 * 1000;
-	// 	closingTimes.push({
-	// 		ownerWalletId: 111,
-	// 		dateTime: [dayDates[index][0], dayDates[index][1], dayDates[index][2], 7,0],
-	// 		durationInSecs:0,
-	// 		docWalletID: 0,
-	// 	})
-	// ));
-	// weekAppointmentsArray.concat(closingTimes);
+	let closingTimes: Array<IAppointment> = [];
 
+	openHours.forEach(function(element, index){
+		let start = Math.round(Math.trunc(openHours[index].start/60/60/1000)*60*60+((openHours[index].start/10/60/60)%100*60));
+		let lunchStartHour = Math.trunc(openHours[index].lunchStart/60/60/1000);
+		let lunchStartMin =  ((openHours[index].lunchStart/10/60/60)%100);
+		let lunchStart =(lunchStartHour*60*60+lunchStartMin*60);
+		let lunchEnd = Math.round(Math.trunc(openHours[index].lunchEnd/60/60/1000)*60*60+((openHours[index].lunchEnd/10)%100/60/60)*60);
+		let endHour = Math.trunc(openHours[index].end/60/60/1000);
+		let endMinutes = ((openHours[index].end/10/60/60)%100);
+		let end = endHour*60*60+endMinutes*60;
+
+		let durationBefore = start - 7 * 60 * 60 ;
+		if (durationBefore > 0){
+			closingTimes.push({
+				ownerWalletId: 111,
+				dateTime: [dayDates[index][0], dayDates[index][1], dayDates[index][2], 7,0],
+				durationInSecs: durationBefore,
+				docWalletID: docId,
+			});
+		}
+		let durationLunchTime = lunchEnd - lunchStart;
+		if(durationLunchTime>0){
+			closingTimes.push({
+				ownerWalletId: 111,
+				dateTime: [dayDates[index][0], dayDates[index][1], dayDates[index][2], lunchStartHour,lunchStartMin],
+				durationInSecs: durationLunchTime,
+				docWalletID: docId,
+			})
+		}
+		//alert([dayDates[index][0], dayDates[index][1], dayDates[index][2], lunchStartHour,lunchStartMin])
+		let durationAfter = 20* 60 * 60 - end;
+		if(durationAfter>0){
+			closingTimes.push({
+				ownerWalletId: 111,
+				dateTime: [dayDates[index][0], dayDates[index][1], dayDates[index][2], endHour,endMinutes],
+				durationInSecs: durationAfter,
+				docWalletID: docId,
+			})
+		}
+	});
+
+	weekAppointmentsArray.push(...closingTimes)
     setWeekappointments(weekAppointmentsArray)
   }, [dateMonday[0]])
 

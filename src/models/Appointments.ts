@@ -39,7 +39,7 @@ export var appointmentsArray: IAppointment[] = [
 	{
 		id: 2, 
 		ownerWalletId: 11111111111, 
-		dateTime: [3,3,2023,7,30], 
+		dateTime: [3,3,2023,8,30], 
 		durationInSecs: 1800, 
 		docWalletID: 0, 
 		doc: docs[0]
