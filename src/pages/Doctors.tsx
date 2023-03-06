@@ -29,7 +29,7 @@ const defaultDetailsVisible = false
 
 export default function Home() {
   const router = useRouter()
-  const { zipCode, areaOfExpertise } = router.query
+  const { zipCode, currareaOfExpertise } = router.query
   const [detailsVisible, setDetailsVisible] = useState(defaultDetailsVisible)
   const [docForDetails, setDocForDetails] = useState<Doctor | null>(null)
 
@@ -71,7 +71,7 @@ export default function Home() {
           pt: '80px' // Navbar ist 80 hoch
         }}
       >
-        {detailsVisible && (
+        {/* {detailsVisible && (
           <Box
             id="Details"
             sx={{
@@ -86,7 +86,7 @@ export default function Home() {
           >
             {generateDetails()}
           </Box>
-        )}
+        )} */}
 
         <Container
           component="section"
@@ -113,10 +113,35 @@ export default function Home() {
             }
           }}
         >
+          {detailsVisible && (
+          <Box
+            id="Details"
+            sx={{
+              zIndex: 0,
+              display: 'flex',
+              backgroundColor: 'tomato',
+              marginTop: '15px',
+              width: '95%',
+              fontSize: '200%',
+              fontWeight: 'light'
+            }}
+          >
+            {generateDetails()}
+          </Box>
+        )}
+        <Box
+        sx={{
+          // zIndex: 0,
+          display: 'flex',
+          backgroundColor: 'blue',
+        }}
+          >
           <Box
             sx={{
               position: 'absolute',
+              transform: 'translate(-50%, 0%)',
               display: 'grid',
+              // backgroundColor: 'green',
               //gridTemplateColumns: 'auto auto',
               gridTemplateColumns: 'repeat(auto-fill, minmax(500px, 1fr))',
               gap: '15px',
@@ -137,9 +162,12 @@ export default function Home() {
                 textAlign: 'center'
               }}
             >
-              Deine Suchergebnisse zu: {areaOfExpertise} in {zipCode}
+              Deine Suchergebnisse zu: {areaOfExpertise[currareaOfExpertise as keyof typeof areaOfExpertise]} in {zipCode}
             </Box>
-            {docs.map((element) => (
+            {docs
+              .filter(function(obj) {
+                if(obj.specialization == currareaOfExpertise){return obj}
+              }).map((element) => (
               <DoctorCard
                 key={element.name}
                 doctor={{
@@ -150,7 +178,7 @@ export default function Home() {
                   city: element.city,
                   openHours: element.openHours,
                   specialization: element.specialization,
-				  consultationCategories: element.consultationCategories,
+				          consultationCategories: element.consultationCategories,
                   description: '',
                   rating: element.rating
                 }}
@@ -158,6 +186,7 @@ export default function Home() {
                 //onclick={() => {}}
               />
             ))}
+          </Box>
           </Box>
         </Container>
       </Box>

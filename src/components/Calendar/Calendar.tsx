@@ -24,7 +24,7 @@ const monthsMap = new Map([
 ])
 
 interface Props {
-  docId: number
+  docId: string
   openHours: BusinessHours[];
   consultationCategories: IConsultationCategory[];
 }
@@ -112,7 +112,7 @@ export default function Calendar({ docId, openHours, consultationCategories }: P
     let checkNumberFriday = yearFriday * 10000 + monthFriday! * 100 + dayfriday
 
     let weekAppointmentsArray: Array<IAppointment> = [];
-	weekAppointmentsArray = appointmentsArray.filter(function (obj) {
+	  weekAppointmentsArray = appointmentsArray.filter(function (obj) {
       //alert(checkNumberMonday + checkNumberFriday + obj.dateTime[2]*10000+obj.dateTime[1]*100+obj.dateTime[0])
       if (
         obj.docWalletID == docId &&
@@ -169,7 +169,7 @@ export default function Calendar({ docId, openHours, consultationCategories }: P
 		let durationBefore = start - 7 * 60 * 60 ;
 		if (durationBefore > 0){
 			closingTimes.push({
-				ownerWalletId: 111,
+				ownerWalletId: 'dummy',
 				dateTime: [dayDates[index][0], dayDates[index][1], dayDates[index][2], 7,0],
 				durationInSecs: durationBefore,
 				docWalletID: docId,
@@ -178,7 +178,7 @@ export default function Calendar({ docId, openHours, consultationCategories }: P
 		let durationLunchTime = lunchEnd - lunchStart;
 		if(durationLunchTime>0){
 			closingTimes.push({
-				ownerWalletId: 111,
+				ownerWalletId: 'dummy',
 				dateTime: [dayDates[index][0], dayDates[index][1], dayDates[index][2], lunchStartHour,lunchStartMin],
 				durationInSecs: durationLunchTime,
 				docWalletID: docId,
@@ -188,7 +188,7 @@ export default function Calendar({ docId, openHours, consultationCategories }: P
 		let durationAfter = 20* 60 * 60 - end;
 		if(durationAfter>0){
 			closingTimes.push({
-				ownerWalletId: 111,
+				ownerWalletId: 'dummy',
 				dateTime: [dayDates[index][0], dayDates[index][1], dayDates[index][2], endHour,endMinutes],
 				durationInSecs: durationAfter,
 				docWalletID: docId,
@@ -657,7 +657,7 @@ export default function Calendar({ docId, openHours, consultationCategories }: P
         handleClose={handleInputFormClose}
         date={selectedDay}
         docId={docId}
-		consultationCategories={consultationCategories}
+		    consultationCategories={consultationCategories}
         putAppointmentToCalendar={putAppointmentToCalendar}
       />
     </Box>

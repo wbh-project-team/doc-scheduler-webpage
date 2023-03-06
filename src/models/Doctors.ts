@@ -1,5 +1,5 @@
 export interface Doctor {
-	Id: number;  // WalletID?
+	Id: string;  // WalletID?
 	name: string;
 	zipCode: number;
 	address: string;
@@ -8,7 +8,7 @@ export interface Doctor {
 	specialization: keyof typeof areaOfExpertise;
 	consultationCategories: IConsultationCategory[];
 	description: string;
-	rating: number;
+	rating?: number;
 }
 
 export interface BusinessHours {
@@ -32,7 +32,7 @@ export enum areaOfExpertise {
 // Nur vorlaeufig eine Liste mit Aerzten:
 export const docs: Doctor[] = [
 	{
-		Id: 0, 
+		Id: '0', 
 		name: 'Dr. Jörg Sroga', 
 		zipCode: 45468, 
 		address: 'Schlossstr. 35', 
@@ -44,7 +44,7 @@ export const docs: Doctor[] = [
 		rating: 4.5,
 	},
 	{ 
-		Id: 1, 
+		Id: '1', 
 		name: 'Dr. Ivan Fintan', 
 		zipCode: 90409, 
 		address: 'Am Stadtpark 43', 
@@ -56,7 +56,7 @@ export const docs: Doctor[] = [
 		rating: 4.9,
 	},
 	{ 
-		Id: 2, 
+		Id: '2', 
 		name: 'Dr. med Akan Gül', 
 		zipCode: 64295, 
 		address: 'Eschollbrücker Str. 26', 
@@ -68,7 +68,7 @@ export const docs: Doctor[] = [
 		rating: 3,
 	},
 	{ 
-		Id: 3, 
+		Id: '3', 
 		name: 'Dr. med Tobias Raile', 
 		zipCode: 10117, 
 		address: 'Moerenstr. 6', 
@@ -80,7 +80,7 @@ export const docs: Doctor[] = [
 		rating: 5,
 	},
 	{ 
-		Id: 4, 
+		Id: '4', 
 		name: 'Dr. med Nicole Freitag', 
 		zipCode: 45130, 
 		address: 'Kortumstr. 49', 
@@ -100,7 +100,7 @@ export const docs: Doctor[] = [
 		rating: 4.5,
 	},
 	{ 
-		Id: 5, 
+		Id: '5', 
 		name: 'Dr. Krippner und Kollegen', 
 		zipCode: 64287, 
 		address: 'Dierburger Str. 22', 

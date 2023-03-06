@@ -132,7 +132,7 @@ export default function Home() {
               width: '500px',
               textAlign: 'center',
               textTransform: 'uppercase',
-              zIndex: 1
+              zIndex: 0
             }}
             variant="h1"
           >
@@ -184,12 +184,12 @@ export default function Home() {
               variant={'contained'}
               onClick={() =>
                 router.push(
-                  `/Doctors?zipCode=${currentZipCode}&areaOfExpertise=${
-                    areaOfExpertise[
-                      currentAreaOfExpertise as keyof typeof areaOfExpertise
-                    ]
-                  }`
+                  `/Doctors?zipCode=${currentZipCode}&currareaOfExpertise=${currentAreaOfExpertise}`
                 )
+                // areaOfExpertise[
+                    //   currentAreaOfExpertise as keyof typeof areaOfExpertise
+                    // ]
+                    //currentAreaOfExpertise
               }
             >
               Suchen

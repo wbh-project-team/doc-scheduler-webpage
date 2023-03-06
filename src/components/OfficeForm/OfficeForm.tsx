@@ -34,10 +34,14 @@ export default function OfficeForm({ doctor }: Props) {
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: 'space-between'
+          justifyContent: 'space-between',
+          color: 'secondary.main',
           // alignItems: 'center',
         }}
-      ></Box>
+      >
+
+        Text
+      </Box>
     </Box>
   )
 }
