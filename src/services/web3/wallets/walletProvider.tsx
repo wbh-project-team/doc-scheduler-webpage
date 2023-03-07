@@ -103,7 +103,7 @@ export const WalletProvider = ({ children }: any) => {
 			network = newNetwork;
 			if (providers[network]) {
 				setSigner(providers[network].getSigner());
-				setContracts(network, providers[network]);
+				setContracts(network, providers[network].getSigner());
 			} else if (web3Auths[network]) {
 				const web3authProvider = await web3Auths[network].connect();
 				if (!web3authProvider) throw new Error('web3auth connect failed');
@@ -128,7 +128,7 @@ export const WalletProvider = ({ children }: any) => {
 
 		const provider = new ethers.providers.Web3Provider(web3authProvider);
 		setSigner(provider.getSigner());
-		setContracts(network, provider);
+		setContracts(network, provider.getSigner());
 		console.log(provider);
 
 		const walletAddress = await provider.getSigner().getAddress();
@@ -156,7 +156,6 @@ export const WalletProvider = ({ children }: any) => {
 	};
 
 	return (
-		
 		<WalletContext.Provider
 			value={{
 				signer,
@@ -171,6 +170,5 @@ export const WalletProvider = ({ children }: any) => {
 			}}>
 			{children}
 		</WalletContext.Provider>
-		
 	);
 };
