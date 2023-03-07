@@ -97,8 +97,8 @@ export default function Home() {
       >
         <Box
           sx={{
-            height: '400px',
-            width: '400px',
+            height: '50vh',
+            width: '50vh',
             position: 'absolute',
             zIndex: 0,
             top: '50%',
@@ -129,7 +129,7 @@ export default function Home() {
         >
           <Typography
             sx={{
-              width: '500px',
+              width: '40vw',
               textAlign: 'center',
               textTransform: 'uppercase',
               zIndex: 0

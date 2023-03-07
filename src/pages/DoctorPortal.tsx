@@ -102,7 +102,7 @@ export default function Home() {
   // const [OfficeFormVisible, setOfficeFormVisible] = useState(false)
   const [currentAreaOfExpertise, setAreaOfExpertise] = useState<string>('')
   // const [minutes, setMinutes] = useState(0)
-  const [currentDocFromWalletID,setCurrentDocFromWalletID] = useState<Doctor | null>(null)
+  const [currentDocFromWalletID,setCurrentDocFromWalletID] = useState<Doctor | null>(docs[0]) // TODO null
   const [open, setInfoBoxOpen] = useState(false)
   const handleBoxOpen = () => setInfoBoxOpen(true)
   const handleBoxClose = () => setInfoBoxOpen(false)
@@ -120,7 +120,8 @@ export default function Home() {
   useEffect(() => {
     if (isLoggedIn){
       setCurrentDocFromWalletID(findDocInList());
-    } //else {setCurrentDocFromWalletID(docs[0])}  // TODO: else entfernen!
+    } else {
+      setCurrentDocFromWalletID(docs[0])}  // TODO: else entfernen!
   },[isLoggedIn]);
 
   const handleClick = () => {
@@ -277,7 +278,7 @@ export default function Home() {
         >
         { 
         // wenn User nicht eingeloggt ist oder unter dieser WalletAdresse noch keine Praxis erstellt wurde //TODO Ausrufezeichen entfernen
-        (isLoggedIn || currentDocFromWalletID != null) ? 
+        (!isLoggedIn || currentDocFromWalletID != null) ? 
           (
             //wenn der User eingeloggt ist und unter der WalletAdresse eine Praxis erstellt wurde
             <Container sx={{ display: 'flex',  flexDirection: 'column', transform: 'translate(-2.5%, 0%)',margin:'20px',paddingBottom: '90px'}}>
