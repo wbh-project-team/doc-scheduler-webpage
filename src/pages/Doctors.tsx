@@ -167,7 +167,9 @@ export default function Home() {
             </Box>
             {docs
               .filter(function(obj) {
-                if(obj.specialization == currareaOfExpertise){return obj}
+                if(
+                  obj.specialization == currareaOfExpertise && obj.zipCode > Number(zipCode)-1000 && obj.zipCode < Number(zipCode)+1000  // TODO: Suchkreis anpassen
+                  ){return obj}
               }).map((element) => (
               <DoctorCard
                 key={element.name}

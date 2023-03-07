@@ -108,6 +108,11 @@ export default function Home() {
   useContext<WalletContent>(WalletContext)
 
   const textFieldRefName = useRef<HTMLInputElement>();
+  const textFieldRefZip = useRef<HTMLInputElement>();
+  const textFieldRefAddress = useRef<HTMLInputElement>();
+  const textFieldRefCity = useRef<HTMLInputElement>();
+  //const textFieldRefSpec = useRef<HTMLInputElement>();
+  const textFieldRefDescription = useRef<HTMLInputElement>();
 
   //const [docForForm, setDocForForm] = useState<Doctor>();
   const handleClick = () => {
@@ -123,7 +128,8 @@ export default function Home() {
 
   const handleSelectOnChange = (e: any) => {
     let specializationDurations: { [key: string]: number }  = {};
-    let keyname = String(e.target.id);
+    let keyname = String(e.target.name);
+    // alert(e.target.name + " " + e.target.value)
     specializationDurations[keyname] = e.target.value;
     setInputSelectValues({ ...inputSelectValues, ...specializationDurations });
 
@@ -151,45 +157,44 @@ export default function Home() {
   function handleCreateOfficeClick() {
     
     if(!isLoggedIn){ // TODO: Ausrufezeichen entfernen
-      let name  = textFieldRefName.current ? textFieldRefName.current.value : '';
-      // let name = textFieldRefName.current?.value //as string | undefined;
-      let address = document.getElementById('address')!.innerText as string | undefined;
-      let city = document.getElementById('city')!.innerText as string | undefined;
-      let description = document.getElementById('description')!.innerText as string | undefined;
+      let name  = textFieldRefName.current ? textFieldRefName.current.value : '' ;
+      
+      let address = textFieldRefAddress.current ? textFieldRefAddress.current.value : '' ;
+      let city = textFieldRefCity.current ? textFieldRefCity.current.value : '' ;
+      let zipCode = textFieldRefZip.current ? textFieldRefZip.current.value : '' ;
+      let description = textFieldRefDescription.current ? textFieldRefDescription.current.value : "";
 
       // {Object.keys(inputValues).map((c) => {
       //   return <Typography variant='h2'>{inputValues[c] + " "+ c}</Typography>;
       // })}
 
-      
-      alert(name);
-
-    let modifiedArr = Object.entries(inputValues).map(([key,val], index) =>{
-      alert(  val +  inputSelectValues[key] )
+    let specificationArray = Object.entries(inputValues).map(([key,val], index) =>{
+      alert(  val +  key + inputSelectValues[key] )
       return { category: val, durationInSecs: inputSelectValues[key] *60};
     });
     
-      if((typeof name === 'string' && typeof address === 'string' && typeof city === 'string' && typeof description === 'string')){
-          docs.push(
-            {
-              Id: getAddress(), 
-              name: name, 
-              zipCode: 45468, 
-              address: address, 
-              city: city, 
-              openHours: Array.apply(null, Array(5)).map(()=>( {start:8.3 * 60 * 60 * 1000, end: 16 * 60 * 60 * 1000, lunchStart: 12*60*60*1000, lunchEnd: 13*60*60*1000} )),
-              specialization: currentAreaOfExpertise as keyof typeof areaOfExpertise,
-              consultationCategories: modifiedArr,
-              //consultationCategories: inputValues.map((item: string, index: number) => ( { category: item, durationInSecs: inputSelectValues[index] } )),
-              // consultationCategories: [{category: "Beratung", durationInSecs: 1800 }, {category: "Chirurgischer Eingriff", durationInSecs: 3600 }, {category: "Nachsorge", durationInSecs: 900 }],
-              description:description,
-              rating: 0,
-            }
-          )
+      if((name.length >0 && address.length > 0 && city.length > 0 && zipCode.length >0)){
+        docs.push(
+          {
+            Id: getAddress(), 
+            name: name, 
+            zipCode: Number(zipCode), 
+            address: address, 
+            city: city, 
+            openHours: Array.apply(null, Array(5)).map(()=>( {start:8.3 * 60 * 60 * 1000, end: 16 * 60 * 60 * 1000, lunchStart: 12*60*60*1000, lunchEnd: 13*60*60*1000} )),
+            specialization: currentAreaOfExpertise as keyof typeof areaOfExpertise,
+            consultationCategories: specificationArray,
+            //consultationCategories: inputValues.map((item: string, index: number) => ( { category: item, durationInSecs: inputSelectValues[index] } )),
+            // consultationCategories: [{category: "Beratung", durationInSecs: 1800 }, {category: "Chirurgischer Eingriff", durationInSecs: 3600 }, {category: "Nachsorge", durationInSecs: 900 }],
+            description:description,
+            rating: 0,
+          }
+        )
           alert(docs)
       }
       else{
         //input error
+        alert("Bitte tragen Sie in alle mit * gekennzeichneten Felder die notwendigen Informationen ein!")
       }
     
    }
@@ -357,7 +362,7 @@ export default function Home() {
                       // backgroundColor: 'lightblue'
                     }}>
                     
-                        <CustomTextField required inputRef={textFieldRefName} id="name" label="required" defaultValue='Name der Praxis'/>
+                        <CustomTextField required inputRef={textFieldRefName} id="name" label="Name der Praxis" defaultValue=''/>
                         <FormControl size="small">
                         <InputLabel  variant='outlined' sx={{backgroundColor: 'white', color:'grey'}} id="spec">Spezialisierung</InputLabel>
                         <Select
@@ -382,10 +387,10 @@ export default function Home() {
                           ))}
                         </Select>
                         </FormControl>
-                        <CustomTextField required id="address" label="required" defaultValue="Strasse und Hausnr."/>
-                        <CustomTextField required id="plz" label="required" defaultValue="PLZ"/>
-                        <CustomTextField required id="city" label="required" defaultValue="Stadt"/>
-                        <CustomTextField required id="description" label="required" defaultValue="Beschreibung" multiline rows={4}/>
+                        <CustomTextField required inputRef={textFieldRefAddress} id="address" label="Strasse und Hausnr." defaultValue=""/>
+                        <CustomTextField required inputRef={textFieldRefZip} id="plz" label="PLZ" defaultValue=""/>
+                        <CustomTextField required inputRef={textFieldRefCity} id="city" label="Stadt" defaultValue=""/>
+                        <CustomTextField inputRef={textFieldRefDescription} id="description" label="Beschreibung" defaultValue="" multiline rows={4}/>
                     {/* </Box> */}
                   </Container>  
                   <Container sx={{display: 'flex', flexDirection: 'column', rowGap: '1rem', marginTop:'0.1rem'}}>
@@ -407,19 +412,20 @@ export default function Home() {
                             //  sx={{height: '70px'}}
                           />
                           </Box>
-                          <FormControl  sx={{  marginBottom: '1rem', height: '50px', width: '10em' }} size="small">
+                          <FormControl  id={'Spec'+index} sx={{  marginBottom: '1rem', height: '50px', width: '10em' }} size="small">
                           <InputLabel  variant='outlined' sx={{backgroundColor: 'white', color:'grey', }} id="spec">Dauer</InputLabel>
                             <Select
                               key={'S'+index}
                               input={<BootstrapInput />}
                               // sx={{height: '50px'}}
-                              id={'Spec'+index}
-                              // value={minutes}
+                              name={'Spec'+index}
+                              //value={duration}
                               onChange={handleSelectOnChange}
                             >
                             {['15', '30', '45','60'].map((key, index) => {
                               return (
                                 <MenuItem
+                                  id={'Spec'+index}
                                   key={index}
                                   value={Number(key)}
                                   sx={{ color: 'secondary.main' }}
