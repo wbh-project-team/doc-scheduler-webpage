@@ -16,7 +16,7 @@ import { useState } from 'react';
 import { areaOfExpertise } from '../models/Doctors';
 import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
-import { createDoctorsOffice, getDay } from '../services/web3/contracts/contractsProvider';
+import { createDoctorsOffice } from '../services/web3/contracts/contractsProvider';
 
 const CustomTextField = styled(TextField)(({ theme }) => ({
 	'& .MuiInputBase-input': {
@@ -171,12 +171,23 @@ export default function Home() {
 						<Button
 							variant={'contained'}
 							onClick={async () => {
+								router.push(
+									`/Doctors?zipCode=${currentZipCode}&currAreaOfExpertise=${currentAreaOfExpertise}`,
+								);
+							}}>
+							Suchen
+						</Button>
+						<Button
+							variant={'contained'}
+							onClick={async () => {
 								await createDoctorsOffice({
-									Id: '0',
+									id: 0, //placeholder
+									walletId: '', //placeholder
+									firstname: 'sebastian',
 									name: 'sebastian',
-									address: 'bla',
-									city: 'nbg',
 									zipCode: 90441,
+									city: 'nbg',
+									address: 'bla',
 									description: '',
 									openHours: [
 										{ start: 0, end: 10, lunchStart: 4, lunchEnd: 5 },
@@ -190,11 +201,8 @@ export default function Home() {
 									specialization: 'doctor',
 									consultationCategories: [{ category: '', durationInSecs: 3600 }],
 								});
-								router.push(
-									`/Doctors?zipCode=${currentZipCode}&currareaOfExpertise=${currentAreaOfExpertise}`,
-								);
 							}}>
-							Suchen
+							Test Create Doctor
 						</Button>
 					</Box>
 				</Container>

@@ -2,7 +2,7 @@ import { BigNumberish, ethers, Signer, providers } from 'ethers';
 
 import { ContractInterface } from './contractInterface';
 import { sepolia } from './sepolia';
-import { Doctor } from '../../../models/Doctors';
+import { Doctor, DoctorFromSC } from '../../../models/Doctors';
 
 const contractAbis: { [key: number]: ContractInterface } = {};
 contractAbis[11155111] = sepolia;
@@ -26,14 +26,13 @@ export async function createDoctorsOffice(newDoctor: Doctor): Promise<void> {
 		const doctor = {
 			id: 0,
 			owner: ethers.constants.AddressZero,
-			firstName: '',
-			lastName: '',
-			street: '',
-			streetNumber: 0,
-			zipCode: 0,
-			city: '',
-			phoneNumber: '',
-			freeText: '',
+			firstName: newDoctor.firstname,
+			lastName: newDoctor.name,
+			street: newDoctor.address,
+			zipCode: newDoctor.zipCode,
+			city: newDoctor.city,
+			phoneNumber: 0,
+			freeText: newDoctor.description,
 			openingTime: newDoctor.openHours.map((item) => item.start),
 			closingTime: newDoctor.openHours.map((item) => item.end),
 			startLunchbreak: newDoctor.openHours.map((item) => item.lunchStart),
@@ -56,17 +55,17 @@ export async function reconfigureOffice(newDoctor: Doctor): Promise<void> {
 			id: 0,
 			owner: ethers.constants.AddressZero,
 			firstName: newDoctor.name,
-			lastName: newDoctor.name,
+			name: newDoctor.name,
 			street: newDoctor.address,
 			zipCode: newDoctor.zipCode,
 			city: newDoctor.city,
 			phoneNumber: '',
-			freeText: newDoctor.description,
+			description: newDoctor.description,
 			openingTime: newDoctor.openHours.map((item) => item.start),
 			closingTime: newDoctor.openHours.map((item) => item.end),
-			startLunchbreak: newDoctor.openHours.map((item) => item.lunchStart),
-			endLunchbreak: newDoctor.openHours.map((item) => item.lunchEnd),
-			specialization: [+newDoctor.specialization],
+			lunchStart: newDoctor.openHours.map((item) => item.lunchStart),
+			lunchEnd: newDoctor.openHours.map((item) => item.lunchEnd),
+			specializations: [newDoctor.specialization],
 		});
 
 		const tx = await result.wait();
@@ -75,12 +74,28 @@ export async function reconfigureOffice(newDoctor: Doctor): Promise<void> {
 		console.error(`create Doctor failed: wrong abi in this network!\n${error}`);
 	}
 }
-export async function getDay() {
+export async function getDoctors(): Promise<Doctor | null> {
 	try {
-		const result = await docScheduler.getDay(1678012640);
-
+		const result = await docScheduler.getDoctors();
+		const doctors: Doctor = result.map((item: DoctorFromSC) => {
+			return {
+				id: item.id,
+				walletId: item.owner,
+				firstname: item.firstName,
+				name: item.name,
+				zipCode: item.zipCode,
+				address: item.street,
+				city: item.city,
+				openHours: [],
+				specialization: item.specializations[0],
+				consultationCategories: [],
+				description: item.description,
+			};
+		});
 		console.log(+result);
+		return doctors;
 	} catch (error) {
 		console.error(`get Day failed: wrong abi in this network!\n${error}`);
+		return null;
 	}
 }
