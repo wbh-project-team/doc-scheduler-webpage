@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material'
+import { Box, Container, Typography } from '@mui/material'
 import Head from 'next/head'
 import Footer from '../components/Footer/Footer'
 import Navbar from '../components/Navbar/Navbar'
@@ -6,24 +6,34 @@ import styles from '../styles/YourAppointments.module.css'
 // import { makeStyles } from '@mui/styles'
 import { appointmentsArray, IAppointment } from '../models/Appointments'
 import Appointment from '../components/Appointment/Appointment'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 
 import { useRouter } from 'next/router';
+
+import {
+  WalletContent,
+  WalletContext
+} from '../services/web3/wallets/walletProvider'
+
 
 
 export default function YourAppointments() {
   const router = useRouter();
+  const { isLoggedIn, login, logout, getAddress, getBalance, getPrivateKey } =
+  useContext<WalletContent>(WalletContext)
+  
   // TODO: anpassen
-  // let weekAppointmentsArray = appointmentsArray.filter(function(obj) {
-  // 	//alert(checkNumberMonday + checkNumberFriday + obj.dateTime[2]*10000+obj.dateTime[1]*100+obj.dateTime[0])
-  // 	if(
-  // 		obj.docWalletID == docId &&
-  // 		obj.dateTime[2]*10000+obj.dateTime[1]*100+obj.dateTime[0] >=checkNumberMonday &&
-  // 		obj.dateTime[2]*10000+obj.dateTime[1]*100+obj.dateTime[0] <= checkNumberFriday
-  // 	){
-  // 		return obj;
-  // 	}
-  // });
+  let userAppointmentsArray = appointmentsArray.filter(function(obj) {
+  	//alert(checkNumberMonday + checkNumberFriday + obj.dateTime[2]*10000+obj.dateTime[1]*100+obj.dateTime[0])
+  	
+    //if(isLoggedIn && obj.ownerWalletId == getAddress()){  // TODO: wieder einkommentieren
+      if(obj.ownerWalletId == '11111111111'){
+
+  		return obj;
+  	}
+  });
+
+  // wiggle
   // useEffect(() => {
   //   const handleStart = () => {
   //     const box = document.querySelector('#shaking-box');
@@ -53,15 +63,74 @@ export default function YourAppointments() {
       <Box
         component="main"
         sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          width: '100vw',
-          mt: '70px'
+          height: '100vh',
+          position: 'relative',
+          gap: '32px',
+          '&::before': {
+            content: '""',
+            position: 'fixed',
+            display: 'block',
+            top: '0px',
+            left: '0px',
+            bottom: '0px',
+            right: '0px',
+            backgroundImage: 'url("/images/background.png")',
+            backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+            paddingBottom: '200px'
+          }
         }}
       >
+        <Container
+          sx={{
+            position: 'absolute',
+            // backgroundColor: 'rgba(255, 255, 255, 0.9)',
+            width: '95%',
+            height: '120vh',
+            color: 'secondary.main',
+            fontSize: '120%',
+            padding: '2vw',
+            mt: '100px',
+            mb: '120px',
+            display: 'flex',
+            flexDirection: 'row',
+            gap: '10px',
+            transform: 'translate(2.5%, 0%)'
+          }}
+        >
+        {/* <Box sx={{display: 'flex', flexDirection: 'row', gap: '10px'}}> */}
+        {userAppointmentsArray.map((element) => (
+              <Box sx={{width: '15vw', 
+              height: '15rem', 
+              
+              color: 'secondary.main', 
+              backgroundColor: 'white', 
+              border: '3px solid tomato', 
+              padding: '5px',
+              }}>
+                <Typography variant="h5">
+                  Termin am: {element.dateTime[0]}.{element.dateTime[1]}.{element.dateTime[2]}
+                </Typography>
+                <br></br>
+                <Typography>
+                  Uhrzeit: {element.dateTime[3]}:{element.dateTime[4]==0 ? "00" : element.dateTime[4]} Uhr
+                </Typography>  
+                
+                <Typography>
+                  Bei: { (element.doc) ? element.doc.name : ""}
+                </Typography>
+                <br></br>
+                <Typography variant='subtitle1'>
+                Adresse:
+                </Typography>
+                <Typography>
+                  { (element.doc) ? element.doc.address + " " +element.doc.zipCode + " " + element.doc.city  : ""}
+                </Typography>
 
-<Box id="shaking-box" className='shake' sx={{ animationName: 'shaking',animationDuration: '2s', mt: '300px', height: '40px', backgroundColor: 'lightblue'}}>This box shakes for 1 second on page load</Box>)
+              </Box>
+        ))}
+      </Container>
        
 
 

@@ -4,6 +4,7 @@ import { Web3Auth } from '@web3auth/modal';
 import { CHAIN_NAMESPACES } from '@web3auth/base';
 
 import { setContracts } from '../contracts/contractsProvider';
+import { Box } from '@mui/material';
 
 export type WalletContent = {
 	signer: Signer | null;
@@ -155,6 +156,7 @@ export const WalletProvider = ({ children }: any) => {
 	};
 
 	return (
+		
 		<WalletContext.Provider
 			value={{
 				signer,
@@ -169,5 +171,6 @@ export const WalletProvider = ({ children }: any) => {
 			}}>
 			{children}
 		</WalletContext.Provider>
+		
 	);
 };

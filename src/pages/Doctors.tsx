@@ -121,9 +121,10 @@ export default function Home() {
               display: 'flex',
               backgroundColor: 'tomato',
               marginTop: '15px',
-              width: '95%',
+              width: '100%',
               fontSize: '200%',
-              fontWeight: 'light'
+              fontWeight: 'light',
+              marginBottom: '15px',
             }}
           >
             {generateDetails()}
@@ -145,7 +146,7 @@ export default function Home() {
               //gridTemplateColumns: 'auto auto',
               gridTemplateColumns: 'repeat(auto-fill, minmax(500px, 1fr))',
               gap: '15px',
-              width: '95%'
+              width: '95%',
             }}
           >
             <Box

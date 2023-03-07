@@ -267,6 +267,7 @@ export default function Home() {
                   borderBottomLeftRadius : '12%',
                   borderTopRightRadius: '12%',
                   margin:'2rem',
+                  padding: '15px',
                 }}>
                   <Container
                   sx={{
@@ -282,23 +283,38 @@ export default function Home() {
                     height: '50%', 
                     // width: '35%',
                     backgroundColor: 'white',
-                    transform: 'translate(-50px, -15px) rotate(-30deg)',
+                    transform: 'translate(-50px, -22px) rotate(-30deg)',
+                    
                   }}
                 />
                 <Typography 
                   variant='h2' 
                   sx={{
-                    width: '100%', 
+                    width: '200%', 
                     transform: 'translate(-35px, 0px)',
-                    color: 'tomato', 
-                    pt: '1rem'
+                    color: 'tomato',
+                    textAlign: 'center',
+                    // pt: '1rem',
+                    // backgroundColor: 'blue',
                   }}
                 >
-                  Werde Mitglied der Community!
+                  Werde Teil der Community!
                   </Typography>
                 </Container>
-                  <Typography variant='h2'>
-                  Werbung
+                  <Typography variant='h5'>
+                  Registrieren Sie ganz einfach Ihre Praxis und testen Sie 24 Stunden ihren neuen Praxiskalender. 
+                  </Typography>
+                  <br></br>
+                  <Typography variant='h4' sx={{color: 'primary.main',fontWeight: 'bold'}}>
+                  Lizenzgebühren: 100 €/ Monat, monatlich kündbar! 
+                  </Typography>
+                  <br></br>
+                  <Typography variant='h5' sx={{}}>
+                  Sie können bis zu 6 verschiedene Terminkategorien mit entsprechender Länge definieren und eine individuelle Beschreibung Ihrer Praxis hinzufügen.
+                  </Typography>
+                  <br></br>
+                  <Typography variant='h5' sx={{}}>
+                  Seien Sie sichtbar und nutzen die Vorteile unserer Community!
                   </Typography>
               </Box>
               <Box
