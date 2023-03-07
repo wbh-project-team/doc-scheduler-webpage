@@ -174,7 +174,9 @@ export default function Home() {
               <DoctorCard
                 key={element.name}
                 doctor={{
-                  Id: element.Id,
+                  id:element.id,
+                  walletId: element.walletId,
+                  firstname: element.firstname,
                   name: element.name,
                   address: element.address,
                   zipCode: element.zipCode,

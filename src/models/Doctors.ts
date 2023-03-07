@@ -1,6 +1,9 @@
 export interface Doctor {
-	Id: string;  // WalletID?
-	name: string;
+	id: number;
+	walletId: string;  // owner address
+	pictureLink ?: string;
+	firstname: string;
+	name: string;  // Titel + Vorname + Nachname
 	zipCode: number;
 	address: string;
 	city: string;
@@ -31,9 +34,11 @@ export enum areaOfExpertise {
 
 // Nur vorlaeufig eine Liste mit Aerzten:
 export const docs: Doctor[] = [
-	{
-		Id: '0', 
-		name: 'Dr. Jörg Sroga', 
+	{	
+		id: 0,
+		walletId: '0',
+		firstname: 'Dr. Jörg',
+		name: 'Sroga', 
 		zipCode: 45468, 
 		address: 'Schlossstr. 35', 
 		city: 'Mülheim an der Ruhr', 
@@ -44,8 +49,10 @@ export const docs: Doctor[] = [
 		rating: 4.5,
 	},
 	{ 
-		Id: '1', 
-		name: 'Dr. Ivan Fintan', 
+		id: 1,
+		walletId: '1',
+		firstname: 'Dr. Ivan',
+		name: 'Fintan', 
 		zipCode: 90409, 
 		address: 'Am Stadtpark 43', 
 		city: 'Nürnberg', 
@@ -56,8 +63,10 @@ export const docs: Doctor[] = [
 		rating: 4.9,
 	},
 	{ 
-		Id: '2', 
-		name: 'Dr. med Akan Gül', 
+		id: 2,
+		walletId: '2', 
+		firstname: 'Dr. med. Akan',
+		name: 'Gül', 
 		zipCode: 64295, 
 		address: 'Eschollbrücker Str. 26', 
 		city: 'Darmstadt', 
@@ -68,8 +77,10 @@ export const docs: Doctor[] = [
 		rating: 3,
 	},
 	{ 
-		Id: '3', 
-		name: 'Dr. med Tobias Raile', 
+		id: 3,
+		walletId: '3', 
+		firstname: 'Dr. med Tobias',
+		name: 'Raile', 
 		zipCode: 10117, 
 		address: 'Moerenstr. 6', 
 		city: 'Berlin', 
@@ -80,8 +91,10 @@ export const docs: Doctor[] = [
 		rating: 5,
 	},
 	{ 
-		Id: '4', 
-		name: 'Dr. med Nicole Freitag', 
+		id: 4,
+		walletId: '4',
+		firstname: 'Dr. med. Nicole ',
+		name: 'Freitag', 
 		zipCode: 45130, 
 		address: 'Kortumstr. 49', 
 		city: 'Essen', 
@@ -99,9 +112,10 @@ export const docs: Doctor[] = [
 		​Wir freuen uns auf Sie!",
 		rating: 4.5,
 	},
-	{ 
-		Id: '5', 
-		name: 'Dr. Krippner und Kollegen', 
+	{ 	id:5,
+		walletId: '5',
+		firstname: 'Dr.',
+		name: 'Krippner und Kollegen', 
 		zipCode: 64287, 
 		address: 'Dierburger Str. 22', 
 		city: 'Darmstadt', 
