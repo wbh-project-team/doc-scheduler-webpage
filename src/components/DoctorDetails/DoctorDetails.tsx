@@ -21,7 +21,7 @@ interface Props {
 }
 
 export default function DoctorDetails({ doctor }: Props) {
-  const [selectedDocId, setSelectedDocId] = useState(doctor.Id)
+  const [selectedDocId, setSelectedDocId] = useState(doctor.walletId)
   const [selectedDocBH, setSelectedDocBH] = useState(doctor.openHours)
   const [selectedDocCC, setSelectedDocCC] = useState(doctor.consultationCategories)
   // useEffect(() => {
@@ -181,7 +181,7 @@ export default function DoctorDetails({ doctor }: Props) {
             }}
           >
             <Box sx={{ width: '100%' }}>
-              <Calendar docId={selectedDocId} openHours={selectedDocBH} consultationCategories={selectedDocCC}></Calendar>
+              <Calendar docWalletId={selectedDocId} openHours={selectedDocBH} consultationCategories={selectedDocCC} anonym={true}></Calendar>
             </Box>
           </Box>
         </Container>

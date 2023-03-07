@@ -24,12 +24,13 @@ const monthsMap = new Map([
 ])
 
 interface Props {
-  docId: string
+  docWalletId: string
   openHours: BusinessHours[];
   consultationCategories: IConsultationCategory[];
+  anonym: boolean;
 }
 
-export default function Calendar({ docId, openHours, consultationCategories }: Props) {
+export default function Calendar({ docWalletId, openHours, consultationCategories, anonym }: Props) {
   //const router = useRouter();
   //const [selectedDocId, setSelectedDocId] = useState(docId);
   const [selectedYear, setSelectedYear] = useState<string>('2023')
@@ -115,7 +116,7 @@ export default function Calendar({ docId, openHours, consultationCategories }: P
 	  weekAppointmentsArray = appointmentsArray.filter(function (obj) {
       //alert(checkNumberMonday + checkNumberFriday + obj.dateTime[2]*10000+obj.dateTime[1]*100+obj.dateTime[0])
       if (
-        obj.docWalletID == docId &&
+        obj.docWalletID == docWalletId &&
         obj.dateTime[2] * 10000 + obj.dateTime[1] * 100 + obj.dateTime[0] >=
           checkNumberMonday &&
         obj.dateTime[2] * 10000 + obj.dateTime[1] * 100 + obj.dateTime[0] <=
@@ -126,7 +127,6 @@ export default function Calendar({ docId, openHours, consultationCategories }: P
     })
 
     //useState hook works asynchronuous!
-	// Fehler: bei Monatswechsel: nur erster Tag bekommt den neuen Monat
 	let dayDates: Array<Array<number>> = [
 		[dateMonday[0], monthMonday, yearMonday],
 		[
@@ -169,29 +169,29 @@ export default function Calendar({ docId, openHours, consultationCategories }: P
 		let durationBefore = start - 7 * 60 * 60 ;
 		if (durationBefore > 0){
 			closingTimes.push({
-				ownerWalletId: 'dummy',
+				ownerWalletId: 'geschlossen',
 				dateTime: [dayDates[index][0], dayDates[index][1], dayDates[index][2], 7,0],
 				durationInSecs: durationBefore,
-				docWalletID: docId,
+				docWalletID: docWalletId,
 			});
 		}
 		let durationLunchTime = lunchEnd - lunchStart;
 		if(durationLunchTime>0){
 			closingTimes.push({
-				ownerWalletId: 'dummy',
+				ownerWalletId: 'Pause',
 				dateTime: [dayDates[index][0], dayDates[index][1], dayDates[index][2], lunchStartHour,lunchStartMin],
 				durationInSecs: durationLunchTime,
-				docWalletID: docId,
+				docWalletID: docWalletId,
 			})
 		}
 		//alert([dayDates[index][0], dayDates[index][1], dayDates[index][2], lunchStartHour,lunchStartMin])
 		let durationAfter = 20* 60 * 60 - end;
 		if(durationAfter>0){
 			closingTimes.push({
-				ownerWalletId: 'dummy',
+				ownerWalletId: 'geschlossen',
 				dateTime: [dayDates[index][0], dayDates[index][1], dayDates[index][2], endHour,endMinutes],
 				durationInSecs: durationAfter,
-				docWalletID: docId,
+				docWalletID: docWalletId,
 			})
 		}
 	});
@@ -490,6 +490,7 @@ export default function Calendar({ docId, openHours, consultationCategories }: P
                 })
                 .map((item) => (
                   <Appointment
+                    anonym={anonym}
                     appointment={{
                       id: item.id,
                       ownerWalletId: item.ownerWalletId,
@@ -527,6 +528,7 @@ export default function Calendar({ docId, openHours, consultationCategories }: P
                 })
                 .map((item) => (
                   <Appointment
+                  anonym={anonym}
                     appointment={{
                       id: item.id,
                       ownerWalletId: item.ownerWalletId,
@@ -564,6 +566,7 @@ export default function Calendar({ docId, openHours, consultationCategories }: P
                 })
                 .map((item) => (
                   <Appointment
+                  anonym={anonym}
                     appointment={{
                       id: item.id,
                       ownerWalletId: item.ownerWalletId,
@@ -601,6 +604,7 @@ export default function Calendar({ docId, openHours, consultationCategories }: P
                 })
                 .map((item) => (
                   <Appointment
+                  anonym = {anonym}
                     appointment={{
                       id: item.id,
                       ownerWalletId: item.ownerWalletId,
@@ -638,6 +642,7 @@ export default function Calendar({ docId, openHours, consultationCategories }: P
                 })
                 .map((item) => (
                   <Appointment
+                    anonym={anonym}
                     appointment={{
                       id: item.id,
                       ownerWalletId: item.ownerWalletId,
@@ -656,7 +661,7 @@ export default function Calendar({ docId, openHours, consultationCategories }: P
         open={inputFormOpen}
         handleClose={handleInputFormClose}
         date={selectedDay}
-        docId={docId}
+        docId={docWalletId}
 		    consultationCategories={consultationCategories}
         putAppointmentToCalendar={putAppointmentToCalendar}
       />
