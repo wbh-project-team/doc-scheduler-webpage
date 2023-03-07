@@ -16,7 +16,7 @@ import { useState } from 'react';
 import { areaOfExpertise } from '../models/Doctors';
 import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
-import { createDoctorsOffice } from '../services/web3/contracts/contractsProvider';
+import { createDoctorsOffice, getDoctors } from '../services/web3/contracts/contractsProvider';
 
 const CustomTextField = styled(TextField)(({ theme }) => ({
 	'& .MuiInputBase-input': {
@@ -203,6 +203,13 @@ export default function Home() {
 								});
 							}}>
 							Test Create Doctor
+						</Button>
+						<Button
+							variant={'contained'}
+							onClick={async () => {
+								console.log(await getDoctors());
+							}}>
+							Test Get Doctors
 						</Button>
 					</Box>
 				</Container>

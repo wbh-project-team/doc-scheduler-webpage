@@ -1,7 +1,7 @@
 import { ContractInterface } from './contractInterface';
 
 export const sepolia: ContractInterface = {
-	docSchedulerAddress: '0x45639E8B466854985223ea5564cda11E71799e',
+	docSchedulerAddress: '0x45639E8B466854985223ea5564cda11E71799eA0',
 	docSchedulerAbi: [
 		{
 			inputs: [

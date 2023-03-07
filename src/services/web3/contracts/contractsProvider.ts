@@ -3,6 +3,7 @@ import { BigNumberish, ethers, Signer, providers } from 'ethers';
 import { ContractInterface } from './contractInterface';
 import { sepolia } from './sepolia';
 import { Doctor, DoctorFromSC } from '../../../models/Doctors';
+import { log } from 'console';
 
 const contractAbis: { [key: number]: ContractInterface } = {};
 contractAbis[11155111] = sepolia;
@@ -26,18 +27,18 @@ export async function createDoctorsOffice(newDoctor: Doctor): Promise<void> {
 		const doctor = {
 			id: 0,
 			owner: ethers.constants.AddressZero,
-			firstName: newDoctor.firstname,
-			lastName: newDoctor.name,
+			firstName: newDoctor.name,
+			name: newDoctor.name,
 			street: newDoctor.address,
 			zipCode: newDoctor.zipCode,
 			city: newDoctor.city,
-			phoneNumber: 0,
-			freeText: newDoctor.description,
+			phoneNumber: '',
+			description: newDoctor.description,
 			openingTime: newDoctor.openHours.map((item) => item.start),
 			closingTime: newDoctor.openHours.map((item) => item.end),
-			startLunchbreak: newDoctor.openHours.map((item) => item.lunchStart),
-			stopLunchbreak: newDoctor.openHours.map((item) => item.lunchEnd),
-			specializations: [0],
+			lunchStart: newDoctor.openHours.map((item) => item.lunchStart),
+			lunchEnd: newDoctor.openHours.map((item) => item.lunchEnd),
+			specializations: [newDoctor.specialization],
 		};
 		console.log(doctor);
 
@@ -65,7 +66,7 @@ export async function reconfigureOffice(newDoctor: Doctor): Promise<void> {
 			closingTime: newDoctor.openHours.map((item) => item.end),
 			lunchStart: newDoctor.openHours.map((item) => item.lunchStart),
 			lunchEnd: newDoctor.openHours.map((item) => item.lunchEnd),
-			specializations: [newDoctor.specialization],
+			specializations: '',
 		});
 
 		const tx = await result.wait();
@@ -92,7 +93,7 @@ export async function getDoctors(): Promise<Doctor | null> {
 				description: item.description,
 			};
 		});
-		console.log(+result);
+
 		return doctors;
 	} catch (error) {
 		console.error(`get Day failed: wrong abi in this network!\n${error}`);
