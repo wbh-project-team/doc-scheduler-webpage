@@ -54,7 +54,7 @@ export async function createDoctorsOffice(newDoctor: Doctor): Promise<void> {
 export async function reconfigureOffice(newDoctor: Doctor): Promise<void> {
 	try {
 		const result = await docScheduler.reconfigureOffice({
-			id: 0,
+			id: newDoctor.id,
 			owner: ethers.constants.AddressZero,
 			firstName: newDoctor.firstname,
 			name: newDoctor.name,

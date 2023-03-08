@@ -47,6 +47,7 @@ export default function Calendar({ doctor, anonym }: Props) {
 	const [dateWednesday, setDateWednesday] = useState<number[]>([1, 0, 0]);
 	const [dateThursday, setDateThursday] = useState<number[]>([2, 0, 0]);
 	const [dateFriday, setDateFriday] = useState<number[]>([3, 0, 0]);
+	const [selectedWeekDay, setSelectedWeekDay] = useState<number>(0);
 
 	const [weekAppointments, setWeekappointments] = useState<IAppointment[]>([]);
 	const [newAppointment, setNewAppointment] = useState<IAppointment | null>(null);
@@ -286,6 +287,7 @@ export default function Calendar({ doctor, anonym }: Props) {
 		else if (day == 4) selectedDate = dateThursday;
 		else if (day == 5) selectedDate = dateFriday;
 		setSelectedDay([day, selectedDate[0], selectedDate[1], selectedDate[2]]); // day: 1=Monday
+		setSelectedWeekDay(day);
 		setInputFormOpen(true);
 	};
 
@@ -547,6 +549,7 @@ export default function Calendar({ doctor, anonym }: Props) {
 				open={inputFormOpen}
 				handleClose={handleInputFormClose}
 				date={selectedDay}
+				weekDay={selectedWeekDay}
 				doctor={doctor}
 				putAppointmentToCalendar={putAppointmentToCalendar}
 			/>
