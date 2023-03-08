@@ -12,11 +12,19 @@ import {
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { areaOfExpertise } from '../models/Doctors';
 import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
-import { createDoctorsOffice, getDoctors } from '../services/web3/contracts/contractsProvider';
+import {
+	createAppointment,
+	createDoctorsOffice,
+	getAppointments,
+	getDoctors,
+	getReservationFee,
+} from '../services/web3/contracts/contractsProvider';
+import { ethers } from 'ethers';
+import { WalletContent, WalletContext } from '../services/web3/wallets/walletProvider';
 
 const CustomTextField = styled(TextField)(({ theme }) => ({
 	'& .MuiInputBase-input': {
@@ -64,6 +72,7 @@ export default function Home() {
 	const [currentZipCode, setZipCode] = useState<string>('Postleitzahl');
 	const [currentAreaOfExpertise, setAreaOfExpertise] = useState<string>('doctor');
 	const router = useRouter();
+	const { getAddress } = useContext<WalletContent>(WalletContext);
 
 	// https://stackoverflow.com/questions/55601342/using-enumerations-in-react-select
 	const getEnumKeys = <T extends Object>(
@@ -130,20 +139,21 @@ export default function Home() {
 							zIndex: 0,
 							fontSize: '7vh', // soll mit Fenstergroesse skalieren
 							fontWeight: 'bold',
-							textShadow: '0 0 5px grey' // setzt sich besser ab
+							textShadow: '0 0 5px grey', // setzt sich besser ab
 						}}
 						variant="body1">
-						Arzt-Termine 
+						Arzt-Termine
 					</Typography>
-					
-					<Typography sx={{
+
+					<Typography
+						sx={{
 							// width: '43vw',
 							textAlign: 'center',
 							textTransform: 'uppercase',
 							zIndex: 0,
 							fontSize: '7vh',
 							fontWeight: 'bold',
-							textShadow: '0 0 5px grey'
+							textShadow: '0 0 5px grey',
 						}}
 						variant="body1">
 						Einfach Buchen
@@ -154,7 +164,7 @@ export default function Home() {
 							flexDirection: 'row',
 							gap: '24px',
 							alignItems: 'center',
-							mt: '4vh'
+							mt: '4vh',
 						}}>
 						<CustomTextField
 							variant="outlined"
@@ -194,6 +204,8 @@ export default function Home() {
 							}}>
 							Suchen
 						</Button>
+					</Box>
+					<Box sx={{ display: 'flex', marginTop: '24px', gap: '12px' }}>
 						<Button
 							variant={'contained'}
 							onClick={async () => {
@@ -227,6 +239,28 @@ export default function Home() {
 								console.log(await getDoctors());
 							}}>
 							Test Get Doctors
+						</Button>
+						<Button
+							variant={'contained'}
+							onClick={async () => {
+								console.log(ethers.utils.formatEther(await getReservationFee()));
+								await createAppointment({
+									id: 0,
+									startTime: Math.floor(new Date().getTime() / 1000),
+									duration: 60 * 30,
+									doctorsId: 0,
+									patient: getAddress(),
+									reservationFee: 0,
+								});
+							}}>
+							Test Create Appointment
+						</Button>
+						<Button
+							variant={'contained'}
+							onClick={async () => {
+								console.log(await getAppointments(0));
+							}}>
+							Test Get Appointments
 						</Button>
 					</Box>
 				</Container>

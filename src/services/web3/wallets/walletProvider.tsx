@@ -31,7 +31,7 @@ export const WalletContext = createContext<WalletContent>({
 });
 
 const clientId =
-	'BPQAw3wyejo4E-fFMfrSDapX2BzrCXi7nPpsKeaE-7MgcDWb6rF3xKrHRcWZUZbtTlZWZby17-0dxF35YEPvk6E';
+	'BAdQqKcw2Cz6vChZofnvfEsWySoF-gwZ6fXBGmDOHFGAqK_yjw3ts6kqKk4AMLUfg5_IBU0jhmF66yjOjaf2enI';
 
 let network = 11155111;
 const web3Auths: { [key: number]: Web3Auth } = {};

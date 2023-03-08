@@ -3,7 +3,7 @@ import { BigNumberish, ethers, Signer, providers } from 'ethers';
 import { ContractInterface } from './contractInterface';
 import { sepolia } from './sepolia';
 import { Doctor, DoctorFromSC } from '../../../models/Doctors';
-import { log } from 'console';
+import { AppointmentFromSC } from '../../../models/Appointments';
 
 const contractAbis: { [key: number]: ContractInterface } = {};
 contractAbis[11155111] = sepolia;
@@ -27,7 +27,7 @@ export async function createDoctorsOffice(newDoctor: Doctor): Promise<void> {
 		const doctor = {
 			id: 0,
 			owner: ethers.constants.AddressZero,
-			firstName: newDoctor.name,
+			firstName: newDoctor.firstname,
 			name: newDoctor.name,
 			street: newDoctor.address,
 			zipCode: newDoctor.zipCode,
@@ -50,12 +50,13 @@ export async function createDoctorsOffice(newDoctor: Doctor): Promise<void> {
 		console.error(`create Doctor failed: wrong abi in this network!\n${error}`);
 	}
 }
+
 export async function reconfigureOffice(newDoctor: Doctor): Promise<void> {
 	try {
-		const result = await docScheduler.createDoctorsOffice({
+		const result = await docScheduler.reconfigureOffice({
 			id: 0,
 			owner: ethers.constants.AddressZero,
-			firstName: newDoctor.name,
+			firstName: newDoctor.firstname,
 			name: newDoctor.name,
 			street: newDoctor.address,
 			zipCode: newDoctor.zipCode,
@@ -66,13 +67,13 @@ export async function reconfigureOffice(newDoctor: Doctor): Promise<void> {
 			closingTime: newDoctor.openHours.map((item) => item.end),
 			lunchStart: newDoctor.openHours.map((item) => item.lunchStart),
 			lunchEnd: newDoctor.openHours.map((item) => item.lunchEnd),
-			specializations: '',
+			specializations: [newDoctor.specialization],
 		});
 
 		const tx = await result.wait();
 		console.log(tx);
 	} catch (error) {
-		console.error(`create Doctor failed: wrong abi in this network!\n${error}`);
+		console.error(`contract call failed: wrong abi in this network!\n${error}`);
 	}
 }
 export async function getDoctors(): Promise<Doctor | null> {
@@ -87,7 +88,14 @@ export async function getDoctors(): Promise<Doctor | null> {
 				zipCode: item.zipCode,
 				address: item.street,
 				city: item.city,
-				openHours: [],
+				openHours: item.openingTime.map((openingTime, index) => {
+					return {
+						openingTime: openingTime,
+						closingTime: item.closingTime[index],
+						lunchStart: item.lunchStart[index],
+						lunchEnd: item.lunchEnd[index],
+					};
+				}),
 				specialization: item.specializations[0],
 				consultationCategories: [],
 				description: item.description,
@@ -96,7 +104,54 @@ export async function getDoctors(): Promise<Doctor | null> {
 
 		return doctors;
 	} catch (error) {
-		console.error(`get Day failed: wrong abi in this network!\n${error}`);
+		console.error(`contract call failed: wrong abi in this network!\n${error}`);
+		return null;
+	}
+}
+
+export async function createAppointment(newAppointment: AppointmentFromSC): Promise<void> {
+	try {
+		const appointment = {
+			id: 0,
+			startTime: newAppointment.startTime,
+			duration: newAppointment.duration,
+			patient: newAppointment.patient,
+			doctorsId: newAppointment.doctorsId,
+			reservationFee: 0,
+		};
+		console.log(appointment);
+
+		const reservationFee = await getReservationFee();
+
+		const result = await docScheduler.createAppointment(appointment, {
+			value: reservationFee,
+		});
+
+		const tx = await result.wait();
+		console.log(tx);
+	} catch (error) {
+		console.error(`contract call failed: wrong abi in this network!\n${error}`);
+	}
+}
+
+export async function getAppointments(doctorId: BigNumberish) {
+	try {
+		const result = await docScheduler.getAppointments(doctorId);
+
+		return result;
+	} catch (error) {
+		console.error(`contract call failed: wrong abi in this network!\n${error}`);
+		return null;
+	}
+}
+
+export async function getReservationFee() {
+	try {
+		const result = await docScheduler.getReservationFee();
+
+		return result;
+	} catch (error) {
+		console.error(`contract call failed: wrong abi in this network!\n${error}`);
 		return null;
 	}
 }
