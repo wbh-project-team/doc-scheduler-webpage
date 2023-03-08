@@ -27,6 +27,7 @@ import { WalletContent, WalletContext } from '../services/web3/wallets/walletPro
 import { getDoctors } from '../services/web3/contracts/contractsProvider';
 
 export default function Home() {
+	const [isLoading, setLoading] = useState<boolean>(false);
 	const [changeOfficeDataVisible, setChangeOfficeDataVisible] = useState(false);
 	const { isLoggedIn, getAddress } = useContext<WalletContent>(WalletContext);
 	const [doctor, setDoctor] = useState<Doctor | null>(null);
@@ -46,7 +47,7 @@ export default function Home() {
 		if (isLoggedIn) {
 			loadDocs();
 		}
-	}, [isLoggedIn]);
+	}, [isLoggedIn, isLoading]);
 
 	return (
 		<>
@@ -108,12 +109,7 @@ export default function Home() {
 								Ihre Termine, {doctor.firstname} {doctor.name}
 							</Typography>
 							<br></br>
-							<Calendar
-								anonym={false}
-								docWalletId={doctor.walletId}
-								openHours={doctor.openHours}
-								consultationCategories={doctor.consultationCategories}
-							/>
+							<Calendar anonym={false} doctor={doctor} />
 							<Box
 								sx={{
 									display: 'flex',
@@ -137,7 +133,12 @@ export default function Home() {
 											alignItems: 'center',
 											justifyContent: 'center',
 										}}>
-										<OfficeForm currdoctor={doctor} changeExistingData={true} />
+										<OfficeForm
+											currdoctor={doctor}
+											changeExistingData={true}
+											isLoading={isLoading}
+											setLoading={setLoading}
+										/>
 									</Box>
 								) : (
 									''
@@ -207,7 +208,12 @@ export default function Home() {
 									Seien Sie sichtbar und nutzen Sie die Vorteile unserer Community!
 								</Typography>
 							</Box>
-							<OfficeForm currdoctor={doctor} changeExistingData={false} />
+							<OfficeForm
+								currdoctor={doctor}
+								changeExistingData={false}
+								isLoading={isLoading}
+								setLoading={setLoading}
+							/>
 							{/* Ende rightSide */}
 						</Container>
 					)}

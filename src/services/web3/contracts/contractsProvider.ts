@@ -3,7 +3,7 @@ import { BigNumberish, ethers, Signer, providers } from 'ethers';
 import { ContractInterface } from './contractInterface';
 import { sepolia } from './sepolia';
 import { Doctor, DoctorFromSC } from '../../../models/Doctors';
-import { AppointmentFromSC } from '../../../models/Appointments';
+import { AppointmentFromSC, IAppointment } from '../../../models/Appointments';
 
 const contractAbis: { [key: number]: ContractInterface } = {};
 contractAbis[11155111] = sepolia;
@@ -109,17 +109,21 @@ export async function getDoctors(): Promise<Doctor[] | null> {
 	}
 }
 
-export async function createAppointment(newAppointment: AppointmentFromSC): Promise<void> {
+export async function createAppointment(newAppointment: IAppointment): Promise<void> {
 	try {
+		console.log(newAppointment);
+		const date = newAppointment.dateTime;
+		const startTime = new Date(date[2], date[1], date[0], date[3], date[4], 0, 0);
+		console.log(+startTime / 1000);
+
 		const appointment = {
 			id: 0,
-			startTime: newAppointment.startTime,
-			duration: newAppointment.duration,
+			startTime: +startTime / 1000,
+			duration: 60 * 30, //placeholder
 			patient: newAppointment.patient,
-			doctorsId: newAppointment.doctorsId,
+			doctorsId: newAppointment.doctor.id,
 			reservationFee: 0,
 		};
-		console.log(appointment);
 
 		const reservationFee = await getReservationFee();
 
@@ -134,14 +138,27 @@ export async function createAppointment(newAppointment: AppointmentFromSC): Prom
 	}
 }
 
-export async function getAppointments(doctorId: BigNumberish) {
+export async function getAppointments(doctor: Doctor): Promise<IAppointment[]> {
 	try {
-		const result = await docScheduler.getAppointments(doctorId);
-
-		return result;
+		const result = await docScheduler.getAppointments(doctor.id);
+		return result.map((appointment: AppointmentFromSC) => {
+			return {
+				id: appointment.id,
+				patient: appointment.patient,
+				dateTime: [
+					new Date(+appointment.startTime.toString() * 1000).getDate(),
+					new Date(+appointment.startTime.toString() * 1000).getMonth(),
+					new Date(+appointment.startTime.toString() * 1000).getFullYear(),
+					new Date(+appointment.startTime.toString() * 1000).getHours(),
+					new Date(+appointment.startTime.toString() * 1000).getMinutes(),
+				],
+				duration: appointment.duration,
+				doctor: doctor,
+			};
+		});
 	} catch (error) {
 		console.error(`contract call failed: wrong abi in this network!\n${error}`);
-		return null;
+		return [];
 	}
 }
 

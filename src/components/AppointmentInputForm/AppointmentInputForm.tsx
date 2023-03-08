@@ -16,24 +16,23 @@ import {
 } from '@mui/material';
 import { useContext, useState } from 'react';
 import { IAppointment } from '../../models/Appointments';
-import { IConsultationCategory } from '../../models/Doctors';
+import { Doctor, IConsultationCategory } from '../../models/Doctors';
+import { createAppointment } from '../../services/web3/contracts/contractsProvider';
 import { WalletContent, WalletContext } from '../../services/web3/wallets/walletProvider';
 
 interface Props {
 	open: any;
 	handleClose: any;
 	date: number[];
-	docId: string;
-	consultationCategories: IConsultationCategory[];
-	putAppointmentToCalendar: any;
+	doctor: Doctor;
+	putAppointmentToCalendar: (date: IAppointment) => void;
 }
 
 export default function AppointmentInputForm({
 	open,
 	handleClose,
 	date,
-	docId,
-	consultationCategories,
+	doctor,
 	putAppointmentToCalendar,
 }: Props) {
 	const [hour, setHour] = useState(7);
@@ -41,8 +40,7 @@ export default function AppointmentInputForm({
 	// const [duration, setDuration] = useState(0)
 	const [currCategory, setCurrCategory] = useState('');
 
-	const { isLoggedIn, login, logout, getAddress, getBalance, getPrivateKey } =
-		useContext<WalletContent>(WalletContext);
+	const { isLoggedIn, getAddress } = useContext<WalletContent>(WalletContext);
 
 	const [checked, setChecked] = useState(false);
 
@@ -50,22 +48,25 @@ export default function AppointmentInputForm({
 		setChecked(event.target.checked);
 	};
 
-	const handleSubmit = () => {
+	const handleSubmit = async () => {
 		// TODO: put ownerWalletID from Login
 		if (checked) {
 			let duration = 0;
-			for (const item of consultationCategories) {
-				if (item.category == currCategory) duration = item.durationInSecs;
-			}
-			// let submittedDate: IAppointment = {
-			// 	// what about contractNumber ?
-			// 	ownerWalletId: getAddress(),
-			// 	dateTime: [0, 0, 0, hour, minutes],
-			// 	durationInSecs: duration,
-			// 	docWalletID: docId,
-			// };
-			// putAppointmentToCalendar(submittedDate);
 			handleClose();
+
+			putAppointmentToCalendar({
+				patient: getAddress(),
+				doctor: doctor,
+				dateTime: [date[1], date[2], date[3], hour, minutes],
+				duration: duration,
+			});
+
+			await createAppointment({
+				patient: getAddress(),
+				doctor: doctor,
+				dateTime: [date[1], date[2], date[3], hour, minutes],
+				duration: duration,
+			});
 		} else {
 			alert('Bitte stimmen Sie den AGB zu.');
 		}
@@ -156,7 +157,7 @@ export default function AppointmentInputForm({
 								id="duration"
 								value={currCategory}
 								onChange={(event) => setCurrCategory(event.target.value)}>
-								{consultationCategories.map((item, index) => {
+								{doctor.consultationCategories.map((item, index) => {
 									return (
 										<MenuItem key={index} value={item.category} sx={{ color: 'secondary.main' }}>
 											{item.category}

@@ -16,7 +16,7 @@ import {
 } from '@mui/material';
 import { Box } from '@mui/system';
 import { useRouter } from 'next/router';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useContext, useEffect, useRef, useState } from 'react';
 import { areaOfExpertise, docs, Doctor } from '../../models/Doctors';
 import {
 	createDoctorsOffice,
@@ -88,10 +88,16 @@ const getEnumKeys = <T extends Object>(
 interface Props {
 	currdoctor: Doctor | null;
 	changeExistingData: boolean;
+	isLoading: boolean;
+	setLoading: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function OfficeForm({ currdoctor, changeExistingData }: Props) {
-	const [isLoading, setLoading] = useState<boolean>(false);
+export default function OfficeForm({
+	currdoctor,
+	changeExistingData,
+	isLoading,
+	setLoading,
+}: Props) {
 	const [inputValues, setInputValues] = useState<{ [key: string]: any }>({});
 	const [inputSelectValues, setInputSelectValues] = useState<{ [key: string]: any }>({});
 	const [counter, setCounter] = useState(currdoctor ? currdoctor.consultationCategories.length : 1);
@@ -102,8 +108,7 @@ export default function OfficeForm({ currdoctor, changeExistingData }: Props) {
 	const handleBoxOpen = () => setInfoBoxOpen(true);
 	const handleBoxClose = () => setInfoBoxOpen(false);
 	const [formVisible, setFormVisible] = useState(false);
-	const { isLoggedIn, login, logout, getAddress, getBalance, getPrivateKey } =
-		useContext<WalletContent>(WalletContext);
+	const { isLoggedIn, getAddress } = useContext<WalletContent>(WalletContext);
 
 	const textFieldRefFirstName = useRef<HTMLInputElement>();
 	const textFieldRefName = useRef<HTMLInputElement>();
