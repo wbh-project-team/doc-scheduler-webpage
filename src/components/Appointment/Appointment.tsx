@@ -17,12 +17,14 @@ export default function Appointments({ appointment, anonym }: Props) {
     <Box
       className={styles.event}
       sx={{
+        display: 'flex',
         gridRowStart: starts,
         gridRowEnd: ends,
         backgroundColor: 'lightblue',
         padding: '0',
-        textAlign: 'center',
-        
+        // textAlign: 'center',
+        justifyContent: 'center',
+        alignItems: 'center'
       }}
     ><Typography variant='body1'>{anonym ? '' : appointment.ownerWalletId}</Typography></Box>
   )

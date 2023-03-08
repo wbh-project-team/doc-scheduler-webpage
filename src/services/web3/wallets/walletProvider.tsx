@@ -58,7 +58,7 @@ export const WalletProvider = ({ children }: any) => {
 					rpcTarget: url,
 				},
 				uiConfig: {
-					appLogo: '/images/logo.svg',
+					appLogo: '/images/logo.png',
 					defaultLanguage: 'en',
 					theme: 'dark',
 					loginMethodsOrder: [
