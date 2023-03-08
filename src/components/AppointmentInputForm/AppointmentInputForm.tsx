@@ -25,7 +25,7 @@ interface Props {
 	handleClose: any;
 	date: number[];
 	doctor: Doctor;
-	putAppointmentToCalendar: any;
+	putAppointmentToCalendar: (date: IAppointment) => void;
 }
 
 export default function AppointmentInputForm({
@@ -48,17 +48,25 @@ export default function AppointmentInputForm({
 		setChecked(event.target.checked);
 	};
 
-	const handleSubmit = () => {
+	const handleSubmit = async () => {
 		// TODO: put ownerWalletID from Login
 		if (checked) {
 			let duration = 0;
-			createAppointment({
+			handleClose();
+
+			putAppointmentToCalendar({
 				patient: getAddress(),
 				doctor: doctor,
 				dateTime: [date[1], date[2], date[3], hour, minutes],
 				duration: duration,
 			});
-			handleClose();
+
+			await createAppointment({
+				patient: getAddress(),
+				doctor: doctor,
+				dateTime: [date[1], date[2], date[3], hour, minutes],
+				duration: duration,
+			});
 		} else {
 			alert('Bitte stimmen Sie den AGB zu.');
 		}

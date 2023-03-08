@@ -50,6 +50,8 @@ export default function Calendar({ doctor, anonym }: Props) {
 
 	const [weekAppointments, setWeekappointments] = useState<IAppointment[]>([]);
 	const [newAppointment, setNewAppointment] = useState<IAppointment | null>(null);
+	const [inputFormOpen, setInputFormOpen] = useState(false);
+	const [isLoading, setLoading] = useState(false);
 
 	// useEffect(() => {
 	// 	calcWeekStartDate();
@@ -275,23 +277,17 @@ export default function Calendar({ doctor, anonym }: Props) {
 	const [selectedDay, setSelectedDay] = useState<number[]>([0, 0, 0, 0]);
 
 	const handleDayClick = (day: number) => {
+		console.log('hi');
+
 		let selectedDate = [0, 0, 0];
 		if (day == 1) selectedDate = dateMonday;
 		else if (day == 2) selectedDate = dateTuesday;
 		else if (day == 3) selectedDate = dateWednesday;
 		else if (day == 4) selectedDate = dateThursday;
 		else if (day == 5) selectedDate = dateFriday;
-		//alert([day, selectedDate[0], selectedDate[1], selectedDate[2]]);
 		setSelectedDay([day, selectedDate[0], selectedDate[1], selectedDate[2]]); // day: 1=Monday
+		setInputFormOpen(true);
 	};
-
-	useEffect(() => {
-		if (selectedDay[0] > 0) {
-			setInputFormOpen(true);
-		}
-	}, [selectedDay[0]]);
-
-	const [inputFormOpen, setInputFormOpen] = useState(false);
 
 	const handleInputFormClose = () => {
 		setInputFormOpen(false);
