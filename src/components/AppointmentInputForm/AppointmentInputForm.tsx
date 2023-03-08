@@ -1,241 +1,219 @@
 import {
-  Box,
-  Button,
-  Checkbox,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  FormControl,
-  FormControlLabel,
-  InputLabel,
-  MenuItem,
-  Modal,
-  Select,
-  Typography
-} from '@mui/material'
-import { useContext, useState } from 'react'
-import { IAppointment } from '../../models/Appointments'
-import { IConsultationCategory } from '../../models/Doctors'
-import {
-  WalletContent,
-  WalletContext
-} from '../../services/web3/wallets/walletProvider'
+	Box,
+	Button,
+	Checkbox,
+	Dialog,
+	DialogActions,
+	DialogContent,
+	DialogTitle,
+	FormControl,
+	FormControlLabel,
+	InputLabel,
+	MenuItem,
+	Modal,
+	Select,
+	Typography,
+} from '@mui/material';
+import { useContext, useState } from 'react';
+import { IAppointment } from '../../models/Appointments';
+import { IConsultationCategory } from '../../models/Doctors';
+import { WalletContent, WalletContext } from '../../services/web3/wallets/walletProvider';
 
 interface Props {
-  open: any
-  handleClose: any
-  date: number[]
-  docId: string
-  consultationCategories: IConsultationCategory[];
-  putAppointmentToCalendar: any
+	open: any;
+	handleClose: any;
+	date: number[];
+	docId: string;
+	consultationCategories: IConsultationCategory[];
+	putAppointmentToCalendar: any;
 }
 
 export default function AppointmentInputForm({
-  open,
-  handleClose,
-  date,
-  docId,
-  consultationCategories,
-  putAppointmentToCalendar
+	open,
+	handleClose,
+	date,
+	docId,
+	consultationCategories,
+	putAppointmentToCalendar,
 }: Props) {
-  const [appointment, setAppointment] = useState<IAppointment>()
-  const [hour, setHour] = useState(7)
-  const [minutes, setMinutes] = useState(0)
-  // const [duration, setDuration] = useState(0)
-  const [currCategory, setCurrCategory] = useState('')
-  
-  const { isLoggedIn, login, logout, getAddress, getBalance, getPrivateKey } =
-  useContext<WalletContent>(WalletContext)
+	const [hour, setHour] = useState(7);
+	const [minutes, setMinutes] = useState(0);
+	// const [duration, setDuration] = useState(0)
+	const [currCategory, setCurrCategory] = useState('');
 
-  const [checked, setChecked] = useState(false);
+	const { isLoggedIn, login, logout, getAddress, getBalance, getPrivateKey } =
+		useContext<WalletContent>(WalletContext);
 
-  const handleChange = (event: any) => {
-    setChecked(event.target.checked);
-  };
+	const [checked, setChecked] = useState(false);
 
-  const handleSubmit = () => {
-    // TODO: put ownerWalletID from Login
-    if (checked){
-      let duration = 0
-      for (const item of consultationCategories){
-        if(item.category == currCategory)
-          duration=item.durationInSecs
-      }
-      let submittedDate = {
-        // what about contractNumber ?
-        ownerWalletId: getAddress(),
-        dateTime: [0, 0, 0, hour, minutes],
-        durationInSecs: duration,
-        docWalletID: docId
-      }
-      setAppointment(submittedDate)
-      putAppointmentToCalendar(submittedDate)
-      handleClose()
-    } else {
-      alert('Bitte stimmen Sie den AGB zu.')
-    }
-  }
+	const handleChange = (event: any) => {
+		setChecked(event.target.checked);
+	};
 
-  const stylePopupBox = {
-    display: 'block',
-    position: 'fixed',
-    zIndex: 5,
-    top: '0',
-    left: '0',
-    transform: `translate(calc(50vw - 250px), calc(50vh - 100px))`,
-    width: '500px',
-    //height: '200px',
-    bgcolor: 'white',
-    color: 'secondary.main',
-    border: '2px solid #000',
-    borderRadius: '10px',
-    boxShadow: 24,
-    p: 4
-  }
-  
-  return (
-    <>
-    { isLoggedIn ? (
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="form-dialog-title"
-        sx={{width: '30em', gap: '10px'}}
-      >
-        <DialogTitle
-          id="form-dialog-title"
-          sx={{ color: 'secondary.main',fontSize:'1.7em', textAlign: 'center' }}
-        >
-          Termin am {date[1]}.{date[2]}.{date[3]}
-        </DialogTitle>
-        <DialogContent>
-          <FormControl fullWidth margin="normal">
-            <InputLabel
-              id="demo-simple-select-helper-label"
-              sx={{ color: 'secondary.main', backgroundColor: 'white' }}
-            >
-              Stunde
-            </InputLabel>
-            <Select
-              sx={{ color: 'secondary.main' }}
-              labelId="demo-simple-select-helper-label"
-              id="demo-simple-select-helper"
-              value={hour}
-              onChange={(event) => setHour(Number(event.target.value))}
-            >
-              {[7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19].map(
-                (key, index) => {
-                  return (
-                    <MenuItem
-                      key={index}
-                      value={key}
-                      sx={{ color: 'secondary.main' }}
-                    >
-                      {key}
-                    </MenuItem>
-                  )
-                }
-              )}
-            </Select>
-          </FormControl>
-          <FormControl fullWidth margin="dense">
-            <InputLabel
-              id="minutes-label"
-              sx={{ color: 'secondary.main', backgroundColor: 'white' }}
-            >
-              Minute
-            </InputLabel>
-            <Select
-              sx={{ color: 'secondary.main' }}
-              labelId="minutes-label"
-              id="time"
-              value={minutes}
-              onChange={(event) => setMinutes(Number(event.target.value))}
-            >
-              {['00', '15', '30', '45'].map((key, index) => {
-                return (
-                  <MenuItem
-                    key={index}
-                    value={Number(key)}
-                    sx={{ color: 'secondary.main' }}
-                  >
-                    {key}
-                  </MenuItem>
-                )
-              })}
-            </Select>
-          </FormControl>
-          <FormControl fullWidth margin="dense">
-            <InputLabel
-              id="duration-label"
-              sx={{ color: 'secondary.main', backgroundColor: 'white' }}
-            >
-              Terminkategorie
-            </InputLabel>
-            <Select
-              sx={{ color: 'secondary.main' }}
-              labelId="duration-label"
-              id="duration"
-              value={currCategory}
-              
-              onChange={(event) => setCurrCategory(event.target.value)}
-            >
-              {consultationCategories.map((item, index) => {
-                return (
-                  <MenuItem
-                    key={index}
-                    value={item.category}
-                    sx={{ color: 'secondary.main' }}
-                  >
-                    {item.category}
-                  </MenuItem>
-                )
-              })}
-            </Select>
-          </FormControl>
-          <Typography variant='body1' sx={{color: 'secondary.main', mt: '20px', marginBottom: '20px' }}>
-            Bitte beachten Sie, dass für das Buchen eines Termins automatisch 10€ hinterlegt werden, 
-            die Sie bei Wahrnehmen des Termins automatisch zurück erhalten. 
-            Sie können den Termin bis 24h vor Beginn absagen und erhalten die Kaution dann natürlich 
-            zurück. Weitere Informationen hierzu finden Sie in unseren AGB, denen Sie mit 
-            Buchen des Termins zustimmen.
-          </Typography>
-          <FormControlLabel 
-          sx={{color: 'grey'}} 
-          control={<Checkbox checked={checked} onChange={handleChange} sx={{color: 'grey'}} />} 
-          label="Ich stimme den AGB und den Datenschutzbestimmungen der ÄoG zu" />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} variant='outlined' style={{border: '1px solid grey', color: 'grey'}}>
-            Abbrechen
-          </Button>
-          <Button onClick={handleSubmit}  variant='outlined'  style={{ border: '1px solid #A7BDA6', color: 'white', backgroundColor: '#A7BDA6'}}>
-            Buchen
-          </Button>
-        </DialogActions>
-      </Dialog>
-)
-: 
-(
-  <Modal
-    open={open}
-    onClose={handleClose}
-    aria-labelledby="modal-modal-title"
-    aria-describedby="modal-modal-description"
-  >
-    <Box sx={stylePopupBox}>
-      <Typography
-        id="modal-modal-title"
-        variant="h6"
-        component="h2"
-        sx={{ fontSize: '100%' }}
-      >
-        Bitte loggen Sie sich zuerst über den Login-Button ein!
-      </Typography>
-    </Box>
-  </Modal>
-)}
-  </>
-  );
+	const handleSubmit = () => {
+		// TODO: put ownerWalletID from Login
+		if (checked) {
+			let duration = 0;
+			for (const item of consultationCategories) {
+				if (item.category == currCategory) duration = item.durationInSecs;
+			}
+			// let submittedDate: IAppointment = {
+			// 	// what about contractNumber ?
+			// 	ownerWalletId: getAddress(),
+			// 	dateTime: [0, 0, 0, hour, minutes],
+			// 	durationInSecs: duration,
+			// 	docWalletID: docId,
+			// };
+			// putAppointmentToCalendar(submittedDate);
+			handleClose();
+		} else {
+			alert('Bitte stimmen Sie den AGB zu.');
+		}
+	};
+
+	const stylePopupBox = {
+		display: 'block',
+		position: 'fixed',
+		zIndex: 5,
+		top: '0',
+		left: '0',
+		transform: `translate(calc(50vw - 250px), calc(50vh - 100px))`,
+		width: '500px',
+		//height: '200px',
+		bgcolor: 'white',
+		color: 'secondary.main',
+		border: '2px solid #000',
+		borderRadius: '10px',
+		boxShadow: 24,
+		p: 4,
+	};
+
+	return (
+		<>
+			{isLoggedIn ? (
+				<Dialog
+					open={open}
+					onClose={handleClose}
+					aria-labelledby="form-dialog-title"
+					sx={{ width: '30em', gap: '10px' }}>
+					<DialogTitle
+						id="form-dialog-title"
+						sx={{ color: 'secondary.main', fontSize: '1.7em', textAlign: 'center' }}>
+						Termin am {date[1]}.{date[2]}.{date[3]}
+					</DialogTitle>
+					<DialogContent>
+						<FormControl fullWidth margin="normal">
+							<InputLabel
+								id="demo-simple-select-helper-label"
+								sx={{ color: 'secondary.main', backgroundColor: 'white' }}>
+								Stunde
+							</InputLabel>
+							<Select
+								sx={{ color: 'secondary.main' }}
+								labelId="demo-simple-select-helper-label"
+								id="demo-simple-select-helper"
+								value={hour}
+								onChange={(event) => setHour(Number(event.target.value))}>
+								{[7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19].map((key, index) => {
+									return (
+										<MenuItem key={index} value={key} sx={{ color: 'secondary.main' }}>
+											{key}
+										</MenuItem>
+									);
+								})}
+							</Select>
+						</FormControl>
+						<FormControl fullWidth margin="dense">
+							<InputLabel
+								id="minutes-label"
+								sx={{ color: 'secondary.main', backgroundColor: 'white' }}>
+								Minute
+							</InputLabel>
+							<Select
+								sx={{ color: 'secondary.main' }}
+								labelId="minutes-label"
+								id="time"
+								value={minutes}
+								onChange={(event) => setMinutes(Number(event.target.value))}>
+								{['00', '15', '30', '45'].map((key, index) => {
+									return (
+										<MenuItem key={index} value={Number(key)} sx={{ color: 'secondary.main' }}>
+											{key}
+										</MenuItem>
+									);
+								})}
+							</Select>
+						</FormControl>
+						<FormControl fullWidth margin="dense">
+							<InputLabel
+								id="duration-label"
+								sx={{ color: 'secondary.main', backgroundColor: 'white' }}>
+								Terminkategorie
+							</InputLabel>
+							<Select
+								sx={{ color: 'secondary.main' }}
+								labelId="duration-label"
+								id="duration"
+								value={currCategory}
+								onChange={(event) => setCurrCategory(event.target.value)}>
+								{consultationCategories.map((item, index) => {
+									return (
+										<MenuItem key={index} value={item.category} sx={{ color: 'secondary.main' }}>
+											{item.category}
+										</MenuItem>
+									);
+								})}
+							</Select>
+						</FormControl>
+						<Typography
+							variant="body1"
+							sx={{ color: 'secondary.main', mt: '20px', marginBottom: '20px' }}>
+							Bitte beachten Sie, dass für das Buchen eines Termins automatisch 10€ hinterlegt
+							werden, die Sie bei Wahrnehmen des Termins automatisch zurück erhalten. Sie können den
+							Termin bis 24h vor Beginn absagen und erhalten die Kaution dann natürlich zurück.
+							Weitere Informationen hierzu finden Sie in unseren AGB, denen Sie mit Buchen des
+							Termins zustimmen.
+						</Typography>
+						<FormControlLabel
+							sx={{ color: 'grey' }}
+							control={
+								<Checkbox checked={checked} onChange={handleChange} sx={{ color: 'grey' }} />
+							}
+							label="Ich stimme den AGB und den Datenschutzbestimmungen der ÄoG zu"
+						/>
+					</DialogContent>
+					<DialogActions>
+						<Button
+							onClick={handleClose}
+							variant="outlined"
+							style={{ border: '1px solid grey', color: 'grey' }}>
+							Abbrechen
+						</Button>
+						<Button
+							onClick={handleSubmit}
+							variant="outlined"
+							style={{ border: '1px solid #A7BDA6', color: 'white', backgroundColor: '#A7BDA6' }}>
+							Buchen
+						</Button>
+					</DialogActions>
+				</Dialog>
+			) : (
+				<Modal
+					open={open}
+					onClose={handleClose}
+					aria-labelledby="modal-modal-title"
+					aria-describedby="modal-modal-description">
+					<Box sx={stylePopupBox}>
+						<Typography
+							id="modal-modal-title"
+							variant="h6"
+							component="h2"
+							sx={{ fontSize: '100%' }}>
+							Bitte loggen Sie sich zuerst über den Login-Button ein!
+						</Typography>
+					</Box>
+				</Modal>
+			)}
+		</>
+	);
 }
