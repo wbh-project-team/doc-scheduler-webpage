@@ -50,9 +50,10 @@ export async function createDoctorsOffice(newDoctor: Doctor): Promise<void> {
 		console.error(`create Doctor failed: wrong abi in this network!\n${error}`);
 	}
 }
+
 export async function reconfigureOffice(newDoctor: Doctor): Promise<void> {
 	try {
-		const result = await docScheduler.createDoctorsOffice({
+		const result = await docScheduler.reconfigureOffice({
 			id: 0,
 			owner: ethers.constants.AddressZero,
 			firstName: newDoctor.name,
@@ -66,7 +67,7 @@ export async function reconfigureOffice(newDoctor: Doctor): Promise<void> {
 			closingTime: newDoctor.openHours.map((item) => item.end),
 			lunchStart: newDoctor.openHours.map((item) => item.lunchStart),
 			lunchEnd: newDoctor.openHours.map((item) => item.lunchEnd),
-			specializations: '',
+			specializations: [newDoctor.specialization],
 		});
 
 		const tx = await result.wait();
@@ -87,7 +88,14 @@ export async function getDoctors(): Promise<Doctor | null> {
 				zipCode: item.zipCode,
 				address: item.street,
 				city: item.city,
-				openHours: [],
+				openHours: item.openingTime.map((openingTime, index) => {
+					return {
+						openingTime: openingTime,
+						closingTime: item.closingTime[index],
+						lunchStart: item.lunchStart[index],
+						lunchEnd: item.lunchEnd[index],
+					};
+				}),
 				specialization: item.specializations[0],
 				consultationCategories: [],
 				description: item.description,
@@ -98,5 +106,34 @@ export async function getDoctors(): Promise<Doctor | null> {
 	} catch (error) {
 		console.error(`get Day failed: wrong abi in this network!\n${error}`);
 		return null;
+	}
+}
+
+export async function createAppointment(newAppointment: Doctor): Promise<void> {
+	try {
+		const doctor = {
+			id: 0,
+			owner: ethers.constants.AddressZero,
+			firstName: newDoctor.name,
+			name: newDoctor.name,
+			street: newDoctor.address,
+			zipCode: newDoctor.zipCode,
+			city: newDoctor.city,
+			phoneNumber: '',
+			description: newDoctor.description,
+			openingTime: newDoctor.openHours.map((item) => item.start),
+			closingTime: newDoctor.openHours.map((item) => item.end),
+			lunchStart: newDoctor.openHours.map((item) => item.lunchStart),
+			lunchEnd: newDoctor.openHours.map((item) => item.lunchEnd),
+			specializations: [newDoctor.specialization],
+		};
+		console.log(doctor);
+
+		const result = await docScheduler.createDoctorsOffice(doctor);
+
+		const tx = await result.wait();
+		console.log(tx);
+	} catch (error) {
+		console.error(`create Doctor failed: wrong abi in this network!\n${error}`);
 	}
 }
