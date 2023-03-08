@@ -1,7 +1,7 @@
 import { ContractInterface } from './contractInterface';
 
 export const sepolia: ContractInterface = {
-	docSchedulerAddress: '0x22723DB04718F6fedFA429908F9C35f0bA93afAb',
+	docSchedulerAddress: '0x161BF40d010A1347CFCf8aAE538cf27898dD57d8',
 	docSchedulerAbi: [
 		{
 			inputs: [{ internalType: 'address', name: 'dateTimeAddress', type: 'address' }],
@@ -23,6 +23,7 @@ export const sepolia: ContractInterface = {
 					components: [
 						{ internalType: 'uint256', name: 'id', type: 'uint256' },
 						{ internalType: 'uint256', name: 'startTime', type: 'uint256' },
+						{ internalType: 'string', name: 'categoryName', type: 'string' },
 						{ internalType: 'uint256', name: 'duration', type: 'uint256' },
 						{ internalType: 'address', name: 'patient', type: 'address' },
 						{ internalType: 'uint256', name: 'doctorsId', type: 'uint256' },
@@ -56,6 +57,8 @@ export const sepolia: ContractInterface = {
 						{ internalType: 'uint256[]', name: 'lunchStart', type: 'uint256[]' },
 						{ internalType: 'uint256[]', name: 'lunchEnd', type: 'uint256[]' },
 						{ internalType: 'string[]', name: 'specializations', type: 'string[]' },
+						{ internalType: 'string[]', name: 'categoryNames', type: 'string[]' },
+						{ internalType: 'uint256[]', name: 'categoryDurations', type: 'uint256[]' },
 					],
 					internalType: 'struct DocScheduler.Doctor',
 					name: 'newDoctor',
@@ -75,6 +78,7 @@ export const sepolia: ContractInterface = {
 					components: [
 						{ internalType: 'uint256', name: 'id', type: 'uint256' },
 						{ internalType: 'uint256', name: 'startTime', type: 'uint256' },
+						{ internalType: 'string', name: 'categoryName', type: 'string' },
 						{ internalType: 'uint256', name: 'duration', type: 'uint256' },
 						{ internalType: 'address', name: 'patient', type: 'address' },
 						{ internalType: 'uint256', name: 'doctorsId', type: 'uint256' },
@@ -115,6 +119,8 @@ export const sepolia: ContractInterface = {
 						{ internalType: 'uint256[]', name: 'lunchStart', type: 'uint256[]' },
 						{ internalType: 'uint256[]', name: 'lunchEnd', type: 'uint256[]' },
 						{ internalType: 'string[]', name: 'specializations', type: 'string[]' },
+						{ internalType: 'string[]', name: 'categoryNames', type: 'string[]' },
+						{ internalType: 'uint256[]', name: 'categoryDurations', type: 'uint256[]' },
 					],
 					internalType: 'struct DocScheduler.Doctor[]',
 					name: '',
@@ -166,6 +172,8 @@ export const sepolia: ContractInterface = {
 						{ internalType: 'uint256[]', name: 'lunchStart', type: 'uint256[]' },
 						{ internalType: 'uint256[]', name: 'lunchEnd', type: 'uint256[]' },
 						{ internalType: 'string[]', name: 'specializations', type: 'string[]' },
+						{ internalType: 'string[]', name: 'categoryNames', type: 'string[]' },
+						{ internalType: 'uint256[]', name: 'categoryDurations', type: 'uint256[]' },
 					],
 					internalType: 'struct DocScheduler.Doctor',
 					name: 'doctor',

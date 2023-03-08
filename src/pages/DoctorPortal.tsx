@@ -138,6 +138,7 @@ export default function Home() {
 											changeExistingData={true}
 											isLoading={isLoading}
 											setLoading={setLoading}
+											setVisible={setChangeOfficeDataVisible}
 										/>
 									</Box>
 								) : (
@@ -213,6 +214,7 @@ export default function Home() {
 								changeExistingData={false}
 								isLoading={isLoading}
 								setLoading={setLoading}
+								setVisible={setChangeOfficeDataVisible}
 							/>
 							{/* Ende rightSide */}
 						</Container>

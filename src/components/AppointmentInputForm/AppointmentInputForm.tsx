@@ -51,7 +51,7 @@ export default function AppointmentInputForm({
 	};
 
 	const handleSubmit = async () => {
-		let duration = 0;
+		let duration = 60 * 30; //todo add time from categories
 		if (
 			doctor.openHours[weekDay - 1].openingTime > hour * 60 * 60 * 1000 + minutes * 60 * 1000 ||
 			doctor.openHours[weekDay - 1].closingTime - 60 * 60 * 1000 <
@@ -69,10 +69,13 @@ export default function AppointmentInputForm({
 		}
 		handleClose();
 
+		console.log(currCategory);
+
 		putAppointmentToCalendar({
 			patient: getAddress(),
 			doctor: doctor,
 			dateTime: [date[1], date[2], date[3], hour, minutes],
+			categoryName: currCategory,
 			duration: duration,
 		});
 
@@ -80,6 +83,7 @@ export default function AppointmentInputForm({
 			patient: getAddress(),
 			doctor: doctor,
 			dateTime: [date[1], date[2], date[3], hour, minutes],
+			categoryName: currCategory,
 			duration: duration,
 		});
 	};

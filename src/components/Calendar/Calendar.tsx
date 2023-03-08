@@ -175,6 +175,7 @@ export default function Calendar({ doctor, anonym }: Props) {
 					closingTimes.push({
 						patient: 'geschlossen',
 						dateTime: [dayDates[index][0], dayDates[index][1], dayDates[index][2], 7, 0],
+						categoryName: doctor.consultationCategories[0].category,
 						duration: durationBefore,
 						doctor: doctor,
 					});
@@ -190,6 +191,7 @@ export default function Calendar({ doctor, anonym }: Props) {
 							lunchStartHour,
 							lunchStartMin,
 						],
+						categoryName: doctor.consultationCategories[0].category,
 						duration: durationLunchTime,
 						doctor: doctor,
 					});
@@ -206,6 +208,7 @@ export default function Calendar({ doctor, anonym }: Props) {
 							endHour,
 							endMinutes,
 						],
+						categoryName: doctor.consultationCategories[0].category,
 						duration: durationAfter,
 						doctor: doctor,
 					});
@@ -278,8 +281,6 @@ export default function Calendar({ doctor, anonym }: Props) {
 	const [selectedDay, setSelectedDay] = useState<number[]>([0, 0, 0, 0]);
 
 	const handleDayClick = (day: number) => {
-		console.log('hi');
-
 		let selectedDate = [0, 0, 0];
 		if (day == 1) selectedDate = dateMonday;
 		else if (day == 2) selectedDate = dateTuesday;
