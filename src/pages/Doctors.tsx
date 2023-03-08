@@ -2,21 +2,14 @@ import { Box, Container, InputBase, styled, TextField, Typography } from '@mui/m
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 //import { useReducer } from 'react';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { areaOfExpertise, Doctor, docs } from '../models/Doctors';
 import DoctorCard from '../components/DoctorCard/DoctorCard';
 import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
 import DoctorDetails from '../components/DoctorDetails/DoctorDetails';
-
-// const StyledBox = styled(Box)({
-// 	background: 'url("/images/background.png")',
-// 	'WebkitTextFillColor': 'transparent',
-//   	'WebkitBackgroundClip': 'text',
-
-// 	 // filter: drop-shadow(2px 2px #333);
-// 	//display:'block',
-// });
+import { getDoctors } from '../services/web3/contracts/contractsProvider';
+import { WalletContent, WalletContext } from '../services/web3/wallets/walletProvider';
 
 const defaultDetailsVisible = false;
 
@@ -25,11 +18,25 @@ export default function Home() {
 	const { zipCode, currAreaOfExpertise } = router.query;
 	const [detailsVisible, setDetailsVisible] = useState(defaultDetailsVisible);
 	const [docForDetails, setDocForDetails] = useState<Doctor | null>(null);
+	const [doctors, setDoctors] = useState<Doctor[]>([]);
+	const { isLoggedIn } = useContext<WalletContent>(WalletContext);
 
 	function handleCardClick(doc: Doctor) {
 		setDetailsVisible(false);
 		setDocForDetails(doc);
 	}
+
+	useEffect(() => {
+		const loadDocs = async () => {
+			const docs = await getDoctors();
+			if (!docs) return;
+
+			setDoctors(docs);
+			console.log(docs);
+		};
+
+		loadDocs();
+	}, [isLoggedIn]);
 
 	useEffect(() => {
 		if (docForDetails) {
@@ -60,26 +67,9 @@ export default function Home() {
 					display: 'flex',
 					flexDirection: 'column',
 					alignItems: 'center',
-					height: `calc(100vh - 60px)`, // Footer ist 60 hoch
-					pt: '80px', // Navbar ist 80 hoch
+					height: `calc(100vh - 60px)`,
+					pt: '80px',
 				}}>
-				{/* {detailsVisible && (
-          <Box
-            id="Details"
-            sx={{
-              zIndex: 1,
-              display: 'flex',
-              backgroundColor: 'tomato',
-              marginTop: '15px',
-              width: '95%',
-              fontSize: '200%',
-              fontWeight: 'light'
-            }}
-          >
-            {generateDetails()}
-          </Box>
-        )} */}
-
 				<Container
 					component="section"
 					sx={{
@@ -122,7 +112,6 @@ export default function Home() {
 					)}
 					<Box
 						sx={{
-							// zIndex: 0,
 							display: 'flex',
 							backgroundColor: 'blue',
 						}}>
@@ -131,9 +120,7 @@ export default function Home() {
 								position: 'absolute',
 								transform: 'translate(-50%, 0%)',
 								display: 'grid',
-								// backgroundColor: 'green',
-								//gridTemplateColumns: 'auto auto',
-								gridTemplateColumns: 'repeat(auto-fill, minmax(500px, 1fr))',
+								gridTemplateColumns: 'repeat(auto-fill, minmax(650px, 1fr))',
 								gap: '15px',
 								width: '95%',
 							}}>
@@ -153,35 +140,35 @@ export default function Home() {
 								Deine Suchergebnisse zu:{' '}
 								{areaOfExpertise[currAreaOfExpertise as keyof typeof areaOfExpertise]} in {zipCode}
 							</Box>
-							{docs
-								.filter(function (obj) {
+							{doctors
+								.filter((doctor) => {
+									if (!zipCode) return null;
 									if (
-										obj.specialization == currAreaOfExpertise &&
-										obj.zipCode > Number(zipCode) - 1000 &&
-										obj.zipCode < Number(zipCode) + 1000 // TODO: Suchkreis anpassen
+										doctor.specialization == currAreaOfExpertise &&
+										doctor.zipCode > +zipCode - 1000 &&
+										doctor.zipCode < +zipCode + 1000 // TODO: Suchkreis anpassen
 									) {
-										return obj;
+										return doctor;
 									}
 								})
-								.map((element) => (
+								.map((doctor) => (
 									<DoctorCard
-										key={element.name}
+										key={doctor.id}
 										doctor={{
-											id: element.id,
-											walletId: element.walletId,
-											firstname: element.firstname,
-											name: element.name,
-											address: element.address,
-											zipCode: element.zipCode,
-											city: element.city,
-											openHours: element.openHours,
-											specialization: element.specialization,
-											consultationCategories: element.consultationCategories,
-											description: '',
-											rating: element.rating,
+											id: +doctor.id,
+											walletId: doctor.walletId,
+											firstname: doctor.firstname,
+											name: doctor.name,
+											address: doctor.address,
+											zipCode: doctor.zipCode,
+											city: doctor.city,
+											openHours: doctor.openHours,
+											specialization: doctor.specialization,
+											consultationCategories: doctor.consultationCategories,
+											description: doctor.description,
+											rating: doctor.rating,
 										}}
-										onclick={() => handleCardClick(element)}
-										//onclick={() => {}}
+										onclick={() => handleCardClick(doctor)}
 									/>
 								))}
 						</Box>

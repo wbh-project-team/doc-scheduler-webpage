@@ -1,4 +1,4 @@
-import { BigNumberish } from 'ethers';
+import { BigNumber, BigNumberish } from 'ethers';
 import { Doctor, docs } from './Doctors';
 
 export interface IAppointment {

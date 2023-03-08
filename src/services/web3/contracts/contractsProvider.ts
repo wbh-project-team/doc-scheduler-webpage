@@ -34,8 +34,8 @@ export async function createDoctorsOffice(newDoctor: Doctor): Promise<void> {
 			city: newDoctor.city,
 			phoneNumber: '',
 			description: newDoctor.description,
-			openingTime: newDoctor.openHours.map((item) => item.start),
-			closingTime: newDoctor.openHours.map((item) => item.end),
+			openingTime: newDoctor.openHours.map((item) => item.openingTime),
+			closingTime: newDoctor.openHours.map((item) => item.closingTime),
 			lunchStart: newDoctor.openHours.map((item) => item.lunchStart),
 			lunchEnd: newDoctor.openHours.map((item) => item.lunchEnd),
 			specializations: [newDoctor.specialization],
@@ -63,8 +63,8 @@ export async function reconfigureOffice(newDoctor: Doctor): Promise<void> {
 			city: newDoctor.city,
 			phoneNumber: '',
 			description: newDoctor.description,
-			openingTime: newDoctor.openHours.map((item) => item.start),
-			closingTime: newDoctor.openHours.map((item) => item.end),
+			openingTime: newDoctor.openHours.map((item) => item.openingTime),
+			closingTime: newDoctor.openHours.map((item) => item.closingTime),
 			lunchStart: newDoctor.openHours.map((item) => item.lunchStart),
 			lunchEnd: newDoctor.openHours.map((item) => item.lunchEnd),
 			specializations: [newDoctor.specialization],
@@ -76,24 +76,24 @@ export async function reconfigureOffice(newDoctor: Doctor): Promise<void> {
 		console.error(`contract call failed: wrong abi in this network!\n${error}`);
 	}
 }
-export async function getDoctors(): Promise<Doctor | null> {
+export async function getDoctors(): Promise<Doctor[] | null> {
 	try {
 		const result = await docScheduler.getDoctors();
-		const doctors: Doctor = result.map((item: DoctorFromSC) => {
+		const doctors: Doctor[] = result.map((item: DoctorFromSC) => {
 			return {
-				id: item.id,
+				id: +item.id.toString(),
 				walletId: item.owner,
 				firstname: item.firstName,
 				name: item.name,
-				zipCode: item.zipCode,
+				zipCode: +item.zipCode.toString(),
 				address: item.street,
 				city: item.city,
 				openHours: item.openingTime.map((openingTime, index) => {
 					return {
-						openingTime: openingTime,
-						closingTime: item.closingTime[index],
-						lunchStart: item.lunchStart[index],
-						lunchEnd: item.lunchEnd[index],
+						openingTime: +openingTime.toString(),
+						closingTime: +item.closingTime[index].toString(),
+						lunchStart: +item.lunchStart[index].toString(),
+						lunchEnd: +item.lunchEnd[index].toString(),
 					};
 				}),
 				specialization: item.specializations[0],

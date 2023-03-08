@@ -34,8 +34,8 @@ export interface DoctorFromSC {
 }
 
 export interface BusinessHours {
-	start: number;
-	end: number;
+	openingTime: number;
+	closingTime: number;
 	lunchStart: number;
 	lunchEnd: number;
 }
@@ -62,8 +62,8 @@ export const docs: Doctor[] = [
 		address: 'Schlossstr. 35',
 		city: 'Mülheim an der Ruhr',
 		openHours: Array.apply(null, Array(5)).map(() => ({
-			start: 8.3 * 60 * 60 * 1000,
-			end: 16 * 60 * 60 * 1000,
+			openingTime: 8.3 * 60 * 60 * 1000,
+			closingTime: 16 * 60 * 60 * 1000,
 			lunchStart: 12 * 60 * 60 * 1000,
 			lunchEnd: 13 * 60 * 60 * 1000,
 		})),
@@ -85,8 +85,8 @@ export const docs: Doctor[] = [
 		address: 'Am Stadtpark 43',
 		city: 'Nürnberg',
 		openHours: Array.apply(null, Array(5)).map(() => ({
-			start: 8.3 * 60 * 60 * 1000,
-			end: 16 * 60 * 60 * 1000,
+			openingTime: 8.3 * 60 * 60 * 1000,
+			closingTime: 16 * 60 * 60 * 1000,
 			lunchStart: 12 * 60 * 60 * 1000,
 			lunchEnd: 13 * 60 * 60 * 1000,
 		})),
@@ -109,8 +109,8 @@ export const docs: Doctor[] = [
 		address: 'Eschollbrücker Str. 26',
 		city: 'Darmstadt',
 		openHours: Array.apply(null, Array(5)).map(() => ({
-			start: 8.3 * 60 * 60 * 1000,
-			end: 16 * 60 * 60 * 1000,
+			openingTime: 8.3 * 60 * 60 * 1000,
+			closingTime: 16 * 60 * 60 * 1000,
 			lunchStart: 12 * 60 * 60 * 1000,
 			lunchEnd: 13 * 60 * 60 * 1000,
 		})),
@@ -133,8 +133,8 @@ export const docs: Doctor[] = [
 		address: 'Moerenstr. 6',
 		city: 'Berlin',
 		openHours: Array.apply(null, Array(5)).map(() => ({
-			start: 8.3 * 60 * 60 * 1000,
-			end: 16 * 60 * 60 * 1000,
+			openingTime: 8.3 * 60 * 60 * 1000,
+			closingTime: 16 * 60 * 60 * 1000,
 			lunchStart: 12 * 60 * 60 * 1000,
 			lunchEnd: 13 * 60 * 60 * 1000,
 		})),
@@ -157,8 +157,8 @@ export const docs: Doctor[] = [
 		address: 'Kortumstr. 49',
 		city: 'Essen',
 		openHours: Array.apply(null, Array(5)).map(() => ({
-			start: 8.3 * 60 * 60 * 1000,
-			end: 16 * 60 * 60 * 1000,
+			openingTime: 8.3 * 60 * 60 * 1000,
+			closingTime: 16 * 60 * 60 * 1000,
 			lunchStart: 12 * 60 * 60 * 1000,
 			lunchEnd: 13 * 60 * 60 * 1000,
 		})),
@@ -190,8 +190,8 @@ export const docs: Doctor[] = [
 		address: 'Dierburger Str. 22',
 		city: 'Darmstadt',
 		openHours: Array.apply(null, Array(5)).map(() => ({
-			start: 7 * 60 * 60 * 1000,
-			end: 18 * 60 * 60 * 1000,
+			openingTime: 7 * 60 * 60 * 1000,
+			closingTime: 18 * 60 * 60 * 1000,
 			lunchStart: 12 * 60 * 60 * 1000,
 			lunchEnd: 13 * 60 * 60 * 1000,
 		})),
