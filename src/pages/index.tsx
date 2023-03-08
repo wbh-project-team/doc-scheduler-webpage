@@ -94,8 +94,8 @@ export default function Home() {
 				}}>
 				<Box
 					sx={{
-						height: '400px',
-						width: '400px',
+						height: '31vw',
+						width: '31vw',
 						position: 'absolute',
 						zIndex: 0,
 						top: '50%',
@@ -120,17 +120,33 @@ export default function Home() {
 						backgroundImage: 'url("/images/background.png")',
 						backgroundSize: 'cover',
 						backgroundPosition: 'center',
-						gap: '32px',
+						// gap: '32px',
 					}}>
 					<Typography
 						sx={{
-							width: '500px',
+							// width: '43vw',
 							textAlign: 'center',
 							textTransform: 'uppercase',
 							zIndex: 0,
+							fontSize: '7vh', // soll mit Fenstergroesse skalieren
+							fontWeight: 'bold',
+							textShadow: '0 0 5px grey' // setzt sich besser ab
 						}}
-						variant="h1">
-						Arzt-Termine Einfach Buchen
+						variant="body1">
+						Arzt-Termine 
+					</Typography>
+					
+					<Typography sx={{
+							// width: '43vw',
+							textAlign: 'center',
+							textTransform: 'uppercase',
+							zIndex: 0,
+							fontSize: '7vh',
+							fontWeight: 'bold',
+							textShadow: '0 0 5px grey'
+						}}
+						variant="body1">
+						Einfach Buchen
 					</Typography>
 					<Box
 						sx={{
@@ -138,6 +154,7 @@ export default function Home() {
 							flexDirection: 'row',
 							gap: '24px',
 							alignItems: 'center',
+							mt: '4vh'
 						}}>
 						<CustomTextField
 							variant="outlined"
