@@ -17,12 +17,12 @@ export interface Doctor {
 }
 
 export interface DoctorFromSC {
-	id: number;
+	id: BigNumberish;
 	owner: string;
 	firstName: string;
 	name: string;
 	street: string;
-	zipCode: number;
+	zipCode: BigNumberish;
 	city: string;
 	phoneNumber: string;
 	description: string;

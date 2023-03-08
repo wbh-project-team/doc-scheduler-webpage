@@ -1,15 +1,6 @@
 import { BigNumberish } from 'ethers';
 import { Doctor, docs } from './Doctors';
 
-// from Solidity:
-// struct DateTime {
-// 	uint day;
-// 	uint month;
-// 	uint year;
-// 	uint hour;
-// 	uint minute;
-//   }appointmentsArray
-
 export interface IAppointment {
 	id?: number; // contractNumber?
 	ownerWalletId: string;
