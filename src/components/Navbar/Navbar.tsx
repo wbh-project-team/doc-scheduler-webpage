@@ -13,10 +13,10 @@ import {
 } from '@mui/material';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-
 import { pages } from './Pages';
 import { WalletContent, WalletContext } from '../../services/web3/wallets/walletProvider';
 import { BigNumber, BigNumberish, ethers } from 'ethers';
+import AccountMenu from '../AccountMenu/AccountMenu';
 
 interface LogoProps {
 	path: string;
@@ -126,7 +126,7 @@ export default function Navbar() {
 										Log in
 									</Button>
 								) : (
-									<Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+									<Box sx={{ display: 'flex', justifyContent: 'right', alignItems: 'center' }}>
 										<Box
 											sx={{
 												display: 'flex',
@@ -134,19 +134,21 @@ export default function Navbar() {
 												justifyContent: 'center',
 												alignItems: 'center',
 											}}>
-											<Typography variant={'body1'}>{getAddress()}</Typography>
-											<Typography variant={'body1'}>
-												Wallet Balance: {ethers.utils.formatEther(balance)} ETH
-											</Typography>
+											{/* <Typography variant={'body1'}>{getAddress()}</Typography> */}
+											
+											{/* <Typography variant={'body1'}>
+												Wallet Kontostand: {ethers.utils.formatEther(balance)} ETH
+											</Typography> */}
+											<AccountMenu/>
 										</Box>
-										<Button
+										{/* <Button
 											onClick={async () => {
 												await logout();
 											}}
 											sx={{ ml: '1.25rem' }}
 											variant="contained">
 											Logout
-										</Button>
+										</Button> */}
 									</Box>
 								)}
 							</Box>
