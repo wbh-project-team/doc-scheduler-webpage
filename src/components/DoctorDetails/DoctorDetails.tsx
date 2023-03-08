@@ -1,6 +1,5 @@
 import { Avatar, Box, Container, Typography } from '@mui/material';
 import { areaOfExpertise, Doctor } from '../../models/Doctors';
-import { useState } from 'react';
 import Calendar from '../Calendar/Calendar';
 
 const weekdays = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag'];
@@ -10,10 +9,6 @@ interface Props {
 }
 
 export default function DoctorDetails({ doctor }: Props) {
-	const [selectedDocId, setSelectedDocId] = useState(doctor.walletId);
-	const [selectedDocBH, setSelectedDocBH] = useState(doctor.openHours);
-	const [selectedDocCC, setSelectedDocCC] = useState(doctor.consultationCategories);
-
 	return (
 		<>
 			<Box
@@ -142,11 +137,7 @@ export default function DoctorDetails({ doctor }: Props) {
 							fontSize: '60%',
 						}}>
 						<Box sx={{ width: '100%' }}>
-							<Calendar
-								docWalletId={selectedDocId}
-								openHours={selectedDocBH}
-								consultationCategories={selectedDocCC}
-								anonym={true}></Calendar>
+							<Calendar doctor={doctor} anonym={true}></Calendar>
 						</Box>
 					</Box>
 				</Container>

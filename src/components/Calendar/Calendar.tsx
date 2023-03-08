@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import AppointmentInputForm from '../AppointmentInputForm/AppointmentInputForm';
 import mystyles from './calendarStyle.module.css';
 import Appointment from '../Appointment/Appointment';
-import { BusinessHours, IConsultationCategory } from '../../models/Doctors';
+import { BusinessHours, Doctor, IConsultationCategory } from '../../models/Doctors';
 
 const monthsMap = new Map([
 	['Januar', 1],
@@ -24,18 +24,11 @@ const monthsMap = new Map([
 ]);
 
 interface Props {
-	docWalletId: string;
-	openHours: BusinessHours[];
-	consultationCategories: IConsultationCategory[];
+	doctor: Doctor;
 	anonym: boolean;
 }
 
-export default function Calendar({
-	docWalletId,
-	openHours,
-	consultationCategories,
-	anonym,
-}: Props) {
+export default function Calendar({ doctor, anonym }: Props) {
 	const [selectedYear, setSelectedYear] = useState<string>('2023');
 	const [yearValues, setYearValues] = useState<string[]>(['2023', '2024']);
 	const [selectedMonth, setSelectedMonth] = useState<string>('März');
@@ -113,7 +106,7 @@ export default function Calendar({
 		weekAppointmentsArray = appointmentsArray.filter(function (obj) {
 			//alert(checkNumberMonday + checkNumberFriday + obj.dateTime[2]*10000+obj.dateTime[1]*100+obj.dateTime[0])
 			if (
-				obj.docWalletID == docWalletId &&
+				obj.doctor.walletId == doctor.walletId &&
 				obj.dateTime[2] * 10000 + obj.dateTime[1] * 100 + obj.dateTime[0] >= checkNumberMonday &&
 				obj.dateTime[2] * 10000 + obj.dateTime[1] * 100 + obj.dateTime[0] <= checkNumberFriday
 			) {
@@ -148,41 +141,39 @@ export default function Calendar({
 		setDateThursday(dayDates[3]);
 		setDateFriday(dayDates[4]);
 
-		console.log(dayDates);
-		console.log(openHours);
 		//let dayDates: Array<Array<number>> = [[dateMonday[0], monthMonday, yearMonday],]
 		let closingTimes: Array<IAppointment> = [];
 
-		openHours.forEach(function (element, index) {
+		doctor.openHours.forEach(function (element, index) {
 			if (index > 4) return; //quick fix
 			let start = Math.round(
-				Math.trunc(openHours[index].openingTime / 60 / 60 / 1000) * 60 * 60 +
-					((openHours[index].openingTime / 10 / 60 / 60) % 100) * 60,
+				Math.trunc(doctor.openHours[index].openingTime / 60 / 60 / 1000) * 60 * 60 +
+					((doctor.openHours[index].openingTime / 10 / 60 / 60) % 100) * 60,
 			);
-			let lunchStartHour = Math.trunc(openHours[index].lunchStart / 60 / 60 / 1000);
-			let lunchStartMin = (openHours[index].lunchStart / 10 / 60 / 60) % 100;
+			let lunchStartHour = Math.trunc(doctor.openHours[index].lunchStart / 60 / 60 / 1000);
+			let lunchStartMin = (doctor.openHours[index].lunchStart / 10 / 60 / 60) % 100;
 			let lunchStart = lunchStartHour * 60 * 60 + lunchStartMin * 60;
 			let lunchEnd = Math.round(
-				Math.trunc(openHours[index].lunchEnd / 60 / 60 / 1000) * 60 * 60 +
-					(((openHours[index].lunchEnd / 10) % 100) / 60 / 60) * 60,
+				Math.trunc(doctor.openHours[index].lunchEnd / 60 / 60 / 1000) * 60 * 60 +
+					(((doctor.openHours[index].lunchEnd / 10) % 100) / 60 / 60) * 60,
 			);
-			let endHour = Math.trunc(openHours[index].closingTime / 60 / 60 / 1000);
-			let endMinutes = (openHours[index].closingTime / 10 / 60 / 60) % 100;
+			let endHour = Math.trunc(doctor.openHours[index].closingTime / 60 / 60 / 1000);
+			let endMinutes = (doctor.openHours[index].closingTime / 10 / 60 / 60) % 100;
 			let end = endHour * 60 * 60 + endMinutes * 60;
 
 			let durationBefore = start - 7 * 60 * 60;
 			if (durationBefore > 0) {
 				closingTimes.push({
-					ownerWalletId: 'geschlossen',
+					patient: 'geschlossen',
 					dateTime: [dayDates[index][0], dayDates[index][1], dayDates[index][2], 7, 0],
-					durationInSecs: durationBefore,
-					docWalletID: docWalletId,
+					duration: durationBefore,
+					doctor: doctor,
 				});
 			}
 			let durationLunchTime = lunchEnd - lunchStart;
 			if (durationLunchTime > 0) {
 				closingTimes.push({
-					ownerWalletId: 'Pause',
+					patient: 'Pause',
 					dateTime: [
 						dayDates[index][0],
 						dayDates[index][1],
@@ -190,15 +181,15 @@ export default function Calendar({
 						lunchStartHour,
 						lunchStartMin,
 					],
-					durationInSecs: durationLunchTime,
-					docWalletID: docWalletId,
+					duration: durationLunchTime,
+					doctor: doctor,
 				});
 			}
 			//alert([dayDates[index][0], dayDates[index][1], dayDates[index][2], lunchStartHour,lunchStartMin])
 			let durationAfter = 20 * 60 * 60 - end;
 			if (durationAfter > 0) {
 				closingTimes.push({
-					ownerWalletId: 'geschlossen',
+					patient: 'geschlossen',
 					dateTime: [
 						dayDates[index][0],
 						dayDates[index][1],
@@ -206,8 +197,8 @@ export default function Calendar({
 						endHour,
 						endMinutes,
 					],
-					durationInSecs: durationAfter,
-					docWalletID: docWalletId,
+					duration: durationAfter,
+					doctor: doctor,
 				});
 			}
 		});
@@ -450,16 +441,7 @@ export default function Calendar({
 									}
 								})
 								.map((item) => (
-									<Appointment
-										anonym={anonym}
-										appointment={{
-											id: item.id,
-											ownerWalletId: item.ownerWalletId,
-											dateTime: item.dateTime,
-											durationInSecs: item.durationInSecs,
-											docWalletID: item.docWalletID,
-										}}
-									/>
+									<Appointment key={item.id} anonym={anonym} appointment={item} />
 								))}
 							{/* {generateBlockClosingTimes(1)} */}
 						</Box>
@@ -481,16 +463,7 @@ export default function Calendar({
 									}
 								})
 								.map((item) => (
-									<Appointment
-										anonym={anonym}
-										appointment={{
-											id: item.id,
-											ownerWalletId: item.ownerWalletId,
-											dateTime: item.dateTime,
-											durationInSecs: item.durationInSecs,
-											docWalletID: item.docWalletID,
-										}}
-									/>
+									<Appointment key={item.id} anonym={anonym} appointment={item} />
 								))}
 							{/* {generateNewAppointment(2)} */}
 						</Box>
@@ -512,16 +485,7 @@ export default function Calendar({
 									}
 								})
 								.map((item) => (
-									<Appointment
-										anonym={anonym}
-										appointment={{
-											id: item.id,
-											ownerWalletId: item.ownerWalletId,
-											dateTime: item.dateTime,
-											durationInSecs: item.durationInSecs,
-											docWalletID: item.docWalletID,
-										}}
-									/>
+									<Appointment key={item.id} anonym={anonym} appointment={item} />
 								))}
 							{/* {generateNewAppointment(3)} */}
 						</Box>
@@ -543,16 +507,7 @@ export default function Calendar({
 									}
 								})
 								.map((item) => (
-									<Appointment
-										anonym={anonym}
-										appointment={{
-											id: item.id,
-											ownerWalletId: item.ownerWalletId,
-											dateTime: item.dateTime,
-											durationInSecs: item.durationInSecs,
-											docWalletID: item.docWalletID,
-										}}
-									/>
+									<Appointment key={item.id} anonym={anonym} appointment={item} />
 								))}
 							{/* {generateNewAppointment(4)} */}
 						</Box>
@@ -574,16 +529,7 @@ export default function Calendar({
 									}
 								})
 								.map((item) => (
-									<Appointment
-										anonym={anonym}
-										appointment={{
-											id: item.id,
-											ownerWalletId: item.ownerWalletId,
-											dateTime: item.dateTime,
-											durationInSecs: item.durationInSecs,
-											docWalletID: item.docWalletID,
-										}}
-									/>
+									<Appointment key={item.id} anonym={anonym} appointment={item} />
 								))}
 							{/* {generateNewAppointment(5)} */}
 						</Box>
@@ -594,8 +540,7 @@ export default function Calendar({
 				open={inputFormOpen}
 				handleClose={handleInputFormClose}
 				date={selectedDay}
-				docId={docWalletId}
-				consultationCategories={consultationCategories}
+				doctor={doctor}
 				putAppointmentToCalendar={putAppointmentToCalendar}
 			/>
 		</Box>
