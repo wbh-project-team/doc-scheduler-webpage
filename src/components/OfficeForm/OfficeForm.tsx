@@ -90,6 +90,7 @@ interface Props {
 	changeExistingData: boolean;
 	isLoading: boolean;
 	setLoading: Dispatch<SetStateAction<boolean>>;
+	setVisible: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function OfficeForm({
@@ -97,6 +98,7 @@ export default function OfficeForm({
 	changeExistingData,
 	isLoading,
 	setLoading,
+	setVisible,
 }: Props) {
 	const [inputValues, setInputValues] = useState<{ [key: string]: any }>({});
 	const [inputSelectValues, setInputSelectValues] = useState<{ [key: string]: any }>({});
@@ -190,7 +192,6 @@ export default function OfficeForm({
 				// alert(  val +  key + inputSelectValues[key] )
 				return { category: val, durationInSecs: inputSelectValues[key] * 60 };
 			});
-			console.log(categoryArray);
 
 			if (
 				name.length > 0 &&
@@ -219,6 +220,7 @@ export default function OfficeForm({
 				};
 
 				setLoading(true);
+				setVisible(false);
 
 				if (changeExistingData) {
 					await reconfigureOffice(newDocData);

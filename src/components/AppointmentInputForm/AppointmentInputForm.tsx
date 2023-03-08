@@ -81,10 +81,13 @@ Bitte wählen Sie einen anderen Termin, der noch frei ist.`);
     }
 		handleClose();
 
+		console.log(currCategory);
+
 		putAppointmentToCalendar({
 			patient: getAddress(),
 			doctor: doctor,
 			dateTime: [date[1], date[2], date[3], hour, minutes],
+			categoryName: currCategory,
 			duration: duration,
 		});
 
@@ -92,6 +95,7 @@ Bitte wählen Sie einen anderen Termin, der noch frei ist.`);
 			patient: getAddress(),
 			doctor: doctor,
 			dateTime: [date[1], date[2], date[3], hour, minutes],
+			categoryName: currCategory,
 			duration: duration,
 		});
 	};

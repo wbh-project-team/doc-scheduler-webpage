@@ -39,6 +39,8 @@ export async function createDoctorsOffice(newDoctor: Doctor): Promise<void> {
 			lunchStart: newDoctor.openHours.map((item) => item.lunchStart),
 			lunchEnd: newDoctor.openHours.map((item) => item.lunchEnd),
 			specializations: [newDoctor.specialization],
+			categoryNames: newDoctor.consultationCategories.map((item) => item.category),
+			categoryDurations: newDoctor.consultationCategories.map((item) => item.durationInSecs),
 		};
 		console.log(doctor);
 
@@ -53,8 +55,6 @@ export async function createDoctorsOffice(newDoctor: Doctor): Promise<void> {
 
 export async function reconfigureOffice(newDoctor: Doctor): Promise<void> {
 	try {
-		console.log(newDoctor.id);
-
 		const result = await docScheduler.reconfigureOffice({
 			id: newDoctor.id,
 			owner: ethers.constants.AddressZero,
@@ -70,7 +70,8 @@ export async function reconfigureOffice(newDoctor: Doctor): Promise<void> {
 			lunchStart: newDoctor.openHours.map((item) => item.lunchStart),
 			lunchEnd: newDoctor.openHours.map((item) => item.lunchEnd),
 			specializations: [newDoctor.specialization],
-			// categoryNames: newDoctor.consultationCategories.map((item) => item.category)
+			categoryNames: newDoctor.consultationCategories.map((item) => item.category),
+			categoryDurations: newDoctor.consultationCategories.map((item) => item.durationInSecs),
 		});
 
 		const tx = await result.wait();
@@ -100,7 +101,12 @@ export async function getDoctors(): Promise<Doctor[] | null> {
 					};
 				}),
 				specialization: item.specializations[0],
-				consultationCategories: [],
+				consultationCategories: item.categoryNames.map((categoryName, index) => {
+					return {
+						category: categoryName,
+						durationInSecs: item.categoryDurations[index],
+					};
+				}),
 				description: item.description,
 			};
 		});
@@ -122,6 +128,7 @@ export async function createAppointment(newAppointment: IAppointment): Promise<v
 		const appointment = {
 			id: 0,
 			startTime: +startTime / 1000,
+			categoryName: newAppointment.categoryName,
 			duration: 60 * 30, //placeholder
 			patient: newAppointment.patient,
 			doctorsId: newAppointment.doctor.id,
