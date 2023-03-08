@@ -143,12 +143,12 @@ export default function DoctorDetails({ doctor }: Props) {
 						{weekdays[index]}
 						</Typography>
 						<Typography variant="h6" sx={{ fontWeight: '1000' }}>
-						{(day.start / 60 / 60 / 1000).toFixed(2)}-
+						{(day.openingTime / 60 / 60 / 1000).toFixed(2)}-
 						{(day.lunchStart / 60 / 60 / 1000).toFixed(2)}
 						</Typography>
 						<Typography variant="h6" sx={{ fontWeight: '1000' }}>
 						{(day.lunchEnd / 60 / 60 / 1000).toFixed(2)}-
-						{(day.end / 60 / 60 / 1000).toFixed(2)}
+						{(day.closingTime / 60 / 60 / 1000).toFixed(2)}
 						</Typography>
 					</Box>
                 ))}

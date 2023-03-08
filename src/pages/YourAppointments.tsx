@@ -27,7 +27,7 @@ export default function YourAppointments() {
   	//alert(checkNumberMonday + checkNumberFriday + obj.dateTime[2]*10000+obj.dateTime[1]*100+obj.dateTime[0])
   	
     //if(isLoggedIn && obj.ownerWalletId == getAddress()){  // TODO: wieder einkommentieren
-      if(obj.ownerWalletId == '11111111111'){
+      if(obj.ownerWalletId == getAddress()){
 
   		return obj;
   	}
@@ -82,12 +82,13 @@ export default function YourAppointments() {
           }
         }}
       >
+        
         <Container
           sx={{
             position: 'absolute',
             // backgroundColor: 'rgba(255, 255, 255, 0.9)',
             width: '95%',
-            height: '120vh',
+            // height: '120vh',
             color: 'secondary.main',
             fontSize: '120%',
             padding: '2vw',
@@ -99,6 +100,20 @@ export default function YourAppointments() {
             transform: 'translate(2.5%, 0%)'
           }}
         >
+          <Box
+								sx={{
+									//zindex: 1,
+									
+									color: 'secondary.main',
+									backgroundColor: 'white',
+									padding: '30px 10px',
+									overflow: 'hidden',
+									fontSize: '200%',
+									fontWeight: 'bold',
+									textAlign: 'center',
+                  width: '100%',
+                  // height: '20rem'
+								}}>Deine Termine: </Box>
         {/* <Box sx={{display: 'flex', flexDirection: 'row', gap: '10px'}}> */}
         {userAppointmentsArray.map((element) => (
               <Box sx={{width: '15vw', 

@@ -59,7 +59,6 @@ const CustomTextField = styled(TextField)(({ theme }) => ({
         if (isLoggedIn) {
             fetchBalance();
         }
-        alert(ethers.utils.formatEther(balance))
     }, [isLoggedIn]);
     const router = useRouter();
   

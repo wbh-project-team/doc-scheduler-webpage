@@ -205,7 +205,7 @@ export default function OfficeForm({ currdoctor, changeExistingData }: Props) {
           zipCode: Number(zipCode), 
           address: address, 
           city: city, 
-          openHours: Array.apply(null, Array(5)).map(()=>( {start:8.3 * 60 * 60 * 1000, end: 16 * 60 * 60 * 1000, lunchStart: 12*60*60*1000, lunchEnd: 13*60*60*1000} )),
+          openHours: Array.apply(null, Array(5)).map(()=>( {openingTime:8.3 * 60 * 60 * 1000, closingTime: 16 * 60 * 60 * 1000, lunchStart: 12*60*60*1000, lunchEnd: 13*60*60*1000} )),
           specialization: currentAreaOfExpertise as keyof typeof areaOfExpertise,
           consultationCategories: specificationArray,
           //consultationCategories: inputValues.map((item: string, index: number) => ( { category: item, durationInSecs: inputSelectValues[index] } )),

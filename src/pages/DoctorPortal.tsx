@@ -34,9 +34,10 @@ export default function Home() {
 	useEffect(() => {
 		if (isLoggedIn) {
 			setCurrentDocFromWalletID(findDocInList());
-		} else {
-			setCurrentDocFromWalletID(docs[0]);
-		} // TODO: else entfernen!
+		} //else {
+			//setCurrentDocFromWalletID(docs[0]);
+		//} // TODO: else entfernen!
+    alert(currentDocFromWalletID)
 	}, [isLoggedIn]);
 
 	function findDocInList() {
@@ -97,7 +98,7 @@ export default function Home() {
 					}}>
 					{
 						// wenn User nicht eingeloggt ist oder unter dieser WalletAdresse noch keine Praxis erstellt wurde //TODO Ausrufezeichen entfernen
-						isLoggedIn || currentDocFromWalletID != null ? (
+						(isLoggedIn && currentDocFromWalletID !== null) ? (
 							//wenn der User eingeloggt ist und unter der WalletAdresse eine Praxis erstellt wurde
 							<Box
 								sx={{
