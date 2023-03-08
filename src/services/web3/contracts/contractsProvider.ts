@@ -53,6 +53,8 @@ export async function createDoctorsOffice(newDoctor: Doctor): Promise<void> {
 
 export async function reconfigureOffice(newDoctor: Doctor): Promise<void> {
 	try {
+		console.log(newDoctor.id);
+
 		const result = await docScheduler.reconfigureOffice({
 			id: newDoctor.id,
 			owner: ethers.constants.AddressZero,
@@ -68,6 +70,7 @@ export async function reconfigureOffice(newDoctor: Doctor): Promise<void> {
 			lunchStart: newDoctor.openHours.map((item) => item.lunchStart),
 			lunchEnd: newDoctor.openHours.map((item) => item.lunchEnd),
 			specializations: [newDoctor.specialization],
+			// categoryNames: newDoctor.consultationCategories.map((item) => item.category)
 		});
 
 		const tx = await result.wait();

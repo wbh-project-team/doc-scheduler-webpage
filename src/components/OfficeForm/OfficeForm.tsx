@@ -200,7 +200,7 @@ export default function OfficeForm({
 				zipCode.length > 0
 			) {
 				const newDocData: Doctor = {
-					id: 0, // TODO: get id from blockchain
+					id: currdoctor ? currdoctor.id : 0, // TODO: get id from blockchain
 					walletId: getAddress(),
 					firstname: firstname,
 					name: name,

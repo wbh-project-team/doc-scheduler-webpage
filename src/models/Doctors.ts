@@ -31,6 +31,8 @@ export interface DoctorFromSC {
 	lunchStart: BigNumberish[];
 	lunchEnd: BigNumberish[];
 	specializations: string[];
+	categoryNames: string[];
+	categoryDurations: BigNumberish[];
 }
 
 export interface BusinessHours {
