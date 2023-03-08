@@ -216,7 +216,6 @@ export default function OfficeForm({
 					specialization: currentAreaOfExpertise as keyof typeof areaOfExpertise,
 					consultationCategories: categoryArray,
 					description: description,
-					rating: 0,
 				};
 
 				setLoading(true);

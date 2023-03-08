@@ -102,7 +102,7 @@ export default function Home() {
 								display: 'flex',
 								backgroundColor: 'tomato',
 								marginTop: '15px',
-								width: '100%',
+								width: '98%',
 								fontSize: '200%',
 								fontWeight: 'light',
 								marginBottom: '15px',
@@ -166,7 +166,7 @@ export default function Home() {
 											specialization: doctor.specialization,
 											consultationCategories: doctor.consultationCategories,
 											description: doctor.description,
-											rating: doctor.rating,
+											// rating: doctor.rating,
 										}}
 										onclick={() => handleCardClick(doctor)}
 									/>

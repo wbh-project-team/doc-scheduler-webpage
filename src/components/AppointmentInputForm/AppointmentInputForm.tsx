@@ -26,6 +26,7 @@ interface Props {
 	date: number[];
 	weekDay: number;
 	doctor: Doctor;
+  currDayAppointments: IAppointment[];
 	putAppointmentToCalendar: (date: IAppointment) => void;
 }
 
@@ -35,6 +36,7 @@ export default function AppointmentInputForm({
 	date,
 	weekDay,
 	doctor,
+  currDayAppointments,
 	putAppointmentToCalendar,
 }: Props) {
 	const [hour, setHour] = useState(7);
@@ -51,7 +53,10 @@ export default function AppointmentInputForm({
 	};
 
 	const handleSubmit = async () => {
-		let duration = 0;
+		let duration = 15*60; // TODO duration categories implementieren
+    for (const item of doctor.consultationCategories) {
+      if (item.category == currCategory) duration = item.durationInSecs;
+    }
 		if (
 			doctor.openHours[weekDay - 1].openingTime > hour * 60 * 60 * 1000 + minutes * 60 * 1000 ||
 			doctor.openHours[weekDay - 1].closingTime - 60 * 60 * 1000 <
@@ -67,6 +72,13 @@ export default function AppointmentInputForm({
 			alert('Bitte stimmen Sie den AGB zu.');
 			return;
 		}
+
+    if (appointmentIsBlocked(duration)) {
+      alert(`Für die gewählte Terminkategorie ist ein Zeitraum von ${duration/60} Minuten vorgesehen. \
+Zu dem von Ihnen angegebenen Zeitpunkt ist leider nicht genug Zeit verfügbar. \
+Bitte wählen Sie einen anderen Termin, der noch frei ist.`);
+			return;
+    }
 		handleClose();
 
 		putAppointmentToCalendar({
@@ -83,6 +95,20 @@ export default function AppointmentInputForm({
 			duration: duration,
 		});
 	};
+
+  function appointmentIsBlocked(duration: number){
+    for (const element of currDayAppointments) {
+      let elemStart = element.dateTime[3]*60 + element.dateTime[4];
+      let elemEnd = elemStart + element.duration/60;
+      let start = hour*60 + minutes;
+      let end = start + duration/60;
+      
+      if ( end > elemStart && start < elemEnd ) {
+        return true;
+      }
+    }
+    return false;
+  }
 
 	const stylePopupBox = {
 		display: 'block',

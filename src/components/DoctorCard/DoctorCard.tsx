@@ -43,14 +43,16 @@ export default function DoctorCard({ doctor, onclick }: Props) {
 						alignItems: 'center',
 						gap: '12px',
 					}}>
-					<Avatar src="/images/portrait.jpeg" sx={{ width: '80px', height: '80px' }} />
+					<Avatar 
+						// src="/images/portrait.jpeg" 
+						sx={{ width: '80px', height: '80px', marginRight:'20px' }} />
 					<Box sx={{ display: 'flex', flexDirection: 'column', gap: '0px' }}>
 						<Typography variant="subtitle1" sx={{ fontWeight: 700, fontSize: '2em' }}>
 							{doctor.firstname} {doctor.name}
 						</Typography>
-						<Typography variant="caption" sx={{ fontWeight: 700 }}>
+						{/* <Typography variant="caption" sx={{ fontWeight: 700 }}>
 							{doctor.rating} / 5
-						</Typography>
+						</Typography> */}
 					</Box>
 				</Box>
 				<Box
@@ -66,7 +68,7 @@ export default function DoctorCard({ doctor, onclick }: Props) {
 						{doctor.zipCode} {doctor.city}
 					</Typography>
 				</Box>
-				<Box
+				{/* <Box
 					sx={{
 						width: '32px',
 						height: '32px',
@@ -74,7 +76,7 @@ export default function DoctorCard({ doctor, onclick }: Props) {
 						borderRadius: '50%',
 						border: 'solid 1px #9e9e9e',
 					}}
-				/>
+				/> */}
 			</Box>
 			<Box
 				sx={{

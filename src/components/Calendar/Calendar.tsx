@@ -551,6 +551,15 @@ export default function Calendar({ doctor, anonym }: Props) {
 				date={selectedDay}
 				weekDay={selectedWeekDay}
 				doctor={doctor}
+				currDayAppointments = {
+					weekAppointments.filter(function (obj) {
+						//alert(checkNumberMonday + checkNumberFriday + obj.dateTime[2]*10000+obj.dateTime[1]*100+obj.dateTime[0])
+						if (
+							obj.dateTime[0] == selectedDay[1] // wenn der Tag uebereinstimmt, passen Monat und Jahr aus weekappointments auch
+						) {
+							return obj;
+						}
+				})}
 				putAppointmentToCalendar={putAppointmentToCalendar}
 			/>
 		</Box>

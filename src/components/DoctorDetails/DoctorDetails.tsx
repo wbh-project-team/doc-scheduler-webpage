@@ -41,18 +41,19 @@ export default function DoctorDetails({ doctor }: Props) {
 							//   mt: '3rem',
 							//  width: '100%'
 						}}>
-						<Box sx={{ display: 'grid', backgroundColor: 'white' }}>
+						<Box sx={{ display: 'grid', }}>
 							<Box
 								sx={{
 									display: 'grid',
 									//backgroundColor: 'white',
 									alignItems: 'center',
 									justifyContent: 'left',
-									pt: '3vh',
+									padding: '3vh',
 									//   width: '50%',
-									//backgroundColor: 'red',
 								}}>
-								<Avatar src="/images/portrait.jpeg" sx={{ width: '12vh', height: '12vh' }} />
+                  <Avatar 
+                    //src="/images/portrait.jpeg" 
+                    sx={{ width: '12vh', height: '12vh' }} />
 							</Box>
 							<Box
 								sx={{
@@ -65,11 +66,8 @@ export default function DoctorDetails({ doctor }: Props) {
 									{areaOfExpertise[doctor.specialization]}
 								</Typography>
 								<Typography variant="subtitle1" sx={{ fontWeight: 700, fontSize: '2em' }}>
-									{doctor.firstname}
+									{doctor.firstname}{' '}
 									{doctor.name}
-								</Typography>
-								<Typography variant="caption" sx={{ fontWeight: 700 }}>
-									{doctor.rating} / 5
 								</Typography>
 							</Box>
 							<Box
@@ -93,7 +91,7 @@ export default function DoctorDetails({ doctor }: Props) {
 							<Typography
 								variant="subtitle1"
 								sx={{
-									//pt: '0.5vh',
+									pt: '0.5vh',
 									fontWeight: 700,
 								}}>
 								Öffnungszeiten:
@@ -107,6 +105,7 @@ export default function DoctorDetails({ doctor }: Props) {
 										justifyContent: 'center',
 										alignItems: 'center',
 										pb: 'em',
+                    paddingBottom: '10px',
 									}}>
 									<Typography variant="overline" sx={{ fontWeight: 'normal' }}>
 										{weekdays[index]}
@@ -123,7 +122,7 @@ export default function DoctorDetails({ doctor }: Props) {
 							))}
 						</Box>
 						{/* <Box sx={{ display: 'grid', backgroundColor: 'white' }}> :</Box> */}
-
+            <Typography variant="subtitle1" sx={{pt: '0.5vh',  fontWeight: 700 }}>Beschreibung: </Typography>
 						<Typography sx={{ fonSize: '30%', pr: '1vw', backgroundColor: 'white' }}>
 							{doctor.description}
 						</Typography>

@@ -5,7 +5,7 @@ export interface Doctor {
 	walletId: string; // owner address
 	pictureLink?: string;
 	firstname: string;
-	name: string; // Titel + Vorname + Nachname
+	name: string; // Titel + Vorname
 	zipCode: number;
 	address: string;
 	city: string;
@@ -13,7 +13,7 @@ export interface Doctor {
 	specialization: keyof typeof areaOfExpertise;
 	consultationCategories: IConsultationCategory[];
 	description: string;
-	rating?: number;
+	// rating?: number;
 }
 
 export interface DoctorFromSC {
@@ -76,7 +76,7 @@ export const docs: Doctor[] = [
 			{ category: 'Nachsorge', durationInSecs: 900 },
 		],
 		description: '',
-		rating: 4.5,
+		// rating: 4.5,
 	},
 	{
 		id: 1,
@@ -100,7 +100,7 @@ export const docs: Doctor[] = [
 			{ category: 'Wurzelbehandlung', durationInSecs: 2700 },
 		],
 		description: '',
-		rating: 4.9,
+		// rating: 4.9,
 	},
 	{
 		id: 2,
@@ -124,7 +124,7 @@ export const docs: Doctor[] = [
 			{ category: 'Wurzelbehandlung', durationInSecs: 900 },
 		],
 		description: '',
-		rating: 3,
+		// rating: 3,
 	},
 	{
 		id: 3,
@@ -148,7 +148,7 @@ export const docs: Doctor[] = [
 			{ category: 'Wurzelbehandlung', durationInSecs: 900 },
 		],
 		description: '',
-		rating: 5,
+		// rating: 5,
 	},
 	{
 		id: 4,
@@ -181,7 +181,7 @@ export const docs: Doctor[] = [
 		und Ernährungsmedizin wie auch die Behandlung von Bluthochdruckerkrankungen und Impfberatung. \
 		Ferner bieten wir psychotherapeutische Sitzungen an.\
 		​Wir freuen uns auf Sie!',
-		rating: 4.5,
+		// rating: 4.5,
 	},
 	{
 		id: 5,
@@ -205,6 +205,6 @@ export const docs: Doctor[] = [
 			{ category: 'Wurzelbehandlung', durationInSecs: 900 },
 		],
 		description: 'Arzt in Darmstadt, Hessen',
-		rating: 4.5,
+		// rating: 4.5,
 	},
 ];
