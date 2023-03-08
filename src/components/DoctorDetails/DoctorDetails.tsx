@@ -2,16 +2,10 @@ import {
   Avatar,
   Box,
   Container,
-  InputBase,
-  styled,
-  TextField,
   Typography
 } from '@mui/material'
 import { areaOfExpertise, Doctor } from '../../models/Doctors'
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
-//import { CalendarPicker } from '@mui/x-date-pickers/CalendarPicker';
-import DoctorCard from '../DoctorCard/DoctorCard'
+import { useState } from 'react'
 import Calendar from '../Calendar/Calendar'
 
 const weekdays = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag']
@@ -24,9 +18,6 @@ export default function DoctorDetails({ doctor }: Props) {
   const [selectedDocId, setSelectedDocId] = useState(doctor.walletId)
   const [selectedDocBH, setSelectedDocBH] = useState(doctor.openHours)
   const [selectedDocCC, setSelectedDocCC] = useState(doctor.consultationCategories)
-  // useEffect(() => {
-  // 	calcWeekStartDate();
-  // }, [selectedDocId])
 
   return (
     <>
@@ -36,7 +27,6 @@ export default function DoctorDetails({ doctor }: Props) {
           //height: '200px',
           backgroundColor: 'white',
           width: '100%',
-          //color: 'secondary.main',
           color: 'tomato',
           margin: '15px',
           padding: '1vh'
