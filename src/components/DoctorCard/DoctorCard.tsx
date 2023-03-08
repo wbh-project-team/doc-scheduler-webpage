@@ -63,7 +63,7 @@ export default function DoctorCard({ doctor, onclick }: Props) {
               variant="subtitle1"
               sx={{ fontWeight: 700, fontSize: '2em' }}
             >
-              {doctor.name}
+              {doctor.firstname} {doctor.name}
             </Typography>
             <Typography variant="caption" sx={{ fontWeight: 700 }}>
               {doctor.rating} / 5

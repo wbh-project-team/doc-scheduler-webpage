@@ -94,8 +94,8 @@ export default function Home() {
 				}}>
 				<Box
 					sx={{
-						height: '50vw',
-						width: '50vw',
+						height: '31vw',
+						width: '31vw',
 						position: 'absolute',
 						zIndex: 0,
 						top: '50%',
@@ -124,13 +124,24 @@ export default function Home() {
 					}}>
 					<Typography
 						sx={{
-							width: '500px',
+							// width: '43vw',
+							textAlign: 'center',
+							textTransform: 'uppercase',
+							zIndex: 0,
+							rowGap:'0',
+						}}
+						variant="h1">
+						Arzt-Termine 
+					</Typography>
+					
+					<Typography sx={{
+							// width: '43vw',
 							textAlign: 'center',
 							textTransform: 'uppercase',
 							zIndex: 0,
 						}}
 						variant="h1">
-						Arzt-Termine Einfach Buchen
+						Einfach Buchen
 					</Typography>
 					<Box
 						sx={{

@@ -95,22 +95,25 @@ export default function YourAppointments() {
             mb: '120px',
             display: 'flex',
             flexDirection: 'row',
-            gap: '10px',
+            gap: '15px',
             transform: 'translate(2.5%, 0%)'
           }}
         >
         {/* <Box sx={{display: 'flex', flexDirection: 'row', gap: '10px'}}> */}
         {userAppointmentsArray.map((element) => (
               <Box sx={{width: '15vw', 
-              height: '15rem', 
+              height: '17rem', 
               
               color: 'secondary.main', 
               backgroundColor: 'white', 
-              border: '3px solid tomato', 
+              border: '10px solid tomato', 
               padding: '5px',
               }}>
                 <Typography variant="h5">
-                  Termin am: {element.dateTime[0]}.{element.dateTime[1]}.{element.dateTime[2]}
+                  Termin am: 
+                </Typography>
+                <Typography variant="h5">
+                {element.dateTime[0]}.{element.dateTime[1]}.{element.dateTime[2]}
                 </Typography>
                 <br></br>
                 <Typography>

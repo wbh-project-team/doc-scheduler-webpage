@@ -43,7 +43,7 @@ export default function DoctorDetails({ doctor }: Props) {
         }}
       >
         <Typography sx={{ fontSize: '100%' }}>
-          Buche schnell einen Termin bei {doctor.name}!
+          Buche schnell einen Termin bei {doctor.firstname} {doctor.name}!
         </Typography>
         <Container
           sx={{
@@ -57,7 +57,7 @@ export default function DoctorDetails({ doctor }: Props) {
               color: 'secondary.main',
               fontSize: '1rem',
               display: 'grid',
-			  width: '100%',
+			        width: '100%',
               gridTemplateColumns: '1fr',
             //    gridTemplateRows: 'repeat(4, 1fr)',
             //   mt: '3rem',
@@ -71,7 +71,7 @@ export default function DoctorDetails({ doctor }: Props) {
                   //backgroundColor: 'white',
                   alignItems: 'center',
                   justifyContent: 'left',
-				  pt: '3vh',
+				          pt: '3vh',
                 //   width: '50%',
 				  //backgroundColor: 'red',
                 }}
@@ -86,10 +86,10 @@ export default function DoctorDetails({ doctor }: Props) {
                       display: 'flex',
                       flexDirection: 'column',
                       gap: '0px',
-					 // backgroundColor: 'blue',
+					            // backgroundColor: 'blue',
                     }}
                   >
-					<Typography
+					          <Typography
                       variant="subtitle1"
                       sx={{ fontWeight: 700, pt: '2vh' }}
                     >
@@ -99,7 +99,7 @@ export default function DoctorDetails({ doctor }: Props) {
                       variant="subtitle1"
                       sx={{ fontWeight: 700, fontSize: '2em' }}
                     >
-                      {doctor.name}
+                      {doctor.firstname}{doctor.name}
                     </Typography>
                     <Typography variant="caption" sx={{ fontWeight: 700 }}>
                       {doctor.rating} / 5
@@ -110,7 +110,7 @@ export default function DoctorDetails({ doctor }: Props) {
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'center',
-					//backgroundColor: 'lightgreen',
+					          //backgroundColor: 'lightgreen',
                   }}
                 >
 					<Typography

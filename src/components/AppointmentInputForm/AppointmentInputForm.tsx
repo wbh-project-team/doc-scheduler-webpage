@@ -81,7 +81,7 @@ export default function AppointmentInputForm({
   
   return (
     <>
-    { isLoggedIn ? (
+    { !isLoggedIn ? (
       <Dialog
         open={open}
         onClose={handleClose}
