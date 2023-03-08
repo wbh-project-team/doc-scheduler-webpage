@@ -36,8 +36,6 @@ export default function Calendar({
 	consultationCategories,
 	anonym,
 }: Props) {
-	//const router = useRouter();
-	//const [selectedDocId, setSelectedDocId] = useState(docId);
 	const [selectedYear, setSelectedYear] = useState<string>('2023');
 	const [yearValues, setYearValues] = useState<string[]>(['2023', '2024']);
 	const [selectedMonth, setSelectedMonth] = useState<string>('März');
@@ -124,7 +122,7 @@ export default function Calendar({
 		});
 
 		//useState hook works asynchronuous!
-		let dayDates: Array<Array<number>> = [
+		let dayDates: number[][] = [
 			[dateMonday[0], monthMonday, yearMonday],
 			[
 				daytuesday,
@@ -150,10 +148,13 @@ export default function Calendar({
 		setDateThursday(dayDates[3]);
 		setDateFriday(dayDates[4]);
 
+		console.log(dayDates);
+		console.log(openHours);
 		//let dayDates: Array<Array<number>> = [[dateMonday[0], monthMonday, yearMonday],]
 		let closingTimes: Array<IAppointment> = [];
 
 		openHours.forEach(function (element, index) {
+			if (index > 4) return; //quick fix
 			let start = Math.round(
 				Math.trunc(openHours[index].openingTime / 60 / 60 / 1000) * 60 * 60 +
 					((openHours[index].openingTime / 10 / 60 / 60) % 100) * 60,

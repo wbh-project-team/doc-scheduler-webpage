@@ -20,34 +20,33 @@ import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
 import OfficeForm from '../components/OfficeForm/OfficeForm';
 import { useContext, useEffect, useRef, useState } from 'react';
-import { areaOfExpertise, docs, Doctor } from '../models/Doctors';
+import { Doctor } from '../models/Doctors';
 import Calendar from '../components/Calendar/Calendar';
 
 import { WalletContent, WalletContext } from '../services/web3/wallets/walletProvider';
+import { getDoctors } from '../services/web3/contracts/contractsProvider';
 
 export default function Home() {
-	const [currentDocFromWalletID, setCurrentDocFromWalletID] = useState<Doctor | null>(null); // TODO null (docs[0])
 	const [changeOfficeDataVisible, setChangeOfficeDataVisible] = useState(false);
-	const { isLoggedIn, login, logout, getAddress, getBalance, getPrivateKey } =
-		useContext<WalletContent>(WalletContext);
+	const { isLoggedIn, getAddress } = useContext<WalletContent>(WalletContext);
+	const [doctor, setDoctor] = useState<Doctor | null>(null);
 
 	useEffect(() => {
-		if (isLoggedIn) {
-			setCurrentDocFromWalletID(findDocInList());
-		} else {
-			setCurrentDocFromWalletID(docs[0]);
-		} // TODO: else entfernen!
-	}, [isLoggedIn]);
+		const loadDocs = async () => {
+			const docs = await getDoctors();
+			if (!docs) return;
 
-	function findDocInList() {
-		let currWalletAddress = getAddress();
-		docs.forEach((element) => {
-			if (element.walletId == currWalletAddress) {
-				return element;
-			}
-		});
-		return null;
-	}
+			const currentDoc = docs.find((doctor) => doctor.walletId === getAddress());
+			if (!currentDoc) return;
+			console.log(currentDoc);
+
+			setDoctor(currentDoc);
+		};
+
+		if (isLoggedIn) {
+			loadDocs();
+		}
+	}, [isLoggedIn]);
 
 	return (
 		<>
@@ -95,130 +94,123 @@ export default function Home() {
 						display: 'flex',
 						flexDirection: 'row',
 					}}>
-					{
-						// wenn User nicht eingeloggt ist oder unter dieser WalletAdresse noch keine Praxis erstellt wurde //TODO Ausrufezeichen entfernen
-						isLoggedIn || currentDocFromWalletID != null ? (
-							//wenn der User eingeloggt ist und unter der WalletAdresse eine Praxis erstellt wurde
+					{doctor !== null ? (
+						<Box
+							sx={{
+								display: 'flex',
+								flexDirection: 'column',
+								width: '100%',
+								transform: 'translate(-2.5%, 0%)',
+								margin: '20px',
+								paddingBottom: '90px',
+							}}>
+							<Typography variant="h1">
+								Ihre Termine, {doctor.firstname} {doctor.name}
+							</Typography>
+							<br></br>
+							<Calendar
+								anonym={false}
+								docWalletId={doctor.walletId}
+								openHours={doctor.openHours}
+								consultationCategories={doctor.consultationCategories}
+							/>
 							<Box
 								sx={{
 									display: 'flex',
 									flexDirection: 'column',
-									width: '100%',
-									transform: 'translate(-2.5%, 0%)',
-									margin: '20px',
-									paddingBottom: '90px',
+									alignItems: 'center',
+									justifyContent: 'center',
 								}}>
-								<Typography variant="h1">
-									Ihre Termine,{' '}
-									{currentDocFromWalletID ? currentDocFromWalletID.firstname : 'vorname'}{' '}
-									{currentDocFromWalletID ? currentDocFromWalletID.name : 'name'}
-								</Typography>
-								<br></br>
-								<Calendar
-									anonym={false}
-									docWalletId={currentDocFromWalletID ? currentDocFromWalletID.walletId : ''}
-									openHours={currentDocFromWalletID ? currentDocFromWalletID.openHours : []}
-									consultationCategories={
-										currentDocFromWalletID ? currentDocFromWalletID.consultationCategories : []
-									}></Calendar>
-								<Box
-									sx={{
-										display: 'flex',
-										flexDirection: 'column',
-										alignItems: 'center',
-										justifyContent: 'center',
-									}}>
-									<Button
-										variant={'contained'}
-										onClick={() => setChangeOfficeDataVisible(true)}
-										sx={{ height: '3em', fontSize: 14, mt: '2rem' }}>
-										Praxisdaten bearbeiten
-									</Button>
-									{changeOfficeDataVisible ? (
-										<Box
-											sx={{
-												border: '2px solid grey',
-												borderRadius: '10px',
-												mt: '35px',
-												pb: '20px',
-												alignItems: 'center',
-												justifyContent: 'center',
-											}}>
-											<OfficeForm currdoctor={currentDocFromWalletID} changeExistingData={true} />
-										</Box>
-									) : (
-										''
-									)}
-								</Box>
-							</Box>
-						) : (
-							<Container
-								sx={{ display: 'flex', transform: 'translate(-3%, 0%)', paddingBottom: '15px' }}>
-								<Box
-									sx={{
-										display: 'flex',
-										flexDirection: 'column',
-										width: '33%',
-										// height: '70vh',
-										backgroundColor: 'white',
-										border: '3px solid tomato',
-										borderBottomLeftRadius: '12%',
-										borderTopRightRadius: '12%',
-										margin: '2rem',
-										padding: '15px',
-									}}>
-									<Container
+								<Button
+									variant={'contained'}
+									onClick={() => setChangeOfficeDataVisible(true)}
+									sx={{ height: '3em', fontSize: 14, mt: '2rem' }}>
+									Praxisdaten bearbeiten
+								</Button>
+								{changeOfficeDataVisible ? (
+									<Box
 										sx={{
-											display: 'flex',
-											flexDirection: 'row',
+											border: '2px solid grey',
+											borderRadius: '10px',
+											mt: '35px',
+											pb: '20px',
+											alignItems: 'center',
+											justifyContent: 'center',
+										}}>
+										<OfficeForm currdoctor={doctor} changeExistingData={true} />
+									</Box>
+								) : (
+									''
+								)}
+							</Box>
+						</Box>
+					) : (
+						<Container
+							sx={{ display: 'flex', transform: 'translate(-3%, 0%)', paddingBottom: '15px' }}>
+							<Box
+								sx={{
+									display: 'flex',
+									flexDirection: 'column',
+									width: '33%',
+									// height: '70vh',
+									backgroundColor: 'white',
+									border: '3px solid tomato',
+									borderBottomLeftRadius: '12%',
+									borderTopRightRadius: '12%',
+									margin: '2rem',
+									padding: '15px',
+								}}>
+								<Container
+									sx={{
+										display: 'flex',
+										flexDirection: 'row',
+										// backgroundColor: 'blue',
+									}}>
+									<img
+										src="/images/logo3.png"
+										alt={'doc scheduler logo'}
+										style={{
+											height: '50%',
+											// width: '35%',
+											backgroundColor: 'white',
+											transform: 'translate(-50px, -22px) rotate(-30deg)',
+										}}
+									/>
+									<Typography
+										variant="h2"
+										sx={{
+											width: '200%',
+											transform: 'translate(-35px, 0px)',
+											color: 'tomato',
+											textAlign: 'center',
+											// pt: '1rem',
 											// backgroundColor: 'blue',
 										}}>
-										<img
-											src="/images/logo3.png"
-											alt={'doc scheduler logo'}
-											style={{
-												height: '50%',
-												// width: '35%',
-												backgroundColor: 'white',
-												transform: 'translate(-50px, -22px) rotate(-30deg)',
-											}}
-										/>
-										<Typography
-											variant="h2"
-											sx={{
-												width: '200%',
-												transform: 'translate(-35px, 0px)',
-												color: 'tomato',
-												textAlign: 'center',
-												// pt: '1rem',
-												// backgroundColor: 'blue',
-											}}>
-											Werde Teil der Community!
-										</Typography>
-									</Container>
-									<Typography variant="h5">
-										Registrieren Sie ganz einfach Ihre Praxis und testen Sie 24 Stunden ihren neuen
-										Praxiskalender.
+										Werde Teil der Community!
 									</Typography>
-									<br></br>
-									<Typography variant="h4" sx={{ color: 'primary.main', fontWeight: 'bold' }}>
-										Lizenzgebühren: 100 €/ Monat, monatlich kündbar!
-									</Typography>
-									<br></br>
-									<Typography variant="h5" sx={{}}>
-										Sie können bis zu 6 verschiedene Terminkategorien mit entsprechender Länge
-										definieren und eine individuelle Beschreibung Ihrer Praxis hinzufügen.
-									</Typography>
-									<br></br>
-									<Typography variant="h5" sx={{}}>
-										Seien Sie sichtbar und nutzen Sie die Vorteile unserer Community!
-									</Typography>
-								</Box>
-								<OfficeForm currdoctor={currentDocFromWalletID} changeExistingData={false} />
-								{/* Ende rightSide */}
-							</Container>
-						)
-					}
+								</Container>
+								<Typography variant="h5">
+									Registrieren Sie ganz einfach Ihre Praxis und testen Sie 24 Stunden ihren neuen
+									Praxiskalender.
+								</Typography>
+								<br></br>
+								<Typography variant="h4" sx={{ color: 'primary.main', fontWeight: 'bold' }}>
+									Lizenzgebühren: 100 €/ Monat, monatlich kündbar!
+								</Typography>
+								<br></br>
+								<Typography variant="h5" sx={{}}>
+									Sie können bis zu 6 verschiedene Terminkategorien mit entsprechender Länge
+									definieren und eine individuelle Beschreibung Ihrer Praxis hinzufügen.
+								</Typography>
+								<br></br>
+								<Typography variant="h5" sx={{}}>
+									Seien Sie sichtbar und nutzen Sie die Vorteile unserer Community!
+								</Typography>
+							</Box>
+							<OfficeForm currdoctor={doctor} changeExistingData={false} />
+							{/* Ende rightSide */}
+						</Container>
+					)}
 				</Container>
 			</Box>
 			<Footer />
