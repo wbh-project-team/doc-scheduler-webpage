@@ -25,7 +25,9 @@ export default function Appointments({ appointment, anonym }: Props) {
 				backgroundColor: 'lightblue',
 				padding: '0',
 			}}>
-			<Typography variant="body1">{anonym ? '' : appointment.patient}</Typography>
+			<Typography noWrap={true} sx={{ maxWidth: '150px' }} variant="body1">
+				{anonym ? '' : appointment.patient}
+			</Typography>
 		</Box>
 	);
 }

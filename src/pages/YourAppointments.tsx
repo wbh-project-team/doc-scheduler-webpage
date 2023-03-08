@@ -15,8 +15,7 @@ import { getAppointments, getDoctors } from '../services/web3/contracts/contract
 
 export default function YourAppointments() {
 	const router = useRouter();
-	const { isLoggedIn, login, logout, getAddress, getBalance, getPrivateKey } =
-		useContext<WalletContent>(WalletContext);
+	const { isLoggedIn, getAddress } = useContext<WalletContent>(WalletContext);
 	const [currentAppointments, setAppointments] = useState<IAppointment[]>([]);
 
 	useEffect(() => {
@@ -125,8 +124,6 @@ export default function YourAppointments() {
 								key={element.id}
 								sx={{
 									width: '15vw',
-									height: '17rem',
-
 									color: 'secondary.main',
 									backgroundColor: 'white',
 									border: '10px solid tomato',
@@ -141,6 +138,7 @@ export default function YourAppointments() {
 									Uhrzeit: {element.dateTime[3]}:
 									{element.dateTime[4] == 0 ? '00' : element.dateTime[4]} Uhr
 								</Typography>
+								<Typography>Dauer: {+element.duration / 60} Minuten</Typography>
 
 								<Typography>Bei: {element.doctor ? element.doctor.name : ''}</Typography>
 								<br></br>

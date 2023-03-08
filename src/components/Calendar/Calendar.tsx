@@ -2,11 +2,13 @@ import { Select, MenuItem, InputLabel, Container } from '@mui/material';
 import { appointmentsArray, IAppointment } from '../../models/Appointments';
 import { Box } from '@mui/system';
 //import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import AppointmentInputForm from '../AppointmentInputForm/AppointmentInputForm';
 import mystyles from './calendarStyle.module.css';
 import Appointment from '../Appointment/Appointment';
 import { BusinessHours, Doctor, IConsultationCategory } from '../../models/Doctors';
+import { getAppointments, getDoctors } from '../../services/web3/contracts/contractsProvider';
+import { WalletContent, WalletContext } from '../../services/web3/wallets/walletProvider';
 
 const monthsMap = new Map([
 	['Januar', 1],
@@ -29,6 +31,7 @@ interface Props {
 }
 
 export default function Calendar({ doctor, anonym }: Props) {
+	const { isLoggedIn, getAddress } = useContext<WalletContent>(WalletContext);
 	const [selectedYear, setSelectedYear] = useState<string>('2023');
 	const [yearValues, setYearValues] = useState<string[]>(['2023', '2024']);
 	const [selectedMonth, setSelectedMonth] = useState<string>('März');
@@ -67,144 +70,152 @@ export default function Calendar({ doctor, anonym }: Props) {
 
 	useEffect(() => {
 		//auf dateMonday[0]
-		let endOfMonth = 0;
-		if (calcKwFromSelectedMonth() == Number(selectedKW)) {
-			endOfMonth = calcEndOfMonth(
-				monthsMap.get(selectedMonth)! - 1 > 0 ? monthsMap.get(selectedMonth)! - 1 : 12,
-			);
-		} else {
-			endOfMonth = calcEndOfMonth(monthsMap.get(selectedMonth)!);
-		}
-		let daytuesday = dateMonday[0] < endOfMonth ? dateMonday[0] + 1 : 1;
-		let daywednesday = daytuesday < endOfMonth ? daytuesday + 1 : 1;
-		let daythursday = daywednesday < endOfMonth ? daywednesday + 1 : 1;
-		let dayfriday = daythursday < endOfMonth ? daythursday + 1 : 1;
+		const loadAppointments = async () => {
+			let endOfMonth = 0;
+			if (calcKwFromSelectedMonth() == Number(selectedKW)) {
+				endOfMonth = calcEndOfMonth(
+					monthsMap.get(selectedMonth)! - 1 > 0 ? monthsMap.get(selectedMonth)! - 1 : 12,
+				);
+			} else {
+				endOfMonth = calcEndOfMonth(monthsMap.get(selectedMonth)!);
+			}
+			let daytuesday = dateMonday[0] < endOfMonth ? dateMonday[0] + 1 : 1;
+			let daywednesday = daytuesday < endOfMonth ? daytuesday + 1 : 1;
+			let daythursday = daywednesday < endOfMonth ? daywednesday + 1 : 1;
+			let dayfriday = daythursday < endOfMonth ? daythursday + 1 : 1;
 
-		let monthMonday = 0;
-		let monthFriday = monthsMap.get(selectedMonth);
-		let yearMonday = 0;
-		let yearFriday = Number(selectedYear);
+			let monthMonday = 0;
+			let monthFriday = monthsMap.get(selectedMonth);
+			let yearMonday = 0;
+			let yearFriday = Number(selectedYear);
 
-		if (dateMonday[0] < dayfriday) {
-			monthMonday = monthFriday!;
-			yearMonday = yearFriday;
-		} else {
-			if (monthFriday! - 1 > 0) {
-				monthMonday = monthFriday! - 1;
+			if (dateMonday[0] < dayfriday) {
+				monthMonday = monthFriday!;
 				yearMonday = yearFriday;
 			} else {
-				monthMonday = 12;
-				yearMonday = yearFriday - 1;
+				if (monthFriday! - 1 > 0) {
+					monthMonday = monthFriday! - 1;
+					yearMonday = yearFriday;
+				} else {
+					monthMonday = 12;
+					yearMonday = yearFriday - 1;
+				}
 			}
+
+			//zB monday: 230227 friday: 230303 => da das Jahr vorne steht, wird immer weiter hochgezählt
+			let checkNumberMonday = yearMonday * 10000 + monthMonday * 100 + dateMonday[0];
+			let checkNumberFriday = yearFriday * 10000 + monthFriday! * 100 + dayfriday;
+
+			const doctors = await getDoctors();
+			if (!doctors) return;
+			let appointments: IAppointment[] = await getAppointments(doctors[0]);
+			appointments = appointments.filter(function (obj) {
+				//alert(checkNumberMonday + checkNumberFriday + obj.dateTime[2]*10000+obj.dateTime[1]*100+obj.dateTime[0])
+				if (
+					obj.doctor.walletId == doctor.walletId &&
+					obj.dateTime[2] * 10000 + obj.dateTime[1] * 100 + obj.dateTime[0] >= checkNumberMonday &&
+					obj.dateTime[2] * 10000 + obj.dateTime[1] * 100 + obj.dateTime[0] <= checkNumberFriday
+				) {
+					return obj;
+				}
+			});
+
+			//useState hook works asynchronuous!
+			let dayDates: number[][] = [
+				[dateMonday[0], monthMonday, yearMonday],
+				[
+					daytuesday,
+					(daytuesday > dateMonday[0] ? monthMonday : monthFriday)!,
+					daytuesday > dateMonday[0] ? yearMonday : yearFriday,
+				],
+				[
+					daywednesday,
+					(daywednesday > dateMonday[0] ? monthMonday : monthFriday)!,
+					daywednesday > dateMonday[0] ? yearMonday : yearFriday,
+				],
+				[
+					daythursday,
+					(daythursday > dateMonday[0] ? monthMonday : monthFriday)!,
+					daythursday > dateMonday[0] ? yearMonday : yearFriday,
+				],
+				[dayfriday, monthFriday!, yearFriday],
+			];
+
+			setDateMonday(dayDates[0]);
+			setDateTuesday(dayDates[1]);
+			setDateWednesday(dayDates[2]);
+			setDateThursday(dayDates[3]);
+			setDateFriday(dayDates[4]);
+
+			//let dayDates: Array<Array<number>> = [[dateMonday[0], monthMonday, yearMonday],]
+			let closingTimes: Array<IAppointment> = [];
+
+			doctor.openHours.forEach(function (element, index) {
+				if (index > 4) return; //quick fix
+				let start = Math.round(
+					Math.trunc(doctor.openHours[index].openingTime / 60 / 60 / 1000) * 60 * 60 +
+						((doctor.openHours[index].openingTime / 10 / 60 / 60) % 100) * 60,
+				);
+				let lunchStartHour = Math.trunc(doctor.openHours[index].lunchStart / 60 / 60 / 1000);
+				let lunchStartMin = (doctor.openHours[index].lunchStart / 10 / 60 / 60) % 100;
+				let lunchStart = lunchStartHour * 60 * 60 + lunchStartMin * 60;
+				let lunchEnd = Math.round(
+					Math.trunc(doctor.openHours[index].lunchEnd / 60 / 60 / 1000) * 60 * 60 +
+						(((doctor.openHours[index].lunchEnd / 10) % 100) / 60 / 60) * 60,
+				);
+				let endHour = Math.trunc(doctor.openHours[index].closingTime / 60 / 60 / 1000);
+				let endMinutes = (doctor.openHours[index].closingTime / 10 / 60 / 60) % 100;
+				let end = endHour * 60 * 60 + endMinutes * 60;
+
+				let durationBefore = start - 7 * 60 * 60;
+				if (durationBefore > 0) {
+					closingTimes.push({
+						patient: 'geschlossen',
+						dateTime: [dayDates[index][0], dayDates[index][1], dayDates[index][2], 7, 0],
+						duration: durationBefore,
+						doctor: doctor,
+					});
+				}
+				let durationLunchTime = lunchEnd - lunchStart;
+				if (durationLunchTime > 0) {
+					closingTimes.push({
+						patient: 'Pause',
+						dateTime: [
+							dayDates[index][0],
+							dayDates[index][1],
+							dayDates[index][2],
+							lunchStartHour,
+							lunchStartMin,
+						],
+						duration: durationLunchTime,
+						doctor: doctor,
+					});
+				}
+				//alert([dayDates[index][0], dayDates[index][1], dayDates[index][2], lunchStartHour,lunchStartMin])
+				let durationAfter = 20 * 60 * 60 - end;
+				if (durationAfter > 0) {
+					closingTimes.push({
+						patient: 'geschlossen',
+						dateTime: [
+							dayDates[index][0],
+							dayDates[index][1],
+							dayDates[index][2],
+							endHour,
+							endMinutes,
+						],
+						duration: durationAfter,
+						doctor: doctor,
+					});
+				}
+			});
+
+			appointments.push(...closingTimes);
+			setWeekappointments(appointments);
+		};
+
+		if (dateMonday[0]) {
+			loadAppointments();
 		}
-
-		//zB monday: 230227 friday: 230303 => da das Jahr vorne steht, wird immer weiter hochgezählt
-		let checkNumberMonday = yearMonday * 10000 + monthMonday * 100 + dateMonday[0];
-		let checkNumberFriday = yearFriday * 10000 + monthFriday! * 100 + dayfriday;
-
-		let weekAppointmentsArray: Array<IAppointment> = [];
-		weekAppointmentsArray = appointmentsArray.filter(function (obj) {
-			//alert(checkNumberMonday + checkNumberFriday + obj.dateTime[2]*10000+obj.dateTime[1]*100+obj.dateTime[0])
-			if (
-				obj.doctor.walletId == doctor.walletId &&
-				obj.dateTime[2] * 10000 + obj.dateTime[1] * 100 + obj.dateTime[0] >= checkNumberMonday &&
-				obj.dateTime[2] * 10000 + obj.dateTime[1] * 100 + obj.dateTime[0] <= checkNumberFriday
-			) {
-				return obj;
-			}
-		});
-
-		//useState hook works asynchronuous!
-		let dayDates: number[][] = [
-			[dateMonday[0], monthMonday, yearMonday],
-			[
-				daytuesday,
-				(daytuesday > dateMonday[0] ? monthMonday : monthFriday)!,
-				daytuesday > dateMonday[0] ? yearMonday : yearFriday,
-			],
-			[
-				daywednesday,
-				(daywednesday > dateMonday[0] ? monthMonday : monthFriday)!,
-				daywednesday > dateMonday[0] ? yearMonday : yearFriday,
-			],
-			[
-				daythursday,
-				(daythursday > dateMonday[0] ? monthMonday : monthFriday)!,
-				daythursday > dateMonday[0] ? yearMonday : yearFriday,
-			],
-			[dayfriday, monthFriday!, yearFriday],
-		];
-
-		setDateMonday(dayDates[0]);
-		setDateTuesday(dayDates[1]);
-		setDateWednesday(dayDates[2]);
-		setDateThursday(dayDates[3]);
-		setDateFriday(dayDates[4]);
-
-		//let dayDates: Array<Array<number>> = [[dateMonday[0], monthMonday, yearMonday],]
-		let closingTimes: Array<IAppointment> = [];
-
-		doctor.openHours.forEach(function (element, index) {
-			if (index > 4) return; //quick fix
-			let start = Math.round(
-				Math.trunc(doctor.openHours[index].openingTime / 60 / 60 / 1000) * 60 * 60 +
-					((doctor.openHours[index].openingTime / 10 / 60 / 60) % 100) * 60,
-			);
-			let lunchStartHour = Math.trunc(doctor.openHours[index].lunchStart / 60 / 60 / 1000);
-			let lunchStartMin = (doctor.openHours[index].lunchStart / 10 / 60 / 60) % 100;
-			let lunchStart = lunchStartHour * 60 * 60 + lunchStartMin * 60;
-			let lunchEnd = Math.round(
-				Math.trunc(doctor.openHours[index].lunchEnd / 60 / 60 / 1000) * 60 * 60 +
-					(((doctor.openHours[index].lunchEnd / 10) % 100) / 60 / 60) * 60,
-			);
-			let endHour = Math.trunc(doctor.openHours[index].closingTime / 60 / 60 / 1000);
-			let endMinutes = (doctor.openHours[index].closingTime / 10 / 60 / 60) % 100;
-			let end = endHour * 60 * 60 + endMinutes * 60;
-
-			let durationBefore = start - 7 * 60 * 60;
-			if (durationBefore > 0) {
-				closingTimes.push({
-					patient: 'geschlossen',
-					dateTime: [dayDates[index][0], dayDates[index][1], dayDates[index][2], 7, 0],
-					duration: durationBefore,
-					doctor: doctor,
-				});
-			}
-			let durationLunchTime = lunchEnd - lunchStart;
-			if (durationLunchTime > 0) {
-				closingTimes.push({
-					patient: 'Pause',
-					dateTime: [
-						dayDates[index][0],
-						dayDates[index][1],
-						dayDates[index][2],
-						lunchStartHour,
-						lunchStartMin,
-					],
-					duration: durationLunchTime,
-					doctor: doctor,
-				});
-			}
-			//alert([dayDates[index][0], dayDates[index][1], dayDates[index][2], lunchStartHour,lunchStartMin])
-			let durationAfter = 20 * 60 * 60 - end;
-			if (durationAfter > 0) {
-				closingTimes.push({
-					patient: 'geschlossen',
-					dateTime: [
-						dayDates[index][0],
-						dayDates[index][1],
-						dayDates[index][2],
-						endHour,
-						endMinutes,
-					],
-					duration: durationAfter,
-					doctor: doctor,
-				});
-			}
-		});
-
-		weekAppointmentsArray.push(...closingTimes);
-		setWeekappointments(weekAppointmentsArray);
 	}, [dateMonday[0]]);
 
 	function calcKwFromSelectedMonth() {
