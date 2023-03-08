@@ -12,6 +12,7 @@ import {
 	MenuItem,
 	Button,
 	Modal,
+	CircularProgress,
 } from '@mui/material';
 import { Box } from '@mui/system';
 import { useRouter } from 'next/router';
@@ -90,6 +91,7 @@ interface Props {
 }
 
 export default function OfficeForm({ currdoctor, changeExistingData }: Props) {
+	const [isLoading, setLoading] = useState<boolean>(false);
 	const [inputValues, setInputValues] = useState<{ [key: string]: any }>({});
 	const [inputSelectValues, setInputSelectValues] = useState<{ [key: string]: any }>({});
 	const [counter, setCounter] = useState(currdoctor ? currdoctor.consultationCategories.length : 1);
@@ -212,11 +214,15 @@ export default function OfficeForm({ currdoctor, changeExistingData }: Props) {
 					rating: 0,
 				};
 
+				setLoading(true);
+
 				if (changeExistingData) {
 					await reconfigureOffice(newDocData);
 				} else {
 					await createDoctorsOffice(newDocData);
 				}
+
+				setLoading(false);
 			} else {
 				//input error
 				alert(
@@ -348,7 +354,7 @@ export default function OfficeForm({ currdoctor, changeExistingData }: Props) {
 								marginTop: '0.1rem',
 							}}>
 							<Button
-								sx={{ width: '15em', height: '2.7rem' }}
+								sx={{ width: '100%', height: '2.7rem' }}
 								variant={'contained'}
 								onClick={handleClick}>
 								Terminkategorie hinzufügen
@@ -364,7 +370,7 @@ export default function OfficeForm({ currdoctor, changeExistingData }: Props) {
 											height: '50px',
 											alignItems: 'flex-start',
 										}}>
-										<Box sx={{ pt: '0em' }}>
+										<Box sx={{ flex: 2 }}>
 											<CustomTextField
 												key={'I' + index}
 												label="Terminkategorie"
@@ -377,7 +383,7 @@ export default function OfficeForm({ currdoctor, changeExistingData }: Props) {
 										</Box>
 										<FormControl
 											id={'Spec' + index}
-											sx={{ marginBottom: '1rem', height: '50px', width: '10em' }}
+											sx={{ marginBottom: '1rem', height: '50px', flex: 1 }}
 											size="small">
 											<InputLabel
 												variant="outlined"
@@ -410,15 +416,24 @@ export default function OfficeForm({ currdoctor, changeExistingData }: Props) {
 							})}
 						</Container>
 					</Box>
-					<Box sx={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+					<Box
+						sx={{
+							display: 'flex',
+							justifyContent: 'center',
+							alignItems: 'center',
+							gap: '10px',
+							mt: '2rem',
+						}}>
 						<Button
 							variant={'contained'}
+							disabled={isLoading}
 							onClick={() => {
 								handleCreateOfficeClick();
 							}}
-							sx={{ height: '3em', fontSize: 14, mt: '2rem' }}>
+							sx={{ p: '12px', fontSize: 14 }}>
 							{changeExistingData ? 'Praxis-Daten speichern' : 'Praxis erstellen'}
 						</Button>
+						{isLoading ? <CircularProgress /> : null}
 					</Box>
 				</Box>
 			)}
