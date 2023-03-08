@@ -24,6 +24,7 @@ interface Props {
 	open: any;
 	handleClose: any;
 	date: number[];
+	weekDay: number;
 	doctor: Doctor;
 	putAppointmentToCalendar: (date: IAppointment) => void;
 }
@@ -32,6 +33,7 @@ export default function AppointmentInputForm({
 	open,
 	handleClose,
 	date,
+	weekDay,
 	doctor,
 	putAppointmentToCalendar,
 }: Props) {
@@ -49,27 +51,37 @@ export default function AppointmentInputForm({
 	};
 
 	const handleSubmit = async () => {
-		// TODO: put ownerWalletID from Login
-		if (checked) {
-			let duration = 0;
-			handleClose();
-
-			putAppointmentToCalendar({
-				patient: getAddress(),
-				doctor: doctor,
-				dateTime: [date[1], date[2], date[3], hour, minutes],
-				duration: duration,
-			});
-
-			await createAppointment({
-				patient: getAddress(),
-				doctor: doctor,
-				dateTime: [date[1], date[2], date[3], hour, minutes],
-				duration: duration,
-			});
-		} else {
-			alert('Bitte stimmen Sie den AGB zu.');
+		let duration = 0;
+		if (
+			doctor.openHours[weekDay - 1].openingTime > hour * 60 * 60 * 1000 + minutes * 60 * 1000 ||
+			doctor.openHours[weekDay - 1].closingTime - 60 * 60 * 1000 <
+				hour * 60 * 60 * 1000 + minutes * 60 * 1000 ||
+			(doctor.openHours[weekDay - 1].lunchStart - 60 * 60 * 1000 <
+				hour * 60 * 60 * 1000 + minutes * 60 * 1000 &&
+				doctor.openHours[weekDay - 1].lunchEnd > hour * 60 * 60 * 1000 + minutes * 60 * 1000)
+		) {
+			alert('Bitte innerhalb der Öffnungszeiten reservieren');
+			return;
 		}
+		if (!checked) {
+			alert('Bitte stimmen Sie den AGB zu.');
+			return;
+		}
+		handleClose();
+
+		putAppointmentToCalendar({
+			patient: getAddress(),
+			doctor: doctor,
+			dateTime: [date[1], date[2], date[3], hour, minutes],
+			duration: duration,
+		});
+
+		await createAppointment({
+			patient: getAddress(),
+			doctor: doctor,
+			dateTime: [date[1], date[2], date[3], hour, minutes],
+			duration: duration,
+		});
 	};
 
 	const stylePopupBox = {
