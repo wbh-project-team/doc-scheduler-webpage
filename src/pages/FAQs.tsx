@@ -29,34 +29,42 @@ export default function Home() {
       <Box
         component="main"
         sx={{
-          //position: 'relative',
-          //display: 'flex',
-          //flexDirection: 'column',
-          // alignItems: 'center',
-          // justifyContent: 'center',
-          //minHeight: '900px', // nicht notwendig, wird mit 100vh auf jeweilige Hoehe skaliert
           height: '100vh',
-          //py: '256px', // nicht mehr notwendig
-          backgroundImage: 'url("/images/background.png")',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          gap: '32px'
+          position: 'relative',
+          gap: '32px',
+          '&::before': {
+            content: '""',
+            position: 'fixed',
+            display: 'block',
+            top: '0px',
+            left: '0px',
+            bottom: '0px',
+            right: '0px',
+            backgroundImage: 'url("/images/background.png")',
+            backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+            paddingBottom: '200px'
+          }
         }}
       >
         <Container
           sx={{
-            position: 'fixed',
+            position: 'absolute',
             backgroundColor: 'rgba(255, 255, 255, 0.9)',
             width: '95%',
             color: 'secondary.main',
             fontSize: '120%',
             padding: '2vw',
-            mt: '80px',
-
-            transform: 'translate(2.5%, 10%)'
+            mt: '100px',
+						mb: '120px',
+						transform: 'translate(2.5%, 0%)',
+						display: 'flex',
+						flexDirection: 'column',
+            // gap: '15px',
           }}
         >
-          FAQs - Ärzte
+         <Typography variant='h2'>FAQs Ärzte</Typography>
           {faqsAerzte.map((item, index) => (
             <ListItem sx={{ padding: '10px' }}>
               <ListItemText

@@ -61,8 +61,23 @@ export default function Home() {
             transform: 'translate(2.5%, 0%)'
           }}
         >
-          Datenschutz
-        </Container>
+          <Typography variant='h2'>Datenschutz</Typography>
+
+
+          {/* <Typography sx={{fontWeight: 'bold'}}>
+Nutzungsdaten
+</Typography>
+<Typography>
+Soweit erforderlich, erheben und verwenden wir sog. Nutzungsdaten von Ihnen. Dabei handelt es sich um personenbezogene Daten, die die Inanspruchnahme unseres Internetangebots sowie die Abrechnung ermöglichen. Dabei werden Daten erfasst, die sowohl die zeitlichen Kriterien der Nutzung unseres Angebots durch Sie enthalten, als auch den Umfang der Nutzung und Ihre Identifikationsmerkmale.
+Wir weisen Sie darauf hin, dass es uns zu Werbezwecken, zu Zwecken der Marktforschung sowie zur Gestaltung unseres Internetangebots gestattet ist, Nutzungsprofile d.h. zusammengestellte Daten über den Verlauf von Besuchen auf unseren Seiten zu generieren. Diese Nutzungsprofile geben keinen Aufschluss über Ihre Person und werden auch nicht mit etwaigen anderen, von uns erhobenen Daten, zusammengeführt, sodass auch eine Personenidentifikation durch das Zusammenführen verschiedener Daten nicht erfolgen kann. Sie haben jederzeit das Recht, einer solchen Verwendung Ihrer Daten zu widersprechen.
+</Typography>
+<Typography sx={{fontWeight: 'bold'}}>
+Auskunftsrecht
+</Typography>
+<Typography>
+Wir weisen Sie darauf hin, dass Sie das Recht haben, eine Auskunft von uns über die von Ihnen gespeicherten Daten zu verlangen und im Fall der Unrichtigkeit der Daten eine Sperrung, Löschung oder Berichtigung zu veranlassen. Die Auskunftserteilung ist sowohl telefonisch als auch elektronisch möglich.
+        </Typography>*/}
+        </Container> 
       </Box>
 
       <Footer />

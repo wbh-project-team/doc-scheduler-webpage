@@ -28,26 +28,63 @@ export default function Home() {
         component="main"
         sx={{
           height: '100vh',
-          //py: '256px', // nicht mehr notwendig
-          backgroundImage: 'url("/images/background.png")',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          gap: '32px'
+          position: 'relative',
+          gap: '32px',
+          '&::before': {
+            content: '""',
+            position: 'fixed',
+            display: 'block',
+            top: '0px',
+            left: '0px',
+            bottom: '0px',
+            right: '0px',
+            backgroundImage: 'url("/images/background.png")',
+            backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+            paddingBottom: '200px'
+          }
         }}
       >
         <Container
           sx={{
-            position: 'fixed',
+            position: 'absolute',
             backgroundColor: 'rgba(255, 255, 255, 0.9)',
             width: '95%',
             color: 'secondary.main',
             fontSize: '120%',
             padding: '2vw',
-            mt: '80px',
-            transform: 'translate(2.5%, 10%)'
+            mt: '100px',
+						mb: '120px',
+						transform: 'translate(2.5%, 0%)',
+						display: 'flex',
+						flexDirection: 'column',
+            gap: '15px',
           }}
         >
-          Our Vision
+          <Typography variant='h2'>Unsere Vision</Typography>
+          <Typography variant='body1'>
+          Unsere Vision ist eine deutliche und klare Vereinfachung des nervenaufreibenden Prozesses der Terminbuchung beim Arzt. 
+          Jeder kennt das aus dem Alltag. Man ist krank, fühlt sich nicht gut und freut sich innerlich schon auf die Wartezeit in der Telefonleitung beim Praxisanruf zur Terminvereinbarung. 
+          Dem ist vorausgesetzt, dass man es als Kunde überhaupt in die Warteschleife schafft und die Leitung nicht belegt ist. 
+          Zudem ist man an die Sprechzeiten des jeweiligen Arztes gebunden. Verpasst man diese auch nur um eine Minute, 
+          muss man für die Terminvergabe auf den nächsten Tag warten und verliert so noch einen ganzen Tag. Das ist das Problem auf Kundenseite. 
+          Auf Seiten der Arztpraxis ist die Telefonleitung ständig belegt, es wird ein Mitarbeiter*in nur für die Terminvergaben beschäftigt. 
+          Ärgerlich ist zudem, wenn Patienten dem Termin unentschuldigt fernbleiben. Somit verliert die Praxis Kapazitäten und finanziellen Gewinn durch den entgangenen Termin.
+          </Typography>
+          <Typography variant="h4" sx={{color: 'primary.main', fontWeight: 'bold'}}>
+          Unsere Vision ist es, genau diese Probleme zu lösen. Mit unserer Webanwendung ist es dem Patienten möglich sich online, bequem von zuhause aus, 
+          einen Termin ohne lästige Telefonwartezeiten zu buchen und das rund um die Uhr, zu jeder Tageszeit.
+          Die Arztpraxis wird dadurch personell entlastet und kann sich mehr auf die Kernkompetenzen konzentrieren. 
+          </Typography>
+          <Typography>
+          Wir unterscheiden uns technologisch von den bestehenden Plattformen durch eine Blockchain-Technologie. Unsere Plattform besticht durch eine erhöhte Sicherheit, einer sofortigen Rückverfolgbarkeit, höherer Geschwindigkeit und Effizienz und durch Automation.
+          Durch die Blockchain werden Informationen nicht auf einem einzigen Server, sondern in einem Netzwerk von Computern gespeichert. Dies erschwert es Hackern sensible Daten zu manipulieren und erhöht somit die Sicherheit der Plattform. Die nicht veränderbaren und verschlüsselten Aufzeichnungen der Blockchain verhindern Betrug und Missbrauch. Der nötige Datenschutz personenbezogener Daten wird durch Anonymisierung der Daten und durch die Verwendung von Zugriffsberechtigungen erreicht.
+          Die Blockchain besitzt einen Prüfpfad, durch den jede Aktion innerhalb der Blockchain verfolgt werden kann. Transaktionen werden unverändert aufgezeichnet und mit einem Zeitstempel versehen.
+          Unsere Vision soll die bisher verfügbaren Systeme und Plattformen mit unserer Technologie, der einfachen Handhabung und des Vorteils/Nutzens für die Arztpraxen in den Schatten stellen. Durch die Vorteile sowohl für Patient als auch für Praxis erhoffen wir uns eine stark steigende Nutzerzahl und dementsprechend eine immer höhere Flächendeckung. 
+
+          </Typography>
+
         </Container>
       </Box>
 
