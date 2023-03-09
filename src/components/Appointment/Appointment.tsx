@@ -41,6 +41,7 @@ export default function Appointments({ appointment, anonym, isLoading, setLoadin
 	const [openCancel, setCancelOpen] = useState(false);
 	const [openPayout, setPayoutOpen] = useState(false);
 	const [name, setName] = useState<string>('');
+	const [visible, setVisible] = useState(true);
 
 	let starts = (appointment.dateTime[3] - 7) * 4 + appointment.dateTime[4] / 15 + 1; // 15 Minuten pro grid-Zelle
 	let ends = starts + appointment.duration / 60 / 15;
@@ -95,6 +96,7 @@ export default function Appointments({ appointment, anonym, isLoading, setLoadin
 		if (!(await isAppointmentOver(appointment.doctor.id, appointment.id as number))) {
 			setCancelOpen(false);
 			setLoading(true);
+			setVisible(false);
 			await cancelAppointment(appointment.doctor.id, appointment.id as number);
 			setLoading(false);
 		} else {
@@ -135,6 +137,10 @@ export default function Appointments({ appointment, anonym, isLoading, setLoadin
 					gridRowStart: starts,
 					gridRowEnd: ends,
 					backgroundColor: 'lightblue',
+					...(!visible && {
+						color: '#ffd6d1',
+						backgroundColor: '#ffd6d1',
+					  }),
 					padding: '0',
 				}}>
 				<Typography noWrap={true} sx={{ maxWidth: '150px' }} variant="body1">
@@ -165,9 +171,10 @@ export default function Appointments({ appointment, anonym, isLoading, setLoadin
 						Bei Ja der Patient.
 					</DialogContentText>
 				</DialogContent>
-				<DialogActions>
-					<Button onClick={handleCloseNo}>Nein</Button>
+				<DialogActions sx={{ justifyContent: "space-between" }}>
+					<Button onClick={handleClose}>Abbrechen</Button>
 					<Button onClick={handleCloseYes}>Ja</Button>
+					<Button onClick={handleCloseNo}>Nein</Button>
 				</DialogActions>
 			</Dialog>
 			<Dialog

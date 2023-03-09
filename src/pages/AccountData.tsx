@@ -17,7 +17,7 @@ import { useRouter } from 'next/router';
 import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
 import { BigNumber, BigNumberish, ethers } from 'ethers';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { getPatientNameCid, storeCid } from '../services/web3/contracts/contractsProvider';
 import { ipfsUpload, retrieve } from '../services/ipfs/ipfsProvider';
 
@@ -53,6 +53,7 @@ export default function Home() {
 		useContext<WalletContent>(WalletContext);
 
 	const [name, setName] = useState<string>('');
+	const textFieldUserName = useRef<HTMLInputElement>();
 
 	useEffect(() => {
 		const fetchBalance = async () => {
@@ -121,7 +122,7 @@ export default function Home() {
 						transform: 'translate(2.5%, 0%)',
 						paddingBottom: '10vh',
 					}}>
-					<Typography variant="h2">Mein Account</Typography>
+					<Typography variant="h2">Deine Account-Daten{textFieldUserName.current ? (', ' + textFieldUserName.current.value) : ''}</Typography>
 					<br />
 					<Typography variant="body1">Meine Wallet Adresse: {getAddress()}</Typography>
 					<Typography variant="body1">
@@ -136,6 +137,7 @@ export default function Home() {
 									height: '1em',
 									backgroudColor: 'white',
 								}}
+								inputRef={textFieldUserName}
 								value={name}
 								onChange={(event) => setName(event.target.value)}
 								onBlur={async () => {
