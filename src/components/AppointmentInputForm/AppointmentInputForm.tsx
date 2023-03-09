@@ -26,7 +26,7 @@ interface Props {
 	date: number[];
 	weekDay: number;
 	doctor: Doctor;
-  currDayAppointments: IAppointment[];
+  	currDayAppointments: IAppointment[];
 	putAppointmentToCalendar: (date: IAppointment) => void;
 }
 
@@ -71,7 +71,10 @@ export default function AppointmentInputForm({
 		if (!checked) {
 			alert('Bitte stimmen Sie den AGB zu.');
 			return;
+		} else if (appointmentInPast()) {
+			alert('Sie können keinen Termin in der Vergangenheit buchen!');
 		}
+
 
     if (appointmentIsBlocked(duration)) {
       alert(`Für die gewählte Terminkategorie ist ein Zeitraum von ${duration/60} Minuten vorgesehen. \
@@ -100,19 +103,33 @@ Bitte wählen Sie einen anderen Termin, der noch frei ist.`);
 		});
 	};
 
-  function appointmentIsBlocked(duration: number){
-    for (const element of currDayAppointments) {
-      let elemStart = element.dateTime[3]*60 + element.dateTime[4];
-      let elemEnd = elemStart + element.duration/60;
-      let start = hour*60 + minutes;
-      let end = start + duration/60;
-      
-      if ( end > elemStart && start < elemEnd ) {
-        return true;
-      }
-    }
-    return false;
-  }
+	function appointmentIsBlocked(duration: number){
+		for (const element of currDayAppointments) {
+		let elemStart = element.dateTime[3]*60 + element.dateTime[4];
+		let elemEnd = elemStart + element.duration/60;
+		let start = hour*60 + minutes;
+		let end = start + duration/60;
+		
+		if ( end > elemStart && start < elemEnd ) {
+			return true;
+		}
+		}
+		return false;
+	}
+
+	function appointmentInPast() {
+		//'2023-11-01T13:45:30+0100'
+		let timestamp = new Date();
+		let dateString = date[3].toString() 
+			+ '-' + date[2].toString().padStart(2,'0') 
+			+ '-' + date[1].toString().padStart(2,'0') 
+			+ 'T' + hour.toString().padStart(2,'0') 
+			+ ':' + minutes.toString().padStart(2,'0') 
+			+ ':00+0100';
+		var appointmentDate = new Date(dateString);
+		if (appointmentDate < timestamp) return true
+		return false;
+	}
 
 	const stylePopupBox = {
 		display: 'block',
