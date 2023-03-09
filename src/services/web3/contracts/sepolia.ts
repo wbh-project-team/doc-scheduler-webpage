@@ -1,7 +1,7 @@
 import { ContractInterface } from './contractInterface';
 
 export const sepolia: ContractInterface = {
-	docSchedulerAddress: '0x5663Ee599370745ab0FF17A4e91b09C54B961a86',
+	docSchedulerAddress: '0xC94c3A55BeA20C17D51e52Fb9aaBC3BdF15d5938',
 	docSchedulerAbi: [
 		{
 			inputs: [{ internalType: 'address', name: 'dateTimeAddress', type: 'address' }],
@@ -93,6 +93,13 @@ export const sepolia: ContractInterface = {
 			type: 'function',
 		},
 		{
+			inputs: [{ internalType: 'uint256', name: 'startTime', type: 'uint256' }],
+			name: 'getDay',
+			outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+			stateMutability: 'view',
+			type: 'function',
+		},
+		{
 			inputs: [],
 			name: 'getDoctors',
 			outputs: [
@@ -124,19 +131,16 @@ export const sepolia: ContractInterface = {
 			type: 'function',
 		},
 		{
-			inputs: [],
-			name: 'getReservationFee',
-			outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+			inputs: [{ internalType: 'address', name: 'walletAddress', type: 'address' }],
+			name: 'getPatientNameCid',
+			outputs: [{ internalType: 'string', name: '', type: 'string' }],
 			stateMutability: 'view',
 			type: 'function',
 		},
 		{
-			inputs: [
-				{ internalType: 'uint256', name: 'doctorId', type: 'uint256' },
-				{ internalType: 'uint256', name: 'appointmentId', type: 'uint256' },
-			],
-			name: 'isAppointmentOver',
-			outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+			inputs: [],
+			name: 'getReservationFee',
+			outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
 			stateMutability: 'view',
 			type: 'function',
 		},
@@ -151,7 +155,6 @@ export const sepolia: ContractInterface = {
 			inputs: [
 				{ internalType: 'uint256', name: 'doctorId', type: 'uint256' },
 				{ internalType: 'uint256', name: 'appointmentId', type: 'uint256' },
-				{ internalType: 'bool', name: 'patientWasPresent', type: 'bool' },
 			],
 			name: 'payoutAppointment',
 			outputs: [],
@@ -192,6 +195,13 @@ export const sepolia: ContractInterface = {
 		{
 			inputs: [{ internalType: 'uint256', name: 'newFee', type: 'uint256' }],
 			name: 'setReservationFee',
+			outputs: [],
+			stateMutability: 'nonpayable',
+			type: 'function',
+		},
+		{
+			inputs: [{ internalType: 'string', name: 'cid', type: 'string' }],
+			name: 'storeCid',
 			outputs: [],
 			stateMutability: 'nonpayable',
 			type: 'function',

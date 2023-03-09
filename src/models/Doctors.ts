@@ -33,6 +33,7 @@ export interface DoctorFromSC {
 	specializations: string[];
 	categoryNames: string[];
 	categoryDurations: BigNumberish[];
+	imageCid: string;
 }
 
 export interface BusinessHours {

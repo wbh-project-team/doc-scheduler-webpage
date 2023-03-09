@@ -208,3 +208,24 @@ export async function isAppointmentOver(doctorId: BigNumberish, appointmentId: B
 		return null;
 	}
 }
+export async function getPatientNameCid(walletAddress: string) {
+	try {
+		const result = await docScheduler.getPatientNameCid(walletAddress);
+
+		return result;
+	} catch (error) {
+		console.error(`contract call failed: wrong abi in this network!\n${error}`);
+		return null;
+	}
+}
+
+export async function storeCid(cid: string): Promise<void> {
+	try {
+		const result = await docScheduler.storeCid(cid);
+
+		const tx = await result.wait();
+		console.log(tx);
+	} catch (error) {
+		console.error(`contract call failed: wrong abi in this network!\n${error}`);
+	}
+}

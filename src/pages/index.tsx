@@ -16,15 +16,8 @@ import { useContext, useState } from 'react';
 import { areaOfExpertise } from '../models/Doctors';
 import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
-import {
-	createAppointment,
-	createDoctorsOffice,
-	getAppointments,
-	getDoctors,
-	getReservationFee,
-} from '../services/web3/contracts/contractsProvider';
-import { ethers } from 'ethers';
 import { WalletContent, WalletContext } from '../services/web3/wallets/walletProvider';
+import { ipfsUpload, retrieve } from '../services/ipfs/ipfsProvider';
 
 const CustomTextField = styled(TextField)(({ theme }) => ({
 	'& .MuiInputBase-input': {

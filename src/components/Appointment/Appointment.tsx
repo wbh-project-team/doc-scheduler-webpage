@@ -13,9 +13,11 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
 import {
+	getPatientNameCid,
 	isAppointmentOver,
 	payoutAppointment,
 } from '../../services/web3/contracts/contractsProvider';
+import { retrieve } from '../../services/ipfs/ipfsProvider';
 
 const Transition = forwardRef(function Transition(
 	props: TransitionProps & {
@@ -35,8 +37,24 @@ export default function Appointments({ appointment, anonym }: Props) {
 	const { isLoggedIn, getAddress } = useContext<WalletContent>(WalletContext);
 	const [openCancel, setCancelOpen] = useState(false);
 	const [openPayout, setPayoutOpen] = useState(false);
+	const [name, setName] = useState<string>('');
+
 	let starts = (appointment.dateTime[3] - 7) * 4 + appointment.dateTime[4] / 15 + 1; // 15 Minuten pro grid-Zelle
 	let ends = starts + appointment.duration / 60 / 15;
+
+	useEffect(() => {
+		const loadName = async () => {
+			const cid = await getPatientNameCid(getAddress());
+			if (cid === '') return;
+
+			const tempName = await retrieve(cid);
+			setName(tempName.name);
+		};
+
+		if (isLoggedIn) {
+			loadName();
+		}
+	}, [isLoggedIn]);
 
 	const handleClose = (event: any) => {
 		setPayoutOpen(false);
@@ -95,7 +113,12 @@ export default function Appointments({ appointment, anonym }: Props) {
 					zIndex: 100000000000000000000,
 				}}>
 				<Typography noWrap={true} sx={{ maxWidth: '150px' }} variant="body1">
-					{anonym && !(getAddress() === appointment.patient) ? '' : appointment.patient}
+					{anonym && !(getAddress() === appointment.patient)
+						? ''
+						: appointment.patient.toLocaleLowerCase() === 'geschlossen' ||
+						  appointment.patient.toLocaleLowerCase() === 'pause'
+						? appointment.patient
+						: name}
 				</Typography>
 			</Box>
 			<Dialog
