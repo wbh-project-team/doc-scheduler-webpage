@@ -117,7 +117,7 @@ export default function YourAppointments() {
 								</Typography>
 								<Typography>Dauer: {+element.duration / 60} Minuten</Typography>
 
-								<Typography>Bei: {element.doctor ? element.doctor.name : ''}</Typography>
+								<Typography>Bei: {element.doctor ? element.doctor.firstname + ' ' + element.doctor.name: ''}</Typography>
 								<br></br>
 								<Typography variant="subtitle1">Adresse:</Typography>
 								<Typography>
