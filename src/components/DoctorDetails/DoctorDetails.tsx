@@ -11,18 +11,82 @@ interface Props {
 export default function DoctorDetails({ doctor }: Props) {
 	return (
 		<>
+		<Container
+			sx={{
+				display: 'flex',
+				flexDirection: 'column',
+				
+			}}
+		
+		>
 			<Box
 				component="main"
 				sx={{
-					//height: '200px',
+					backgroundColor: 'white',
+					width: '100%',
+					color: 'secondary.main',
+					mt: '15px',
+					padding: '1vh',
+					display: 'flex',
+					flexDirection: 'column',
+					rowGap: '10px',
+				}}>
+					<Typography variant='subtitle1' sx={{fontWeight: 'bold'}}>
+						Und so funktioniert es:
+					</Typography>
+					<Typography variant='body1' sx={{paddingLeft: '15px'}}>
+						<ul>
+						<li>
+							Für eine Terminbuchung müssen Sie sich über den Login-Button oben rechts einloggen und dann am Besten unter "Mein Account" Ihren Namen eintragen, damit Ihr Arzt Sie in seinem Kalender zuordnen kann.
+						</li>
+						<li>
+							Um einen Termin zu buchen, müssen Sie dann nur auf den entsprechenden Tag im Kalender klicken, eine Uhrzeit und Terminkategorie auswählen und den AGB zustimmen.
+						</li>
+						<li>
+							Die Kalenderwoche kann über die Drop-Down Menüs oberhalb des Kalenders ausgewählt werden.
+						</li>
+						
+						</ul>
+					</Typography>
+					<Typography variant='subtitle1' sx={{fontWeight: 'bold'}}>
+						Bitte beachten Sie:
+					</Typography>
+					<Typography variant='body1' sx={{paddingLeft: '15px'}}>
+						<ul>
+						<li>
+							<Typography display='inline'>Um Ihrem Arzt eine gewisse Planungssicherheit zu geben, sieht das Konzept dieses Buchungsportals vor, 
+							dass jeder Patient für seinen gebuchten</Typography>
+							<Typography display='inline' sx={{fontWeight: 700, color: 'tomato'}}>&nbsp;Termin 10€ Kaution hinterlegt</Typography>.
+							
+						</li>
+						<li>
+							<Typography display='inline'>Diese Kaution erhalten Sie selbstverständlich automatisch zurück, 
+								sobald sie Ihren Termin wahrgenommen haben, oder falls Sie diesen bis</Typography>
+							<Typography display='inline' sx={{fontWeight: 700, color: 'tomato'}}>&nbsp; 24 Stunden vorher absagen</Typography>.
+							
+						</li>
+						<li>
+							<Typography display='inline'>
+								Für die Terminbuchung müssen Sie sich daher mit dem externen Service von 
+								<Typography display='inline' sx={{fontWeight: 700,}}>&nbsp;web3auth</Typography> über den Login-Button dieses Portals einloggen, wodurch automatisch ein Wallet für Kryptowährung für Sie erstellt wird. 
+								Um einen Termin buchen zu können, müssen Sie mindestens einen Betrag von 10€ pro Termin in Ihr (neu erstelltes) Wallet laden. 
+								Dies können Sie ganz bequem über den entsprechenden Button über z.B. Paypal machen (Button muss noch eingearbeitet werden, 
+								in der Testumgebung wird mit Test-Ether bezahlt).</Typography>
+							</li>
+						</ul>
+					</Typography>
+			</Box>
+			<Box
+				component="main"
+				sx={{
 					backgroundColor: 'white',
 					width: '100%',
 					color: 'tomato',
-					margin: '15px',
+					margin: '15px 0 15px 0',
 					padding: '1vh',
 				}}>
 				<Typography sx={{ fontSize: '100%' }}>
-					Buche schnell einen Termin bei {doctor.firstname} {doctor.name}!
+					Buche schnell einen Termin bei {doctor.firstname}{' '}{doctor.name}!
 				</Typography>
 				<Container
 					sx={{
@@ -141,6 +205,7 @@ export default function DoctorDetails({ doctor }: Props) {
 					</Box>
 				</Container>
 			</Box>
+			</Container>
 		</>
 	);
 }

@@ -144,8 +144,8 @@ export default function Home() {
 								.filter((doctor) => {
 									if (!zipCode) return null;
 									if (
-										doctor.specialization == currAreaOfExpertise &&
-										doctor.zipCode > +zipCode - 1000 &&
+										doctor.specialization == currAreaOfExpertise 
+										&& doctor.zipCode > +zipCode - 1000 &&
 										doctor.zipCode < +zipCode + 1000 // TODO: Suchkreis anpassen
 									) {
 										return doctor;
