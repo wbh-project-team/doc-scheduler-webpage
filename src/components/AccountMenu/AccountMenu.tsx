@@ -12,10 +12,17 @@ import PersonAdd from '@mui/icons-material/PersonAdd';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import { WalletContent, WalletContext } from '../../services/web3/wallets/walletProvider';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router'
+import {
+	getPatientNameCid,
+	isAppointmentOver,
+	payoutAppointment,
+} from '../../services/web3/contracts/contractsProvider';
+import { retrieve } from '../../services/ipfs/ipfsProvider';
 
 export default function AccountMenu() {
+    const [name, setName] = useState<string>('Mein Name');
     const { isLoggedIn, login, logout, getAddress, getBalance, getPrivateKey } =
 	    useContext<WalletContent>(WalletContext);
     const router = useRouter()
@@ -31,6 +38,20 @@ export default function AccountMenu() {
         return (`${name.split(' ')[0][0]}${name.split(' ')[1][0]}`)
         
       }
+
+    useEffect(() => {
+    const loadName = async () => {
+        const cid = await getPatientNameCid(getAddress());
+        if (cid === '') return;
+
+        const tempName = await retrieve(cid);
+        setName(tempName.name);
+    };
+
+    if (isLoggedIn) {
+        loadName();
+    }
+}, [isLoggedIn]);
     return (
         <React.Fragment>
         <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
@@ -44,7 +65,7 @@ export default function AccountMenu() {
                 aria-expanded={open ? 'true' : undefined}
             >
                 {/* TODO statt A string */}
-                <Avatar sx={{ width: '50px', height: '50px', backgroundColor: 'grey'}}>{stringAvatar('Mein Name')}</Avatar> 
+                <Avatar sx={{ width: '50px', height: '50px', backgroundColor: 'grey'}}>{stringAvatar(name)}</Avatar> 
             </IconButton>
             </Tooltip>
         </Box>
