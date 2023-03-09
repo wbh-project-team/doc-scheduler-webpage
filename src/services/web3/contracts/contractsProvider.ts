@@ -122,7 +122,7 @@ export async function createAppointment(newAppointment: IAppointment): Promise<v
 	try {
 		console.log(newAppointment);
 		const date = newAppointment.dateTime;
-		const startTime = new Date(date[2], date[1], date[0], date[3], date[4], 0, 0);
+		const startTime = new Date(date[2], date[1] - 1, date[0], date[3], date[4], 0, 0);
 		console.log(+startTime / 1000);
 
 		const appointment = {
@@ -157,7 +157,7 @@ export async function getAppointments(doctor: Doctor): Promise<IAppointment[]> {
 				patient: appointment.patient,
 				dateTime: [
 					new Date(+appointment.startTime.toString() * 1000).getDate(),
-					new Date(+appointment.startTime.toString() * 1000).getMonth(),
+					new Date(+appointment.startTime.toString() * 1000).getMonth() + 1,
 					new Date(+appointment.startTime.toString() * 1000).getFullYear(),
 					new Date(+appointment.startTime.toString() * 1000).getHours(),
 					new Date(+appointment.startTime.toString() * 1000).getMinutes(),
@@ -175,6 +175,32 @@ export async function getAppointments(doctor: Doctor): Promise<IAppointment[]> {
 export async function getReservationFee() {
 	try {
 		const result = await docScheduler.getReservationFee();
+
+		return result;
+	} catch (error) {
+		console.error(`contract call failed: wrong abi in this network!\n${error}`);
+		return null;
+	}
+}
+
+export async function payoutAppointment(
+	doctorId: BigNumberish,
+	appointmentId: BigNumberish,
+	patientWasPresent: boolean,
+): Promise<void> {
+	try {
+		const result = await docScheduler.payoutAppointment(doctorId, appointmentId, patientWasPresent);
+
+		const tx = await result.wait();
+		console.log(tx);
+	} catch (error) {
+		console.error(`contract call failed: wrong abi in this network!\n${error}`);
+	}
+}
+
+export async function isAppointmentOver(doctorId: BigNumberish, appointmentId: BigNumberish) {
+	try {
+		const result = await docScheduler.isAppointmentOver(doctorId, appointmentId);
 
 		return result;
 	} catch (error) {

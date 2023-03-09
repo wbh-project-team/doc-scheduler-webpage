@@ -1,14 +1,15 @@
 import { Select, MenuItem, InputLabel, Container } from '@mui/material';
-import { appointmentsArray, IAppointment } from '../../models/Appointments';
+import { IAppointment } from '../../models/Appointments';
 import { Box } from '@mui/system';
 //import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
 import AppointmentInputForm from '../AppointmentInputForm/AppointmentInputForm';
 import mystyles from './calendarStyle.module.css';
 import Appointment from '../Appointment/Appointment';
-import { BusinessHours, Doctor, IConsultationCategory } from '../../models/Doctors';
+import { Doctor } from '../../models/Doctors';
 import { getAppointments, getDoctors } from '../../services/web3/contracts/contractsProvider';
 import { WalletContent, WalletContext } from '../../services/web3/wallets/walletProvider';
+import * as React from 'react';
 
 const monthsMap = new Map([
 	['Januar', 1],
@@ -111,7 +112,13 @@ export default function Calendar({ doctor, anonym }: Props) {
 
 			const doctors = await getDoctors();
 			if (!doctors) return;
-			let appointments: IAppointment[] = await getAppointments(doctors[0]);
+			let appointments: IAppointment[] = [];
+
+			for (let i = 0; i < doctors.length; i++) {
+				const doctorAppointments = await getAppointments(doctors[i]);
+				appointments = appointments.concat(doctorAppointments);
+			}
+
 			appointments = appointments.filter(function (obj) {
 				//alert(checkNumberMonday + checkNumberFriday + obj.dateTime[2]*10000+obj.dateTime[1]*100+obj.dateTime[0])
 				if (
@@ -552,14 +559,13 @@ export default function Calendar({ doctor, anonym }: Props) {
 				date={selectedDay}
 				weekDay={selectedWeekDay}
 				doctor={doctor}
-				currDayAppointments = {
-					weekAppointments.filter(function (obj) {
-						//alert(checkNumberMonday + checkNumberFriday + obj.dateTime[2]*10000+obj.dateTime[1]*100+obj.dateTime[0])
-						if (
-							obj.dateTime[0] == selectedDay[1] // wenn der Tag uebereinstimmt, passen Monat und Jahr aus weekappointments auch
-						) {
-							return obj;
-						}
+				currDayAppointments={weekAppointments.filter(function (obj) {
+					//alert(checkNumberMonday + checkNumberFriday + obj.dateTime[2]*10000+obj.dateTime[1]*100+obj.dateTime[0])
+					if (
+						obj.dateTime[0] == selectedDay[1] // wenn der Tag uebereinstimmt, passen Monat und Jahr aus weekappointments auch
+					) {
+						return obj;
+					}
 				})}
 				putAppointmentToCalendar={putAppointmentToCalendar}
 			/>

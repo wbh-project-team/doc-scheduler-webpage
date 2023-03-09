@@ -1,7 +1,7 @@
 import { ContractInterface } from './contractInterface';
 
 export const sepolia: ContractInterface = {
-	docSchedulerAddress: '0x161BF40d010A1347CFCf8aAE538cf27898dD57d8',
+	docSchedulerAddress: '0x5663Ee599370745ab0FF17A4e91b09C54B961a86',
 	docSchedulerAbi: [
 		{
 			inputs: [{ internalType: 'address', name: 'dateTimeAddress', type: 'address' }],
@@ -93,13 +93,6 @@ export const sepolia: ContractInterface = {
 			type: 'function',
 		},
 		{
-			inputs: [{ internalType: 'uint256', name: 'startTime', type: 'uint256' }],
-			name: 'getDay',
-			outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
-			stateMutability: 'view',
-			type: 'function',
-		},
-		{
 			inputs: [],
 			name: 'getDoctors',
 			outputs: [
@@ -138,6 +131,16 @@ export const sepolia: ContractInterface = {
 			type: 'function',
 		},
 		{
+			inputs: [
+				{ internalType: 'uint256', name: 'doctorId', type: 'uint256' },
+				{ internalType: 'uint256', name: 'appointmentId', type: 'uint256' },
+			],
+			name: 'isAppointmentOver',
+			outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+			stateMutability: 'view',
+			type: 'function',
+		},
+		{
 			inputs: [],
 			name: 'owner',
 			outputs: [{ internalType: 'address', name: '', type: 'address' }],
@@ -148,6 +151,7 @@ export const sepolia: ContractInterface = {
 			inputs: [
 				{ internalType: 'uint256', name: 'doctorId', type: 'uint256' },
 				{ internalType: 'uint256', name: 'appointmentId', type: 'uint256' },
+				{ internalType: 'bool', name: 'patientWasPresent', type: 'bool' },
 			],
 			name: 'payoutAppointment',
 			outputs: [],

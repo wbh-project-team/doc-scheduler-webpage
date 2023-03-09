@@ -4,7 +4,7 @@ import Footer from '../components/Footer/Footer';
 import Navbar from '../components/Navbar/Navbar';
 import styles from '../styles/YourAppointments.module.css';
 // import { makeStyles } from '@mui/styles'
-import { appointmentsArray, IAppointment } from '../models/Appointments';
+import { IAppointment } from '../models/Appointments';
 import Appointment from '../components/Appointment/Appointment';
 import { useContext, useEffect, useState } from 'react';
 
@@ -14,7 +14,6 @@ import { WalletContent, WalletContext } from '../services/web3/wallets/walletPro
 import { getAppointments, getDoctors } from '../services/web3/contracts/contractsProvider';
 
 export default function YourAppointments() {
-	const router = useRouter();
 	const { isLoggedIn, getAddress } = useContext<WalletContent>(WalletContext);
 	const [currentAppointments, setAppointments] = useState<IAppointment[]>([]);
 
