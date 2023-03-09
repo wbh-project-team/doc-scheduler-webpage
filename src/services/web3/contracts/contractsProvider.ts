@@ -41,6 +41,7 @@ export async function createDoctorsOffice(newDoctor: Doctor): Promise<void> {
 			specializations: [newDoctor.specialization],
 			categoryNames: newDoctor.consultationCategories.map((item) => item.category),
 			categoryDurations: newDoctor.consultationCategories.map((item) => item.durationInSecs),
+			imageCid: '',
 		};
 		console.log(doctor);
 
@@ -72,6 +73,7 @@ export async function reconfigureOffice(newDoctor: Doctor): Promise<void> {
 			specializations: [newDoctor.specialization],
 			categoryNames: newDoctor.consultationCategories.map((item) => item.category),
 			categoryDurations: newDoctor.consultationCategories.map((item) => item.durationInSecs),
+			imageCid: '',
 		});
 
 		const tx = await result.wait();
@@ -108,6 +110,7 @@ export async function getDoctors(): Promise<Doctor[] | null> {
 					};
 				}),
 				description: item.description,
+				pictureLink: item.imageCid,
 			};
 		});
 
@@ -133,6 +136,7 @@ export async function createAppointment(newAppointment: IAppointment): Promise<v
 			patient: newAppointment.patient,
 			doctorsId: newAppointment.doctor.id,
 			reservationFee: 0,
+			canceled: false,
 		};
 
 		const reservationFee = await getReservationFee();
@@ -164,6 +168,7 @@ export async function getAppointments(doctor: Doctor): Promise<IAppointment[]> {
 				],
 				duration: appointment.duration,
 				doctor: doctor,
+				canceled: appointment.canceled,
 			};
 		});
 	} catch (error) {
@@ -190,6 +195,19 @@ export async function payoutAppointment(
 ): Promise<void> {
 	try {
 		const result = await docScheduler.payoutAppointment(doctorId, appointmentId, patientWasPresent);
+
+		const tx = await result.wait();
+		console.log(tx);
+	} catch (error) {
+		console.error(`contract call failed: wrong abi in this network!\n${error}`);
+	}
+}
+export async function cancelAppointment(
+	doctorId: BigNumberish,
+	appointmentId: BigNumberish,
+): Promise<void> {
+	try {
+		const result = await docScheduler.cancelAppointment(doctorId, appointmentId);
 
 		const tx = await result.wait();
 		console.log(tx);

@@ -2,13 +2,8 @@ import { Box, Container, Typography } from '@mui/material';
 import Head from 'next/head';
 import Footer from '../components/Footer/Footer';
 import Navbar from '../components/Navbar/Navbar';
-import styles from '../styles/YourAppointments.module.css';
-// import { makeStyles } from '@mui/styles'
 import { IAppointment } from '../models/Appointments';
-import Appointment from '../components/Appointment/Appointment';
 import { useContext, useEffect, useState } from 'react';
-
-import { useRouter } from 'next/router';
 
 import { WalletContent, WalletContext } from '../services/web3/wallets/walletProvider';
 import { getAppointments, getDoctors } from '../services/web3/contracts/contractsProvider';
@@ -21,7 +16,11 @@ export default function YourAppointments() {
 		const loadAppointments = async () => {
 			const doctors = await getDoctors();
 			if (!doctors) return;
-			let appointments: IAppointment[] = await getAppointments(doctors[0]);
+			let appointments: IAppointment[] = [];
+			for (let i = 0; i < doctors.length; i++) {
+				const doctorAppointments = await getAppointments(doctors[i]);
+				appointments = appointments.concat(doctorAppointments);
+			}
 			appointments = appointments.filter((obj) => {
 				if (obj.patient == getAddress()) {
 					return obj;
@@ -37,23 +36,6 @@ export default function YourAppointments() {
 			loadAppointments();
 		}
 	}, [isLoggedIn]);
-
-	// wiggle
-	// useEffect(() => {
-	//   const handleStart = () => {
-	//     const box = document.querySelector('#shaking-box');
-	//     box!.classList.add(styles.bounce);
-	//     setTimeout(() => {
-	//       box!.classList.remove(styles.bounce);
-	//     }, 10000);
-	//   };
-
-	//   router.events.on('routeChangeStart', handleStart);
-
-	//   return () => {
-	//     router.events.off('routeChangeStart', handleStart);
-	//   };
-	// }, []);
 
 	return (
 		<>
@@ -88,9 +70,7 @@ export default function YourAppointments() {
 				<Container
 					sx={{
 						position: 'absolute',
-						// backgroundColor: 'rgba(255, 255, 255, 0.9)',
 						width: '95%',
-						// height: '120vh',
 						color: 'secondary.main',
 						fontSize: '120%',
 						padding: '2vw',
@@ -103,8 +83,6 @@ export default function YourAppointments() {
 					}}>
 					<Box
 						sx={{
-							//zindex: 1,
-
 							color: 'secondary.main',
 							backgroundColor: 'white',
 							padding: '30px 10px',
@@ -113,7 +91,6 @@ export default function YourAppointments() {
 							fontWeight: 'bold',
 							textAlign: 'center',
 							width: '100%',
-							// height: '20rem'
 						}}>
 						Deine Termine:{' '}
 					</Box>
@@ -128,6 +105,7 @@ export default function YourAppointments() {
 									border: '10px solid tomato',
 									padding: '5px',
 								}}>
+								{element.canceled ? <Typography variant="h5">Von dir Abgesagt</Typography> : null}
 								<Typography variant="h5">Termin am:</Typography>
 								<Typography variant="h5">
 									{element.dateTime[0]}.{element.dateTime[1]}.{element.dateTime[2]}

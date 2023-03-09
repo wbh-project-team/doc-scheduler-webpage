@@ -1,7 +1,7 @@
 import { ContractInterface } from './contractInterface';
 
 export const sepolia: ContractInterface = {
-	docSchedulerAddress: '0xC94c3A55BeA20C17D51e52Fb9aaBC3BdF15d5938',
+	docSchedulerAddress: '0x32f5a54738E5C3Edac4218ef25618cf793D8da1a',
 	docSchedulerAbi: [
 		{
 			inputs: [{ internalType: 'address', name: 'dateTimeAddress', type: 'address' }],
@@ -19,6 +19,16 @@ export const sepolia: ContractInterface = {
 		},
 		{
 			inputs: [
+				{ internalType: 'uint256', name: 'doctorId', type: 'uint256' },
+				{ internalType: 'uint256', name: 'appointmentId', type: 'uint256' },
+			],
+			name: 'cancelAppointment',
+			outputs: [],
+			stateMutability: 'nonpayable',
+			type: 'function',
+		},
+		{
+			inputs: [
 				{
 					components: [
 						{ internalType: 'uint256', name: 'id', type: 'uint256' },
@@ -28,6 +38,7 @@ export const sepolia: ContractInterface = {
 						{ internalType: 'address', name: 'patient', type: 'address' },
 						{ internalType: 'uint256', name: 'doctorsId', type: 'uint256' },
 						{ internalType: 'uint256', name: 'reservationFee', type: 'uint256' },
+						{ internalType: 'bool', name: 'canceled', type: 'bool' },
 					],
 					internalType: 'struct DocScheduler.Appointment',
 					name: 'appointment',
@@ -59,6 +70,7 @@ export const sepolia: ContractInterface = {
 						{ internalType: 'string[]', name: 'specializations', type: 'string[]' },
 						{ internalType: 'string[]', name: 'categoryNames', type: 'string[]' },
 						{ internalType: 'uint256[]', name: 'categoryDurations', type: 'uint256[]' },
+						{ internalType: 'string', name: 'imageCid', type: 'string' },
 					],
 					internalType: 'struct DocScheduler.Doctor',
 					name: 'newDoctor',
@@ -83,19 +95,13 @@ export const sepolia: ContractInterface = {
 						{ internalType: 'address', name: 'patient', type: 'address' },
 						{ internalType: 'uint256', name: 'doctorsId', type: 'uint256' },
 						{ internalType: 'uint256', name: 'reservationFee', type: 'uint256' },
+						{ internalType: 'bool', name: 'canceled', type: 'bool' },
 					],
 					internalType: 'struct DocScheduler.Appointment[]',
 					name: '',
 					type: 'tuple[]',
 				},
 			],
-			stateMutability: 'view',
-			type: 'function',
-		},
-		{
-			inputs: [{ internalType: 'uint256', name: 'startTime', type: 'uint256' }],
-			name: 'getDay',
-			outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
 			stateMutability: 'view',
 			type: 'function',
 		},
@@ -121,6 +127,7 @@ export const sepolia: ContractInterface = {
 						{ internalType: 'string[]', name: 'specializations', type: 'string[]' },
 						{ internalType: 'string[]', name: 'categoryNames', type: 'string[]' },
 						{ internalType: 'uint256[]', name: 'categoryDurations', type: 'uint256[]' },
+						{ internalType: 'string', name: 'imageCid', type: 'string' },
 					],
 					internalType: 'struct DocScheduler.Doctor[]',
 					name: '',
@@ -145,6 +152,16 @@ export const sepolia: ContractInterface = {
 			type: 'function',
 		},
 		{
+			inputs: [
+				{ internalType: 'uint256', name: 'doctorId', type: 'uint256' },
+				{ internalType: 'uint256', name: 'appointmentId', type: 'uint256' },
+			],
+			name: 'isAppointmentOver',
+			outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+			stateMutability: 'view',
+			type: 'function',
+		},
+		{
 			inputs: [],
 			name: 'owner',
 			outputs: [{ internalType: 'address', name: '', type: 'address' }],
@@ -155,6 +172,7 @@ export const sepolia: ContractInterface = {
 			inputs: [
 				{ internalType: 'uint256', name: 'doctorId', type: 'uint256' },
 				{ internalType: 'uint256', name: 'appointmentId', type: 'uint256' },
+				{ internalType: 'bool', name: 'patientWasPresent', type: 'bool' },
 			],
 			name: 'payoutAppointment',
 			outputs: [],
@@ -181,6 +199,7 @@ export const sepolia: ContractInterface = {
 						{ internalType: 'string[]', name: 'specializations', type: 'string[]' },
 						{ internalType: 'string[]', name: 'categoryNames', type: 'string[]' },
 						{ internalType: 'uint256[]', name: 'categoryDurations', type: 'uint256[]' },
+						{ internalType: 'string', name: 'imageCid', type: 'string' },
 					],
 					internalType: 'struct DocScheduler.Doctor',
 					name: 'doctor',

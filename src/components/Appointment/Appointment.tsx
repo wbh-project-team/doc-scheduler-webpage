@@ -1,5 +1,5 @@
 import { Box, Button, Typography } from '@mui/material';
-import { forwardRef, useContext, useEffect, useState } from 'react';
+import { Dispatch, forwardRef, useContext, useEffect, useState } from 'react';
 
 import { IAppointment } from '../../models/Appointments';
 import { Doctor } from '../../models/Doctors';
@@ -13,6 +13,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
 import {
+	cancelAppointment,
 	getPatientNameCid,
 	isAppointmentOver,
 	payoutAppointment,
@@ -31,9 +32,11 @@ const Transition = forwardRef(function Transition(
 interface Props {
 	appointment: IAppointment;
 	anonym: boolean;
+	isLoading: boolean;
+	setLoading: Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function Appointments({ appointment, anonym }: Props) {
+export default function Appointments({ appointment, anonym, isLoading, setLoading }: Props) {
 	const { isLoggedIn, getAddress } = useContext<WalletContent>(WalletContext);
 	const [openCancel, setCancelOpen] = useState(false);
 	const [openPayout, setPayoutOpen] = useState(false);
@@ -54,7 +57,7 @@ export default function Appointments({ appointment, anonym }: Props) {
 		if (isLoggedIn) {
 			loadName();
 		}
-	}, [isLoggedIn]);
+	}, [isLoggedIn, isLoading]);
 
 	const handleClose = (event: any) => {
 		setPayoutOpen(false);
@@ -65,7 +68,9 @@ export default function Appointments({ appointment, anonym }: Props) {
 		event.stopPropagation();
 		if (await isAppointmentOver(appointment.doctor.id, appointment.id as number)) {
 			setPayoutOpen(false);
-			payoutAppointment(appointment.doctor.id, appointment.id as number, true);
+			setLoading(true);
+			await payoutAppointment(appointment.doctor.id, appointment.id as number, true);
+			setLoading(false);
 		} else {
 			alert('Bitte warte bis der Termin stattgefunden hat.');
 		}
@@ -75,10 +80,31 @@ export default function Appointments({ appointment, anonym }: Props) {
 		event.stopPropagation();
 		if (await isAppointmentOver(appointment.doctor.id, appointment.id as number)) {
 			setPayoutOpen(false);
-			payoutAppointment(appointment.doctor.id, appointment.id as number, false);
+			setLoading(true);
+			await payoutAppointment(appointment.doctor.id, appointment.id as number, false);
+			setLoading(false);
 		} else {
 			alert('Bitte warte bis der Termin stattgefunden hat.');
 		}
+	};
+	const handleCloseCancelYes = async (event: any) => {
+		event.stopPropagation();
+		console.log(appointment.doctor.id);
+		console.log(appointment.id);
+
+		if (!(await isAppointmentOver(appointment.doctor.id, appointment.id as number))) {
+			setCancelOpen(false);
+			setLoading(true);
+			await cancelAppointment(appointment.doctor.id, appointment.id as number);
+			setLoading(false);
+		} else {
+			alert('Bitte warte bis der Termin stattgefunden hat.');
+		}
+	};
+
+	const handleCloseCancel = async (event: any) => {
+		setCancelOpen(false);
+		event.stopPropagation();
 	};
 
 	return (
@@ -98,8 +124,8 @@ export default function Appointments({ appointment, anonym }: Props) {
 					event.stopPropagation();
 					if (getAddress() === appointment.doctor.walletId) {
 						setPayoutOpen(true);
-					} else {
-						//todo add cancel
+					} else if (appointment.id) {
+						setCancelOpen(true);
 					}
 				}}
 				sx={{
@@ -110,13 +136,13 @@ export default function Appointments({ appointment, anonym }: Props) {
 					gridRowEnd: ends,
 					backgroundColor: 'lightblue',
 					padding: '0',
-					zIndex: 100000000000000000000,
 				}}>
 				<Typography noWrap={true} sx={{ maxWidth: '150px' }} variant="body1">
 					{anonym && !(getAddress() === appointment.patient)
 						? ''
 						: appointment.patient.toLocaleLowerCase() === 'geschlossen' ||
-						  appointment.patient.toLocaleLowerCase() === 'pause'
+						  appointment.patient.toLocaleLowerCase() === 'pause' ||
+						  name === ''
 						? appointment.patient
 						: name}
 				</Typography>
@@ -134,14 +160,34 @@ export default function Appointments({ appointment, anonym }: Props) {
 					</DialogContentText>
 					<DialogContentText sx={{ color: '#0A0A0A' }} id="alert-dialog-slide-description">
 						Bei Nein erhält deine Praxis den Reservierungsbetrag.
-						<DialogContentText sx={{ color: '#0A0A0A' }} id="alert-dialog-slide-description">
-							Bei Ja der Patient.
-						</DialogContentText>
+					</DialogContentText>
+					<DialogContentText sx={{ color: '#0A0A0A' }} id="alert-dialog-slide-description">
+						Bei Ja der Patient.
 					</DialogContentText>
 				</DialogContent>
 				<DialogActions>
 					<Button onClick={handleCloseNo}>Nein</Button>
 					<Button onClick={handleCloseYes}>Ja</Button>
+				</DialogActions>
+			</Dialog>
+			<Dialog
+				open={openCancel}
+				TransitionComponent={Transition}
+				keepMounted
+				onClose={handleCloseCancel}
+				aria-describedby="alert-dialog-slide-description">
+				<DialogTitle>{"Use Google's location service?"}</DialogTitle>
+				<DialogContent>
+					<DialogContentText sx={{ color: '#0A0A0A' }} id="alert-dialog-slide-description">
+						Willst du deinen Termin absagen? (spätestens 24h vor dem Termin)
+					</DialogContentText>
+					<DialogContentText sx={{ color: '#0A0A0A' }} id="alert-dialog-slide-description">
+						Der Reservierungsbetrag wird dir zurückerstattet.
+					</DialogContentText>
+				</DialogContent>
+				<DialogActions>
+					<Button onClick={handleCloseCancel}>Nein</Button>
+					<Button onClick={handleCloseCancelYes}>Ja</Button>
 				</DialogActions>
 			</Dialog>
 		</>

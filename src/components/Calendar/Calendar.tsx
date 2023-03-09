@@ -185,6 +185,7 @@ export default function Calendar({ doctor, anonym }: Props) {
 						categoryName: doctor.consultationCategories[0].category,
 						duration: durationBefore,
 						doctor: doctor,
+						canceled: false,
 					});
 				}
 				let durationLunchTime = lunchEnd - lunchStart;
@@ -201,6 +202,7 @@ export default function Calendar({ doctor, anonym }: Props) {
 						categoryName: doctor.consultationCategories[0].category,
 						duration: durationLunchTime,
 						doctor: doctor,
+						canceled: false,
 					});
 				}
 				//alert([dayDates[index][0], dayDates[index][1], dayDates[index][2], lunchStartHour,lunchStartMin])
@@ -218,6 +220,7 @@ export default function Calendar({ doctor, anonym }: Props) {
 						categoryName: doctor.consultationCategories[0].category,
 						duration: durationAfter,
 						doctor: doctor,
+						canceled: false,
 					});
 				}
 			});
@@ -457,9 +460,17 @@ export default function Calendar({ doctor, anonym }: Props) {
 										return obj;
 									}
 								})
-								.map((item) => (
-									<Appointment key={item.id} anonym={anonym} appointment={item} />
-								))}
+								.map((item) =>
+									item.canceled ? null : (
+										<Appointment
+											key={item.id}
+											anonym={anonym}
+											appointment={item}
+											isLoading={isLoading}
+											setLoading={setLoading}
+										/>
+									),
+								)}
 							{/* {generateBlockClosingTimes(1)} */}
 						</Box>
 					</Box>
@@ -479,9 +490,17 @@ export default function Calendar({ doctor, anonym }: Props) {
 										return obj;
 									}
 								})
-								.map((item) => (
-									<Appointment key={item.id} anonym={anonym} appointment={item} />
-								))}
+								.map((item) =>
+									item.canceled ? null : (
+										<Appointment
+											key={item.id}
+											anonym={anonym}
+											appointment={item}
+											isLoading={isLoading}
+											setLoading={setLoading}
+										/>
+									),
+								)}
 							{/* {generateNewAppointment(2)} */}
 						</Box>
 					</Box>
@@ -501,9 +520,17 @@ export default function Calendar({ doctor, anonym }: Props) {
 										return obj;
 									}
 								})
-								.map((item) => (
-									<Appointment key={item.id} anonym={anonym} appointment={item} />
-								))}
+								.map((item) =>
+									item.canceled ? null : (
+										<Appointment
+											key={item.id}
+											anonym={anonym}
+											appointment={item}
+											isLoading={isLoading}
+											setLoading={setLoading}
+										/>
+									),
+								)}
 							{/* {generateNewAppointment(3)} */}
 						</Box>
 					</Box>
@@ -523,9 +550,17 @@ export default function Calendar({ doctor, anonym }: Props) {
 										return obj;
 									}
 								})
-								.map((item) => (
-									<Appointment key={item.id} anonym={anonym} appointment={item} />
-								))}
+								.map((item) =>
+									item.canceled ? null : (
+										<Appointment
+											key={item.id}
+											anonym={anonym}
+											appointment={item}
+											isLoading={isLoading}
+											setLoading={setLoading}
+										/>
+									),
+								)}
 							{/* {generateNewAppointment(4)} */}
 						</Box>
 					</Box>
@@ -545,9 +580,17 @@ export default function Calendar({ doctor, anonym }: Props) {
 										return obj;
 									}
 								})
-								.map((item) => (
-									<Appointment key={item.id} anonym={anonym} appointment={item} />
-								))}
+								.map((item) =>
+									item.canceled ? null : (
+										<Appointment
+											key={item.id}
+											anonym={anonym}
+											appointment={item}
+											isLoading={isLoading}
+											setLoading={setLoading}
+										/>
+									),
+								)}
 							{/* {generateNewAppointment(5)} */}
 						</Box>
 					</Box>

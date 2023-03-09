@@ -54,6 +54,10 @@ export default function AppointmentInputForm({
 
 	const handleSubmit = async () => {
 		let duration = 60 * 60;
+		if (currCategory === '') {
+			alert('Bitte Terminkategorie festlegen');
+			return;
+		}
 		for (const item of doctor.consultationCategories) {
 			if (item.category === currCategory) duration = item.durationInSecs;
 		}
@@ -93,6 +97,7 @@ Bitte wählen Sie einen anderen Termin, der noch frei ist.`);
 			dateTime: [date[1], date[2], date[3], hour, minutes],
 			categoryName: currCategory,
 			duration: duration,
+			canceled: false,
 		});
 
 		await createAppointment({
@@ -101,6 +106,7 @@ Bitte wählen Sie einen anderen Termin, der noch frei ist.`);
 			dateTime: [date[1], date[2], date[3], hour, minutes],
 			categoryName: currCategory,
 			duration: duration,
+			canceled: false,
 		});
 	};
 

@@ -8,6 +8,7 @@ export interface IAppointment {
 	categoryName: string;
 	duration: number;
 	doctor: Doctor; // Doctor.id
+	canceled: boolean;
 }
 
 export interface AppointmentFromSC {
@@ -18,4 +19,5 @@ export interface AppointmentFromSC {
 	patient: string;
 	doctorsId: BigNumberish;
 	reservationFee: BigNumberish;
+	canceled: boolean;
 }
