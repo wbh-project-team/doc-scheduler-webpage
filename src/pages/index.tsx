@@ -163,7 +163,13 @@ export default function Home() {
 							variant="outlined"
 							sx={{ width: '150px' }}
 							value={currentZipCode}
-							onChange={(event) => setZipCode(event.target.value)} //todo add validation https://mui.com/material-ui/react-text-field/
+							onChange={(event) => {
+								if(!Number(event.target.value)){
+									alert("Bitte geben Sie nur Zahlen ein")
+									setZipCode('');
+								}else{
+								setZipCode(event.target.value)}} //todo add validation https://mui.com/material-ui/react-text-field/
+							}
 							onFocus={() => {
 								if (currentZipCode === 'Postleitzahl') {
 									setZipCode('');
@@ -191,9 +197,14 @@ export default function Home() {
 						<Button
 							variant={'contained'}
 							onClick={async () => {
-								router.push(
-									`/Doctors?zipCode=${currentZipCode}&currAreaOfExpertise=${currentAreaOfExpertise}`,
-								);
+								if(Number(currentZipCode) < 6502 || Number(currentZipCode) > 91439 ) {
+									alert("Bitte geben Sie eine gültige PLZ ein")
+								}
+								else{
+									router.push(
+										`/Doctors?zipCode=${currentZipCode}&currAreaOfExpertise=${currentAreaOfExpertise}`,
+									);
+								}
 							}}>
 							Suchen
 						</Button>
