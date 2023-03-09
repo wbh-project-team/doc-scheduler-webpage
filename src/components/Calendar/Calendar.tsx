@@ -40,14 +40,14 @@ export default function Calendar({ doctor, anonym }: Props) {
 		Array.from(monthsMap).map(([key, value]) => key),
 	);
 
-	const [selectedKW, setSelectedKW] = useState<string>('9');
+	const [selectedKW, setSelectedKW] = useState<string>('11');
 	const [kwValues, setkwValues] = useState<string[]>(['9', '10', '11', '12']);
 
-	const [dateMonday, setDateMonday] = useState<number[]>([27, 0, 0]);
-	const [dateTuesday, setDateTuesday] = useState<number[]>([28, 0, 0]);
-	const [dateWednesday, setDateWednesday] = useState<number[]>([1, 0, 0]);
-	const [dateThursday, setDateThursday] = useState<number[]>([2, 0, 0]);
-	const [dateFriday, setDateFriday] = useState<number[]>([3, 0, 0]);
+	const [dateMonday, setDateMonday] = useState<number[]>([13, 0, 0]);
+	const [dateTuesday, setDateTuesday] = useState<number[]>([14, 0, 0]);
+	const [dateWednesday, setDateWednesday] = useState<number[]>([15, 0, 0]);
+	const [dateThursday, setDateThursday] = useState<number[]>([16, 0, 0]);
+	const [dateFriday, setDateFriday] = useState<number[]>([17, 0, 0]);
 	const [selectedWeekDay, setSelectedWeekDay] = useState<number>(0);
 
 	const [weekAppointments, setWeekappointments] = useState<IAppointment[]>([]);
