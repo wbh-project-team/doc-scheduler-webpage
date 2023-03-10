@@ -88,26 +88,26 @@ export default function Appointments({ appointment, anonym, isLoading, setLoadin
 			alert('Bitte warte bis der Termin stattgefunden hat.');
 		}
 	};
-	const handleCloseCancelYes = async (event: any) => {
-		event.stopPropagation();
-		console.log(appointment.doctor.id);
-		console.log(appointment.id);
+	// const handleCloseCancelYes = async (event: any) => {
+	// 	event.stopPropagation();
+	// 	console.log(appointment.doctor.id);
+	// 	console.log(appointment.id);
 
-		if (!(await isAppointmentOver(appointment.doctor.id, appointment.id as number))) {
-			setCancelOpen(false);
-			setLoading(true);
-			setVisible(false);
-			await cancelAppointment(appointment.doctor.id, appointment.id as number);
-			setLoading(false);
-		} else {
-			alert('Bitte warte bis der Termin stattgefunden hat.');
-		}
-	};
+	// 	if (!(await isAppointmentOver(appointment.doctor.id, appointment.id as number))) {
+	// 		setCancelOpen(false);
+	// 		setLoading(true);
+	// 		setVisible(false);
+	// 		await cancelAppointment(appointment.doctor.id, appointment.id as number);
+	// 		setLoading(false);
+	// 	} else {
+	// 		alert('Bitte nur 24h vor dem Termin');
+	// 	}
+	// };
 
-	const handleCloseCancel = async (event: any) => {
-		setCancelOpen(false);
-		event.stopPropagation();
-	};
+	// const handleCloseCancel = async (event: any) => {
+	// 	setCancelOpen(false);
+	// 	event.stopPropagation();
+	// };
 
 	return (
 		<>
@@ -126,9 +126,10 @@ export default function Appointments({ appointment, anonym, isLoading, setLoadin
 					event.stopPropagation();
 					if (getAddress() === appointment.doctor.walletId) {
 						setPayoutOpen(true);
-					} else if (appointment.id) {
-						setCancelOpen(true);
 					}
+					// else if (appointment.id) {
+					// 	setCancelOpen(true);
+					// }
 				}}
 				sx={{
 					display: 'flex',
@@ -140,7 +141,7 @@ export default function Appointments({ appointment, anonym, isLoading, setLoadin
 					...(!visible && {
 						color: '#ffd6d1',
 						backgroundColor: '#ffd6d1',
-					  }),
+					}),
 					padding: '0',
 				}}>
 				<Typography noWrap={true} sx={{ maxWidth: '150px' }} variant="body1">
@@ -171,13 +172,13 @@ export default function Appointments({ appointment, anonym, isLoading, setLoadin
 						Bei Ja der Patient.
 					</DialogContentText>
 				</DialogContent>
-				<DialogActions sx={{ justifyContent: "space-between" }}>
+				<DialogActions sx={{ justifyContent: 'space-between' }}>
 					<Button onClick={handleClose}>Abbrechen</Button>
 					<Button onClick={handleCloseYes}>Ja</Button>
 					<Button onClick={handleCloseNo}>Nein</Button>
 				</DialogActions>
 			</Dialog>
-			<Dialog
+			{/* <Dialog
 				open={openCancel}
 				TransitionComponent={Transition}
 				keepMounted
@@ -196,7 +197,7 @@ export default function Appointments({ appointment, anonym, isLoading, setLoadin
 					<Button onClick={handleCloseCancel}>Nein</Button>
 					<Button onClick={handleCloseCancelYes}>Ja</Button>
 				</DialogActions>
-			</Dialog>
+			</Dialog> */}
 		</>
 	);
 }

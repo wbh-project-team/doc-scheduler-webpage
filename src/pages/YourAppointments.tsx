@@ -1,37 +1,44 @@
-import { Box, Container, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Container, Typography } from '@mui/material';
 import Head from 'next/head';
 import Footer from '../components/Footer/Footer';
 import Navbar from '../components/Navbar/Navbar';
 import { IAppointment } from '../models/Appointments';
 import { useContext, useEffect, useState } from 'react';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 import { WalletContent, WalletContext } from '../services/web3/wallets/walletProvider';
-import { getAppointments, getDoctors } from '../services/web3/contracts/contractsProvider';
+import {
+	cancelAppointment,
+	getAppointments,
+	getDoctors,
+	isAppointmentOver,
+} from '../services/web3/contracts/contractsProvider';
 
 export default function YourAppointments() {
 	const { isLoggedIn, getAddress } = useContext<WalletContent>(WalletContext);
 	const [currentAppointments, setAppointments] = useState<IAppointment[]>([]);
+	const [isLoading, setLoading] = useState(false);
+
+	const loadAppointments = async () => {
+		const doctors = await getDoctors();
+		if (!doctors) return;
+		let appointments: IAppointment[] = [];
+		for (let i = 0; i < doctors.length; i++) {
+			const doctorAppointments = await getAppointments(doctors[i]);
+			appointments = appointments.concat(doctorAppointments);
+		}
+		appointments = appointments.filter((obj) => {
+			if (obj.patient == getAddress()) {
+				return obj;
+			}
+		});
+
+		console.log(appointments);
+
+		setAppointments(appointments);
+	};
 
 	useEffect(() => {
-		const loadAppointments = async () => {
-			const doctors = await getDoctors();
-			if (!doctors) return;
-			let appointments: IAppointment[] = [];
-			for (let i = 0; i < doctors.length; i++) {
-				const doctorAppointments = await getAppointments(doctors[i]);
-				appointments = appointments.concat(doctorAppointments);
-			}
-			appointments = appointments.filter((obj) => {
-				if (obj.patient == getAddress()) {
-					return obj;
-				}
-			});
-
-			console.log(appointments);
-
-			setAppointments(appointments);
-		};
-
 		if (isLoggedIn) {
 			loadAppointments();
 		}
@@ -105,7 +112,11 @@ export default function YourAppointments() {
 									border: '10px solid tomato',
 									padding: '5px',
 								}}>
-								{element.canceled ? <Typography variant="h5">Von dir Abgesagt</Typography> : null}
+								{element.canceled ? (
+									<Typography sx={{ fontWeight: '1000', mb: '12px' }} variant="h5">
+										Von dir Abgesagt
+									</Typography>
+								) : null}
 								<Typography variant="h5">Termin am:</Typography>
 								<Typography variant="h5">
 									{element.dateTime[0]}.{element.dateTime[1]}.{element.dateTime[2]}
@@ -117,7 +128,9 @@ export default function YourAppointments() {
 								</Typography>
 								<Typography>Dauer: {+element.duration / 60} Minuten</Typography>
 
-								<Typography>Bei: {element.doctor ? element.doctor.firstname + ' ' + element.doctor.name: ''}</Typography>
+								<Typography>
+									Bei: {element.doctor ? element.doctor.firstname + ' ' + element.doctor.name : ''}
+								</Typography>
 								<br></br>
 								<Typography variant="subtitle1">Adresse:</Typography>
 								<Typography>
@@ -129,6 +142,26 @@ export default function YourAppointments() {
 										  element.doctor.city
 										: ''}
 								</Typography>
+								{element.canceled ? null : (
+									<LoadingButton
+										loading={isLoading}
+										disabled={isLoading}
+										loadingIndicator={<CircularProgress sx={{ color: '#fff' }} size={16} />}
+										onClick={async () => {
+											if (!(await isAppointmentOver(element.doctor.id, element.id as number))) {
+												setLoading(true);
+												await cancelAppointment(element.doctor.id, element.id as number);
+												await loadAppointments();
+												setLoading(false);
+											} else {
+												alert('Bitte nur 24h vor dem Termin');
+											}
+										}}
+										variant="contained"
+										sx={{ mt: '12px', width: '100%', color: 'white' }}>
+										Absagen
+									</LoadingButton>
+								)}
 							</Box>
 						))}
 					</Box>

@@ -18,6 +18,7 @@
 		"@fullcalendar/daygrid": "^6.1.4",
 		"@fullcalendar/react": "^6.1.4",
 		"@mui/icons-material": "^5.11.0",
+		"@mui/lab": "^5.0.0-alpha.122",
 		"@mui/material": "^5.11.1",
 		"@mui/styled-engine-sc": "^5.11.0",
 		"@next/font": "13.1.1",
