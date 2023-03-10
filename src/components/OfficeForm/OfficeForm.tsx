@@ -203,10 +203,10 @@ export default function OfficeForm({
 				let openHours: BusinessHours[] = [];
 				for (let index = 0; index < 5; index++) {
 					openHours.push({
-						openingTime: +(8.3 * 60 * 60 * 1000).toFixed(0),
-						closingTime: +(16 * 60 * 60 * 1000).toFixed(0),
-						lunchStart: +(12 * 60 * 60 * 1000).toFixed(0),
-						lunchEnd: +(13 * 60 * 60 * 1000).toFixed(0),
+						openingTime: +(+(8 * 60 * 60 * 1000).toFixed(0)),
+						closingTime: +(+(16 * 60 * 60 * 1000).toFixed(0)),
+						lunchStart: +(+(12 * 60 * 60 * 1000).toFixed(0)),
+						lunchEnd: +(+(13 * 60 * 60 * 1000).toFixed(0)),
 					});
 				}
 				console.log(openHours);
