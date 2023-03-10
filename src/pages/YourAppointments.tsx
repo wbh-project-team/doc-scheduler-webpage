@@ -101,12 +101,12 @@ export default function YourAppointments() {
 						}}>
 						Deine Termine:{' '}
 					</Box>
-					<Box sx={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
+					<Box sx={{ display: 'flex', flexDirection: 'row', gap: '8px', flexWrap: 'wrap' }}>
 						{currentAppointments.map((element) => (
 							<Box
 								key={element.id}
 								sx={{
-									width: '15vw',
+									width: '300px',
 									color: 'secondary.main',
 									backgroundColor: 'white',
 									border: '10px solid tomato',
