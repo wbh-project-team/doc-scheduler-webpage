@@ -25,6 +25,10 @@ export const faqsAerzte: FAQ[] = [
     question: "Erhält die Arztpraxis bei Absage eines Termines vom Patienten automatisch eine zusätzliche Benachrichtigung oder aktualisiert sich nur der Kalender?",
     answer: "Der Praxiskalender wird automatisch aktualisiert, eine zusätzliche Benachrichtigung/Email gibt es nicht",
 },
+{
+    question: "Ich brauche Hilfe beim Anlegen des Praxiskalenders. Wo finde ich Informationen?",
+    answer: "Sie finden eine Schritt-für-Schritt Anleitung in folgenden Dokumenten: "
+}
 
 
 
