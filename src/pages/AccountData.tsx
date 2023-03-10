@@ -20,6 +20,7 @@ import { BigNumber, BigNumberish, ethers } from 'ethers';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { getPatientNameCid, storeCid } from '../services/web3/contracts/contractsProvider';
 import { ipfsUpload, retrieve } from '../services/ipfs/ipfsProvider';
+import { coinToUsd } from '../utilities/cryptoConverterUtility';
 
 const CustomTextField = styled(TextField)(({ theme }) => ({
 	color: 'secondary.main',
@@ -49,6 +50,7 @@ const CustomTextField = styled(TextField)(({ theme }) => ({
 
 export default function Home() {
 	const [balance, setBalance] = useState<BigNumberish>(0);
+	const [usdBalance, setUsdBalance] = useState<BigNumberish>(0);
 	const { isLoggedIn, login, logout, getAddress, getBalance, getPrivateKey } =
 		useContext<WalletContent>(WalletContext);
 
@@ -59,6 +61,8 @@ export default function Home() {
 		const fetchBalance = async () => {
 			const currBalance = await getBalance();
 			setBalance(currBalance);
+			const usd = await coinToUsd(+ethers.utils.formatEther(currBalance));
+			setUsdBalance(usd);
 		};
 		const loadName = async () => {
 			const cid = await getPatientNameCid(getAddress());
@@ -133,7 +137,8 @@ export default function Home() {
 					<br />
 					<Typography variant="body1">Meine Wallet Adresse: {getAddress()}</Typography>
 					<Typography variant="body1">
-						Mein Wallet Kontostand: {ethers.utils.formatEther(balance)} ETH
+						Mein Wallet Kontostand: {(+ethers.utils.formatEther(balance)).toFixed(4)} ETH ~
+						{(+usdBalance.toString()).toFixed(2)} €
 					</Typography>
 					<Box sx={{ display: 'flex', flexDirection: 'row', gap: '10px', alignItems: 'baseline' }}>
 						<Typography variant="body1">Mein Name:</Typography>
