@@ -17,7 +17,7 @@ import {
 import { Box } from '@mui/system';
 import { useRouter } from 'next/router';
 import { Dispatch, SetStateAction, useContext, useEffect, useRef, useState } from 'react';
-import { areaOfExpertise, docs, Doctor } from '../../models/Doctors';
+import { areaOfExpertise, BusinessHours, docs, Doctor } from '../../models/Doctors';
 import {
 	createDoctorsOffice,
 	reconfigureOffice,
@@ -200,6 +200,17 @@ export default function OfficeForm({
 				city.length > 0 &&
 				zipCode.length > 0
 			) {
+				let openHours: BusinessHours[] = [];
+				for (let index = 0; index < 5; index++) {
+					openHours.push({
+						openingTime: +(8.3 * 60 * 60 * 1000).toFixed(0),
+						closingTime: +(16 * 60 * 60 * 1000).toFixed(0),
+						lunchStart: +(12 * 60 * 60 * 1000).toFixed(0),
+						lunchEnd: +(13 * 60 * 60 * 1000).toFixed(0),
+					});
+				}
+				console.log(openHours);
+
 				const newDocData: Doctor = {
 					id: currdoctor ? currdoctor.id : 0, // TODO: get id from blockchain
 					walletId: getAddress(),
@@ -208,12 +219,7 @@ export default function OfficeForm({
 					zipCode: Number(zipCode),
 					address: address,
 					city: city,
-					openHours: Array.apply(null, Array(5)).map(() => ({
-						openingTime: +(8.3 * 60 * 60 * 1000).toFixed(0),
-						closingTime: +(16 * 60 * 60 * 1000).toFixed(0),
-						lunchStart: +(12 * 60 * 60 * 1000).toFixed(0),
-						lunchEnd: +(13 * 60 * 60 * 1000).toFixed(0),
-					})),
+					openHours: openHours,
 					specialization: currentAreaOfExpertise as keyof typeof areaOfExpertise,
 					consultationCategories: categoryArray,
 					description: description,
