@@ -21,6 +21,7 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { getPatientNameCid, storeCid } from '../services/web3/contracts/contractsProvider';
 import { ipfsUpload, retrieve } from '../services/ipfs/ipfsProvider';
 
+
 const CustomTextField = styled(TextField)(({ theme }) => ({
 	color: 'secondary.main',
 	'& label': {
@@ -122,7 +123,12 @@ export default function Home() {
 						transform: 'translate(2.5%, 0%)',
 						paddingBottom: '10vh',
 					}}>
-					<Typography variant="h2">Deine Account-Daten{textFieldUserName.current ? (', ' + textFieldUserName.current.value) : ''}</Typography>
+					<Typography variant="h2">Deine Account-Daten{
+						textFieldUserName.current ? 
+						(textFieldUserName.current.value.length > 0 ? ', ' + textFieldUserName.current.value : ', ' + name) 
+						: ''
+					}
+					</Typography>
 					<br />
 					<Typography variant="body1">Meine Wallet Adresse: {getAddress()}</Typography>
 					<Typography variant="body1">

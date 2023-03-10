@@ -4,7 +4,8 @@ import {
   Container,
   Typography,
   ListItem,
-  ListItemText
+  ListItemText,
+  Link
 } from '@mui/material'
 import Head from 'next/head'
 
@@ -64,7 +65,7 @@ export default function Home() {
             // gap: '15px',
           }}
         >
-         <Typography variant='h2'>FAQs Ärzte</Typography>
+         <Typography variant='h2'>FAQs - Ärzte</Typography>
           {faqsAerzte.map((item, index) => (
             <ListItem sx={{ padding: '10px' }}>
               <ListItemText
@@ -85,6 +86,27 @@ export default function Home() {
               />
             </ListItem>
           ))}
+          <Box sx={{display: 'flex', justifyContent: 'center', gap: '2vw', mt: '10px'}}>
+            <Button style={{ border: '1px solid #A7BDA6', color: 'white', backgroundColor: '#A7BDA6' }}>
+              <a
+                href="https://drive.google.com/file/d/12bN9onDBgDFgbzZgo5Hl_BneuC0iAQ99/view?usp=sharing"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Anleitung: Erstellen eines Praxiskalenders
+              </a>
+            </Button>
+            <Button style={{ border: '1px solid #A7BDA6', color: 'white', backgroundColor: '#A7BDA6' }}>
+              <a
+                href=""
+                target="_blank"
+                rel="noreferrer"
+              >
+                Videoanleitung
+              </a>
+          </Button>
+        </Box>
+          
         </Container>
       </Box>
 

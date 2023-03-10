@@ -94,7 +94,7 @@ export default function YourAppointments() {
 						}}>
 						Deine Termine:{' '}
 					</Box>
-					<Box sx={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
+					<Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px' }}>
 						{currentAppointments.map((element) => (
 							<Box
 								key={element.id}
