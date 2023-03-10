@@ -1,6 +1,5 @@
 import { Web3Storage, getFilesFromPath } from 'web3.storage';
-const token =
-	'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweGFCZWRBRkI2ZTAzNzdFOWE2MEVBNTljQ0Q5N2IzRTNiOGNDMWJGOTYiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2NzgzNjUzMjc0NDcsIm5hbWUiOiJUZXN0In0.mQqYpDa4fyhEOARpEoJAz2bk_oIFI70MXP1eDWor2co';
+const token = process.env.NEXT_PUBLIC_WEB3_STORAGE_API_KEY;
 
 export async function ipfsUpload(name: string) {
 	if (!token) {
