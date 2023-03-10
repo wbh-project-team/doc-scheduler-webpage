@@ -117,7 +117,7 @@ Bitte wählen Sie einen anderen Termin, der noch frei ist.`);
 			let start = hour * 60 + minutes;
 			let end = start + duration / 60;
 
-			if (end > elemStart && start < elemEnd) {
+			if (end > elemStart && start < elemEnd && !element.canceled) {
 				return true;
 			}
 		}
