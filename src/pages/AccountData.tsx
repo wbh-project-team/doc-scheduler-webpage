@@ -122,7 +122,14 @@ export default function Home() {
 						transform: 'translate(2.5%, 0%)',
 						paddingBottom: '10vh',
 					}}>
-					<Typography variant="h2">Deine Account-Daten{textFieldUserName.current ? (', ' + textFieldUserName.current.value) : ''}</Typography>
+					<Typography variant="h2">
+						Deine Account-Daten
+						{textFieldUserName.current
+							? textFieldUserName.current.value.length > 0
+								? ', ' + textFieldUserName.current.value
+								: ', ' + name
+							: ''}
+					</Typography>
 					<br />
 					<Typography variant="body1">Meine Wallet Adresse: {getAddress()}</Typography>
 					<Typography variant="body1">
