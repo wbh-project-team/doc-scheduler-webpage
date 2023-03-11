@@ -89,7 +89,7 @@ export default function Home() {
 						<Button
 							style={{ border: '1px solid #A7BDA6', color: 'white', backgroundColor: '#A7BDA6' }}>
 							<a
-								href="https://drive.google.com/file/d/1frjRKTCllmU7tkDi4Tz_IxXzeGAUHn8G/view?usp=sharing"
+								href="https://www.dropbox.com/s/rzd4hcupc855j8l/Q-024b-1_Video_Terminbuchung_und_Praxiskalender.flv?dl=0"
 								target="_blank"
 								rel="noreferrer">
 								Videoanleitung
